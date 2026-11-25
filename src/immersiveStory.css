@@ -105,8 +105,13 @@
 .app .investigation-marker.is-locked:is(:hover, :focus-visible) > span { color: #fff2d5; background: #2a231c; }
 .app .investigation-marker-lock-icon { width: 14px; height: 14px; }
 .app .dialog-box[data-investigation='true'] { padding-block: 12px; height: min(184px, var(--dialog-safe-max-height)); }
+/* Listed ways out under a scene to look around need room for their reason line. */
+.app .dialog-box[data-investigation='true']:has(.choice-gate-options) { height: min(236px, var(--dialog-safe-max-height)); }
 .app [data-investigation='true'] .choice-gate { margin-top: 4px; }
-.app [data-investigation='true'] .choice-gate-options { grid-template-columns: 1fr; }
+.app [data-investigation='true'] .choice-gate-options { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 6px; }
+.app [data-investigation='true'] .choice-gate-option { min-height: 44px; padding-block: 8px; }
+/* Ways out that are listed under a scene to look around can outnumber one row on a phone: scroll them rather than clip them. */
+.app .dialog-box[data-investigation='true'] .choice-gate { min-height: 0; overflow-y: auto; }
 .app [data-investigation='true'] .choice-gate-options[data-choice-count='1'] .choice-gate-option-copy { grid-template-columns: minmax(0, 1fr) auto; }
 .app [data-investigation='true'] .choice-gate-options[data-choice-count='1'] .choice-gate-option-index { display: none; }
 .investigation-options { display: flex; flex-wrap: wrap; gap: 5px 16px; margin: 4px 0 8px; padding: 0; list-style: none; }

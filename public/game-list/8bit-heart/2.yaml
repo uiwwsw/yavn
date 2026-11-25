@@ -24,15 +24,52 @@ scenes:
 
   b2_parts:
     actions:
-      - branch:
-          cases:
-            - when: { var: b_battery, op: eq, value: false }
+      - say:
+          channel: narration
+          when: { var: parts_done, op: eq, value: 1 }
+          with: []
+          text: "발소리가 계단참에서 멈췄다가 다시 올라온다."
+      - say:
+          channel: narration
+          when: { var: parts_done, op: eq, value: 2 }
+          with: []
+          text: "9층 복도 끝 집 문짝이 넘어간다."
+      - say:
+          channel: narration
+          when: { var: parts_done, op: eq, value: 3 }
+          with: []
+          text: "현관 손잡이가 한 번 돌아간다."
+      - goto: b2_parts_look
+
+  b2_parts_look:
+    actions:
+      - choice:
+          key: b2_parts
+          presentation: explore
+          prompt: "전원, 칩, 가슴 화면. 셋 다 붙어야 켜진다."
+          with: []
+          camera: wide
+          options:
+            - text: "비상 가방"
+              at: { x: 18, y: 50 }
+              when: { var: b_battery, op: eq, value: false }
               goto: b2_battery
-            - when: { var: b_cpu, op: eq, value: false }
+            - text: "주머니 속 게임기"
+              at: { x: 40, y: 50 }
+              when: { var: b_cpu, op: eq, value: false }
               goto: b2_cpu
-            - when: { var: b_screen, op: eq, value: false }
+            - text: "가슴 화면"
+              at: { x: 70, y: 50 }
+              when: { var: b_screen, op: eq, value: false }
               goto: b2_screen
-          default: b2_boot
+            - text: "전원을 넣는다"
+              requires:
+                all:
+                  - { var: b_battery, op: eq, value: true }
+                  - { var: b_cpu, op: eq, value: true }
+                  - { var: b_screen, op: eq, value: true }
+              lockedText: "아직 붙이지 않은 게 있다."
+              goto: b2_boot
 
   b2_battery:
     actions:
@@ -40,11 +77,11 @@ scenes:
       - say: { channel: action, with: [], text: "본체 배터리는 4년 동안 다 죽었다. 현관에 둔 비상 가방을 끌어온다. 아빠가 싸 둔 가방이다." }
       - say: { channel: thought, with: [], text: "AA 건전지 여덟 개. 손전등에 쓰라고 넣었을 거다." }
       - say: { channel: action, with: [], text: "건전지를 테이프로 묶어 하루 옆구리에 붙인다. 떨어질까 봐 두 번 감는다." }
-      - say: { channel: narration, with: [], text: "발소리가 계단참에서 멈췄다가 다시 올라온다." }
       - sound: repair_battery
       - get: battery
       - clearSticker: { id: b2_bat, leave: fadeOut }
       - set: { b_battery: true }
+      - add: { parts_done: 1 }
       - goto: b2_parts
 
   b2_cpu:
@@ -62,13 +99,14 @@ scenes:
       - say: { channel: action, with: [], text: "윤재는 꺼진 게임기의 START를 한 번 눌러 본다." }
       - clearSticker: { id: b2_cpu, leave: fadeOut }
       - set: { b_cpu: true }
+      - add: { parts_done: 1 }
       - goto: b2_parts
 
   b2_screen:
     actions:
       - say: { channel: action, with: [], text: "가슴 화면에서 나온 선이 두 가닥 남는다. 맞는 단자가 없다. 하나는 띄우고, 하나는 껌 은박으로 감아 꽂는다." }
-      - say: { channel: narration, with: [], text: "9층 복도 센서등이 켜졌다. 다용도실 문틈으로 빛이 들어온다." }
       - set: { b_screen: true }
+      - add: { parts_done: 1 }
       - goto: b2_parts
 
   b2_boot:

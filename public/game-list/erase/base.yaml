@@ -16,9 +16,10 @@ assets:
     rooftop: assets/bg/rooftop.svg
     science_room: assets/bg/science_room.svg
     clinic_hall: assets/bg/clinic_hall.svg
-    harin_photo_sticker: assets/items/harin_classroom_boy.svg
-    harin_slide_sticker: assets/items/harin_slide_photo.svg
-    closed_eye_cut_sticker: assets/items/closed_eye_cut.svg
+    harin_photo_sticker: assets/items/harin_classroom_girl.svg
+    harin_slide_sticker: assets/items/harin_slide_girl.svg
+    closed_eye_cut_sticker: assets/items/closed_eye_cut_bride.svg
+    ring_sticker: assets/items/ring_engraved.svg
     snack_lunch_sticker: assets/items/snack_lunch.svg
     child_photo_sticker: assets/items/child_photo.svg
     child_photo_back_sticker: assets/items/child_photo_back.svg
@@ -31,7 +32,7 @@ assets:
     eyes_closed: false
     surgery_reveal: "정림의원 3층"
     photo_studio: "사진관"
-    couple_home: "도윤과 지수의 집"
+    couple_home: "서윤과 지수의 집"
     office: "영업2팀"
     cafeteria: "회사 식당"
     civil_office: "주민센터"
@@ -42,10 +43,10 @@ assets:
     science_room: "과학실"
     clinic_hall: "정림의원 1층"
   characters:
-    도윤:
-      name: "한도윤"
+    서윤:
+      name: "한서윤"
       placement: prompt-top
-      base: assets/char/doyun.svg
+      base: assets/char/seoyun.svg
       facing: left
       defaultDelivery: neutral
       defaultFraming: portrait
@@ -53,17 +54,17 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        smile: assets/char/doyun-smile.svg
-        panic: assets/char/doyun-panic.svg
-        hollow: assets/char/doyun-hollow.svg
+        smile: assets/char/seoyun-smile.svg
+        panic: assets/char/seoyun-panic.svg
+        hollow: assets/char/seoyun-hollow.svg
       emotionMotions:
         panic: freeze
         hollow: droop
     지수:
       name: "이지수"
       placement: prompt-top
-      base: assets/char/jisu.svg
-      avatar: assets/char/jisu-profile.svg
+      base: assets/char/jisu-groom.svg
+      avatar: assets/char/jisu-groom-profile.svg
       facing: left
       defaultDelivery: calm
       defaultFraming: portrait
@@ -71,8 +72,8 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        warm: assets/char/jisu-warm.svg
-        cold: assets/char/jisu-cold.svg
+        warm: assets/char/jisu-groom-warm.svg
+        cold: assets/char/jisu-groom-cold.svg
     어른아진:
       name: "정아진"
       placement: prompt-top
@@ -88,7 +89,7 @@ assets:
     하린:
       name: "유하린"
       placement: prompt-top
-      base: assets/char/harin-boy.svg
+      base: assets/char/harin-girl.svg
       facing: left
       defaultDelivery: neutral
       defaultFraming: portrait
@@ -96,9 +97,9 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        blank: assets/char/harin-boy-blank.svg
-        cry: assets/char/harin-boy-cry.svg
-        sleep: assets/char/harin-boy-sleep.svg
+        blank: assets/char/harin-girl-blank.svg
+        cry: assets/char/harin-girl-cry.svg
+        sleep: assets/char/harin-girl-sleep.svg
     민재:
       name: "서민재"
       placement: prompt-top
@@ -190,11 +191,14 @@ state:
   home_phone: false
   home_jisu: false
   home_box: false
+  read_form: false
+  read_phone: false
+  saw_door: false
 
 inventory:
   invitation:
     name: "청첩장 시안"
-    description: "지수가 고른 글씨체로 인쇄한 청첩장 시안. 도윤이 눈을 감고 웃는 컷이 들어갔다."
+    description: "지수가 고른 글씨체로 인쇄한 청첩장 시안. 서윤이 눈을 감고 웃는 컷이 들어갔다."
     image: assets/items/invitation.svg
     category: "남은 것"
     order: 10
@@ -210,3 +214,9 @@ inventory:
     image: assets/items/discharge_paper.svg
     category: "남은 것"
     order: 30
+  ring:
+    name: "반지"
+    description: "지난 2월 지수가 내민 반지. 안쪽에 2024. 6. 2.가 새겨져 있다."
+    image: assets/items/ring_engraved.svg
+    category: "남은 것"
+    order: 40

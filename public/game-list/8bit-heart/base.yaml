@@ -123,6 +123,7 @@ state:
   b_battery: false
   b_cpu: false
   b_screen: false
+  parts_done: 0
 
 inventory:
   console_cheap:

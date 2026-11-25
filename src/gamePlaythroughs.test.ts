@@ -248,6 +248,7 @@ describe('8비트 심장', () => {
       b1_haru: '신문지가 뭔지 설명한다',
       b1_home: '침대||책상 위||수리용 단말||다용도실 문을 연다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b2_parts: '비상 가방||주머니 속 게임기||가슴 화면||전원을 넣는다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '끝까지 함께하겠다고 약속한다',
@@ -360,6 +361,7 @@ describe('8비트 심장', () => {
       b1_haru: '말이 안 나온다',
       b1_home: '다용도실 문을 연다',
       b2_register: '아무 일도 없다고 한다',
+      b2_parts: '비상 가방||주머니 속 게임기||가슴 화면||전원을 넣는다',
       b3_snack: '복숭아를 내일로 남겨 둔다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '대답을 내일로 미룬다',
@@ -410,6 +412,7 @@ describe('8비트 심장', () => {
       b1_haru: '신문지가 뭔지 설명한다',
       b1_home: '다용도실 문을 연다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b2_parts: '비상 가방||주머니 속 게임기||가슴 화면||전원을 넣는다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '반대쪽으로 달아난다',
     });
@@ -427,6 +430,7 @@ describe('8비트 심장', () => {
       b1_haru: '신문지가 뭔지 설명한다',
       b1_home: '다용도실 문을 연다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b2_parts: '비상 가방||주머니 속 게임기||가슴 화면||전원을 넣는다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '끝까지 함께하겠다고 약속한다',
@@ -455,6 +459,7 @@ describe('8비트 심장', () => {
       b1_haru: '신문지가 뭔지 설명한다',
       b1_home: '다용도실 문을 연다',
       b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b2_parts: '비상 가방||주머니 속 게임기||가슴 화면||전원을 넣는다',
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '끝까지 함께하겠다고 약속한다',
@@ -472,6 +477,8 @@ describe('8비트 심장', () => {
 });
 
 describe("ERASE", () => {
+  // The last morning is a room to look around: the form, the phone and the glass door, then a way out.
+  const lobby = (way: string) => `서류철||휴대폰||유리문||${way}`;
   // Every choice the story asks, answered the way the novel's main path answers it.
   const mainPath = {
     e1_school: "사실대로 말한다",
@@ -483,13 +490,13 @@ describe("ERASE", () => {
     e3_ajin: "미안하다고 한다",
     e4_accept: "하린 대신 받는다",
     e4_tell: "전부 말한다",
-    e5_final: "사진관으로 간다",
     e3_home: "식탁 위 봉투||휴대폰||베란다 수납장||정림의원을 찾아본다",
+    e5_lobby: lobby("사진관으로 간다"),
   };
 
   it("작가가 이름을 먼저 부르고, 프롤로그는 그 사람을 미리 알려 주지 않는다", async () => {
     await start("erase");
-    const run = await play({ ...mainPath, e5_final: "3층으로 올라간다" });
+    const run = await play({ ...mainPath, e5_lobby: lobby("3층으로 올라간다") });
     finished(run);
     expect(run.state.resolvedEndingId).toBe("erase_loop");
 
@@ -507,16 +514,35 @@ describe("ERASE", () => {
     expect(dot).toBeGreaterThan(studio);
     expect(camera).toBeGreaterThan(studio);
 
-    expect(heard(run.shown, "도윤이 이름을 쓰고 끝에 작은 점을 찍는다")).toBe(true);
-    // The 2016 photo comes in the bundle of originals, and he is the one who asks.
+    expect(heard(run.shown, "서윤이 이름을 쓰고 끝에 작은 점을 찍는다")).toBe(true);
+    expect(heard(run.shown, "신부님, 어깨 힘 빼시고요. 신랑님 보세요.")).toBe(true);
+    // The 2016 photo comes in the bundle of originals, and she is the one who asks.
     expect(heard(run.shown, "마지막 건 뭐예요?")).toBe(true);
     expect(heard(run.shown, "잘못 들어갔어요. 지워 주세요.")).toBe(true);
-    expect(heard(run.shown, "도윤의 사진첩은 2016년 3월에서 시작한다")).toBe(true);
-    expect(heard(run.shown, "도윤은 그 앞을 지나간다.")).toBe(true);
-    // Jisu finds out what the second erasure took from her.
+    expect(heard(run.shown, "서윤의 사진첩은 2016년 3월에서 시작한다")).toBe(true);
+    // The clinic screen shows two records before anyone says there were two.
+    const twoRecords = run.shown.findIndex(text => text.includes("시술 이력 2건"));
+    const proposal = run.shown.findIndex(text => text === "내가 처음 청혼한 날.");
+    expect(twoRecords).toBeGreaterThan(-1);
+    expect(proposal).toBeGreaterThan(twoRecords);
+    expect(heard(run.shown, "1층에서 네 시간 기다렸어.")).toBe(true);
+    expect(heard(run.shown, "말하면 또 지울까 봐.")).toBe(true);
+    expect(heard(run.shown, "2024년 6월 20일 · 신청인 한서윤")).toBe(true);
+    // The third time she comes down asking him what he is doing there.
+    expect(heard(run.shown, "지수야? 여기서 뭐 해?")).toBe(true);
+    expect(heard(run.shown, "……데리러 왔어.")).toBe(true);
     expect(heard(run.shown, "이걸 언제 찍었지.")).toBe(true);
     expect(heard(run.shown, "…하린아.")).toBe(true);
+    expect(heard(run.shown, "서윤은 그 앞을 지나간다.")).toBe(true);
     expect(heard(run.shown, "안 지워요.")).toBe(false);
+  });
+
+  it("로비의 출구는 그 대가를 본 뒤에야 열린다", async () => {
+    await start("erase");
+    const run = await play(mainPath, state => state.choiceGate.key === "e5_lobby");
+    expect(run.state.choiceGate.key).toBe("e5_lobby");
+    const locked = run.state.choiceGate.lockedOptionIndexes.map(index => run.state.choiceGate.options[index].text);
+    expect(locked).toEqual(expect.arrayContaining(["3층으로 올라간다", "유리문을 밀고 나간다", "사진관으로 간다"]));
   });
 
   it("교실에 오라는 말에 답하지 않으면 화환으로 끝난다", async () => {
@@ -540,7 +566,7 @@ describe("ERASE", () => {
     expect(heard(run.shown, "잘못 들어온 거래.")).toBe(false);
   });
 
-  it("끝까지 들은 사람에게 옆자리가 열리고, 그 대가로 가봉을 놓친다", async () => {
+  it("끝까지 들은 사람에게 옆자리가 열리고, 그 대가로 지수의 차를 지나친다", async () => {
     await start("erase");
     const run = await play(mainPath);
     finished(run);
@@ -554,12 +580,15 @@ describe("ERASE", () => {
 
     expect(heard(run.shown, "그날 카레 안 나왔어. 닭볶음탕이었어")).toBe(true);
     expect(heard(run.shown, "1층 유리문 너머에 아진이 서 있다")).toBe(true);
-    // The eleventh message is Ajin's own fault, and he takes the apology for Harin.
-    expect(heard(run.shown, "너 나 좋아하는 것 같다고 민재한테 말한 것도 나야")).toBe(true);
+    // Harin liked Minjae; the eleventh message is Ajin's own fault, and she takes the apology for Harin.
+    expect(heard(run.shown, "유하린 서민재 좋아했잖아")).toBe(true);
+    expect(heard(run.shown, "너 민재 좋아하는 것 같다고 민재한테 말한 것도 나야")).toBe(true);
     expect(heard(run.shown, "기억 안 나는 사람이 받아도 돼요?")).toBe(true);
     expect(heard(run.shown, "오늘 점심 사진관으로 올래요? 옆자리 비워 둘게요.")).toBe(true);
+    expect(heard(run.shown, "길 건너 회색 차 쪽은 보지 않는다")).toBe(true);
     expect(heard(run.shown, "사천 원어치만요")).toBe(true);
     expect(heard(run.shown, "안 지워요.")).toBe(true);
+    expect(heard(run.shown, "아침에 내 차 앞으로 지나갔지.")).toBe(true);
     expect(heard(run.shown, "근데 오늘은 그 사람한테 먼저 갔네.")).toBe(true);
     expect(heard(run.shown, "나는 오늘 처음 듣는데")).toBe(false);
   });
@@ -571,14 +600,12 @@ describe("ERASE", () => {
       e2_listen: "왜 이런 얘기를 하느냐고 묻는다",
       e3_ajin: "그건 하린이라고 한다",
       e4_accept: "받지 않는다",
-    }, state => state.choiceGate.key === "e5_final");
+    }, state => state.choiceGate.key === "e5_lobby");
 
-    expect(run.state.choiceGate.key).toBe("e5_final");
+    expect(run.state.choiceGate.key).toBe("e5_lobby");
     const options = run.state.choiceGate.options.map(o => o.text);
     expect(options).not.toContain("사진관으로 간다");
-    expect(heard(run.shown, "오늘 점심 사진관으로 올래요?")).toBe(false);
     expect(heard(run.shown, "하린이 아니라고 하셨죠. 알아요.")).toBe(true);
-    expect(heard(run.shown, "충전기 뽑히던 소리.")).toBe(true);
   });
 
   it("사과만 한 사람도 사진관에 가지만 사천 원 얘기는 모른다", async () => {
@@ -586,6 +613,7 @@ describe("ERASE", () => {
     const run = await play({ ...mainPath, e2_listen: "왜 이런 얘기를 하느냐고 묻는다", e4_accept: "받지 않는다" });
     finished(run);
     expect(run.state.resolvedEndingId).toBe("side_seat");
+    expect(heard(run.shown, "충전기 뽑히던 소리.")).toBe(true);
     expect(heard(run.shown, "점심시간만큼만요.")).toBe(true);
     expect(heard(run.shown, "사천 원어치만요")).toBe(false);
   });
@@ -595,6 +623,7 @@ describe("ERASE", () => {
     const run = await play({ ...mainPath, e2_jisu: "앨범 얘기만 했다고 한다", e4_tell: "아무 일도 없다고 한다" });
     finished(run);
     expect(run.state.resolvedEndingId).toBe("side_seat");
+    expect(heard(run.shown, "넌 오늘도 다 말하진 않았지. 나는 그게 제일 무서워.")).toBe(true);
     expect(heard(run.shown, "나는 오늘 처음 듣는데. 그 사람은 점심에 들었네.")).toBe(true);
     expect(heard(run.shown, "명단은 내일 하자.")).toBe(true);
     expect(heard(run.shown, "그 사람한테만 말고, 라고 했잖아.")).toBe(false);
@@ -602,7 +631,7 @@ describe("ERASE", () => {
 
   it("클리닉에서 날짜를 잡으면 새벽 3시는 확인 문자다", async () => {
     await start("erase");
-    const booked = await play({ ...mainPath, e5_final: "3층으로 올라간다" });
+    const booked = await play({ ...mainPath, e5_lobby: lobby("3층으로 올라간다") });
     finished(booked);
     expect(heard(booked.shown, "예약 확인 · 내일(화) 오전 10시")).toBe(true);
     expect(heard(booked.shown, "희망 기간")).toBe(false);
@@ -610,13 +639,13 @@ describe("ERASE", () => {
 
   it("클리닉에서 그냥 나오면 예약은 없고, 사본을 찾으러 간 1층에서 기간을 직접 쓴다", async () => {
     await start("erase");
-    const notBooked = await play({ ...mainPath, e3_booking: "그냥 나온다", e5_final: "3층으로 올라간다" });
+    const notBooked = await play({ ...mainPath, e3_booking: "그냥 나온다", e5_lobby: lobby("3층으로 올라간다") });
     finished(notBooked);
     expect(notBooked.state.resolvedEndingId).toBe("erase_loop");
     expect(heard(notBooked.shown, "예약 확인")).toBe(false);
-    expect(heard(notBooked.shown, "언제 열었는지 기억이 나지 않는다")).toBe(false);
     expect(heard(notBooked.shown, "2016년 동의서 사본이 준비되었습니다")).toBe(true);
-    expect(heard(notBooked.shown, "희망 기간: 2027년 4월 2일부터 오늘까지")).toBe(true);
+    expect(heard(notBooked.shown, "희망 기간: 비어 있음")).toBe(true);
+    expect(heard(notBooked.shown, "서윤은 희망 기간 칸에 2027년 4월 2일부터")).toBe(true);
   });
 
   it("첫날 그 사람이 아니라고 했으면 교실의 첫마디가 다르다", async () => {
@@ -627,39 +656,40 @@ describe("ERASE", () => {
     expect(heard(run.shown, "사고라고 하셨죠. 첫날.")).toBe(false);
   });
 
-  it("지수에게 전부 털어놓았다면 전화 끝에 그 이름을 불러 본다", async () => {
+  it("지수에게 전부 털어놓았다면 유리문을 밀고 나가 그 이름을 불린다", async () => {
     await start("erase");
-    const twoNames = await play({ ...mainPath, e5_final: "지수에게 전화한다" });
+    const twoNames = await play({ ...mainPath, e5_lobby: lobby("유리문을 밀고 나간다") });
     finished(twoNames);
     expect(twoNames.state.resolvedEndingId).toBe("two_names");
-    expect(heard(twoNames.shown, "하린아. 가봉 가자. 도윤이도 같이.")).toBe(true);
-    expect(heard(twoNames.shown, "나 열여덟 살 때 이름은 유하린이었어.")).toBe(true);
+    expect(heard(twoNames.shown, "3년 전에도 여기 있었지.")).toBe(true);
+    expect(heard(twoNames.shown, "오늘은 안 올라갔어.")).toBe(true);
+    expect(heard(twoNames.shown, "하린아. 가봉 가자. 서윤이도 같이.")).toBe(true);
+    expect(heard(twoNames.shown, "열여덟 살 때 이름은 유하린이었어.")).toBe(true);
     expect(heard(twoNames.shown, "알았어요. 돈까스는 제가 먹을게요.")).toBe(true);
   });
 
-  it("털어놓지 않은 채 전화하면 식이 미뤄지고 반지는 서류철 위에 놓인다", async () => {
+  it("털어놓지 않은 채 나가면 식이 미뤄지고 차가 먼저 떠난다", async () => {
     await start("erase");
     const unfinished = await play({
       ...mainPath,
       e2_jisu: "앨범 얘기만 했다고 한다",
       e4_tell: "아무 일도 없다고 한다",
-      e5_final: "지수에게 전화한다",
+      e5_lobby: lobby("유리문을 밀고 나간다"),
     });
     finished(unfinished);
     expect(unfinished.state.resolvedEndingId).toBe("unfinished");
-    expect(heard(unfinished.shown, "반지를 빼서 서류철 위에 올려놓는다")).toBe(true);
     expect(heard(unfinished.shown, "반지는 네가 갖고 있어.")).toBe(true);
+    expect(heard(unfinished.shown, "회색 차가 먼저 떠난다")).toBe(true);
     expect(heard(unfinished.shown, "가봉 예약 취소")).toBe(true);
-    expect(heard(unfinished.shown, "나 열여덟 살 때 이름은 유하린이었어.")).toBe(true);
+    expect(heard(unfinished.shown, "열여덟 살 때 이름은 유하린이었어.")).toBe(true);
   });
 
   it("2장에서 사실대로 말하고 식탁에서 옛 친구만 말한 사람은 다 말한 것으로 치지 않는다", async () => {
     await start("erase");
-    const run = await play({ ...mainPath, e4_tell: "옛날 친구를 만났다고만 한다", e5_final: "지수에게 전화한다" });
+    const run = await play({ ...mainPath, e4_tell: "옛날 친구를 만났다고만 한다", e5_lobby: lobby("유리문을 밀고 나간다") });
     finished(run);
     expect(run.state.resolvedEndingId).toBe("unfinished");
-    expect(heard(run.shown, "월요일에 네가 다 말해 줬잖아")).toBe(false);
-    expect(heard(run.shown, "개수대에서 오래 흐르던 물.")).toBe(false);
-    expect(heard(run.shown, "봉투로 도로 들어가던 기본증명서.")).toBe(true);
+    expect(heard(run.shown, "월요일에 네가 먼저 다 말해 줬잖아")).toBe(false);
+    expect(heard(run.shown, "넌 오늘도 다 말하진 않았지.")).toBe(true);
   });
 });

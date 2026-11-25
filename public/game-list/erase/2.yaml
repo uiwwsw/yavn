@@ -12,29 +12,29 @@ scenes:
       - music: static
       - place: "점심시간 · 주민센터"
       - char: { id: 지수, position: left }
-      - char: { id: 도윤, position: right }
-      - say: { char: 지수, with: [도윤], text: "전세 대출 서류에 가족관계증명서랑 기본증명서 들어간대." }
-      - say: { char: 지수, with: [도윤], text: "식 전에 떼 두자." }
-      - say: { channel: action, with: [지수, 도윤], text: "번호표는 37번이다. 발급 신청서 서명 칸에 도윤은 한도윤이라고 쓰고 끝에 작은 점을 찍는다." }
-      - say: { char: 창구직원, with: [지수, 도윤], text: "37번 고객님. 두 분 거 같이 드릴게요." }
-      - say: { channel: action, with: [지수, 도윤], text: "직원이 서류를 한 장씩 지수 쪽으로 민다. 기본증명서를 집어 든 지수의 손이 맨 아래 칸에서 멈춘다." }
-      - say: { channel: record, with: [], text: "기본증명서 · 한도윤 · [개명] 허가일자 2016년 5월 13일 · 개명 전 이름 유하린" }
-      - say: { channel: action, with: [지수, 도윤], text: "지수가 종이를 도윤 쪽으로 돌린다. 도윤은 그 줄을 두 번 읽는다." }
-      - say: { char: 도윤.panic, with: [지수], text: "……이거 뭐지." }
-      - say: { channel: action, with: [지수, 도윤], text: "지수는 대답하지 않는다. 종이를 세 번 접어 봉투에 넣는다." }
-      - say: { char: 지수, with: [도윤], text: "인감은 다음 주에 떼면 되죠?" }
-      - say: { char: 창구직원, with: [지수, 도윤], text: "네, 본인 오시면 돼요." }
+      - char: { id: 서윤, position: right }
+      - say: { char: 지수, with: [서윤], text: "전세 대출 서류에 가족관계증명서랑 기본증명서 들어간대." }
+      - say: { char: 지수, with: [서윤], text: "식 전에 떼 두자." }
+      - say: { channel: action, with: [지수, 서윤], text: "번호표는 37번이다. 발급 신청서 서명 칸에 서윤은 한서윤이라고 쓰고 끝에 작은 점을 찍는다." }
+      - say: { char: 창구직원, with: [지수, 서윤], text: "37번 고객님. 두 분 거 같이 드릴게요." }
+      - say: { channel: action, with: [지수, 서윤], text: "직원이 서류를 한 장씩 지수 쪽으로 민다. 기본증명서를 집어 든 지수의 손이 맨 아래 칸에서 멈춘다." }
+      - say: { channel: record, with: [], text: "기본증명서 · 한서윤 · [개명] 허가일자 2016년 5월 13일 · 개명 전 이름 유하린" }
+      - say: { channel: action, with: [지수, 서윤], text: "지수가 종이를 서윤 쪽으로 돌린다. 서윤은 그 줄을 두 번 읽는다." }
+      - say: { char: 서윤.panic, with: [지수], text: "……이거 뭐지." }
+      - say: { channel: action, with: [지수, 서윤], text: "지수는 대답하지 않는다. 종이를 세 번 접어 봉투에 넣는다." }
+      - say: { char: 지수, with: [서윤], text: "인감은 다음 주에 떼면 되죠?" }
+      - say: { char: 창구직원, with: [지수, 서윤], text: "네, 본인 오시면 돼요." }
       - move: { id: 지수, style: exit }
       - bg: { id: couple_home, transition: fade, duration: 600 }
       - music: wind
-      - place: "그날 밤 · 도윤과 지수의 집"
-      - say: { channel: action, with: [도윤], text: "지수는 저녁 내내 봉투 얘기를 꺼내지 않았다." }
+      - place: "그날 밤 · 서윤과 지수의 집"
+      - say: { channel: action, with: [서윤], text: "지수는 저녁 내내 봉투 얘기를 꺼내지 않았다." }
       - goto: e3_home
 
   e3_home:
     title: "그날 밤"
     actions:
-      - say: { channel: action, with: [도윤], text: "열한 시. 지수가 먼저 들어가 눕는다. 거실 불만 남는다." }
+      - say: { channel: action, with: [서윤], text: "열한 시. 지수가 먼저 들어가 눕는다. 거실 불만 남는다." }
       - goto: e3_home_look
 
   e3_home_look:
@@ -73,38 +73,38 @@ scenes:
   e3_home_envelope:
     title: "봉투"
     actions:
-      - say: { channel: action, with: [도윤], text: "주민센터 봉투가 지수 가방 옆에 있다. 세 번 접힌 그대로다." }
-      - say: { channel: action, with: [도윤], text: "꺼내서 맨 아래 칸을 다시 읽는다." }
+      - say: { channel: action, with: [서윤], text: "주민센터 봉투가 지수 가방 옆에 있다. 세 번 접힌 그대로다." }
+      - say: { channel: action, with: [서윤], text: "꺼내서 맨 아래 칸을 다시 읽는다." }
       - say: { channel: record, with: [], text: "[개명] 허가일자 2016년 5월 13일 · 개명 전 이름 유하린 · 신청인 법정대리인 한경숙" }
-      - say: { channel: action, with: [도윤], text: "한경숙. 엄마 이름이다." }
-      - say: { channel: action, with: [도윤], text: "도윤은 종이를 접힌 금대로 다시 접어 봉투에 넣는다." }
+      - say: { channel: action, with: [서윤], text: "한경숙. 엄마 이름이다." }
+      - say: { channel: action, with: [서윤], text: "서윤은 종이를 접힌 금대로 다시 접어 봉투에 넣는다." }
       - set: { home_envelope: true }
       - goto: e3_home_look
 
   e3_home_phone:
     title: "휴대폰"
     actions:
-      - say: { channel: action, with: [도윤], text: "검색창에 유하린을 쳐 본다. 결과가 없다." }
-      - say: { channel: action, with: [도윤], text: "사진첩 맨 끝으로 내린다. 교실 창가의 남자아이가 아직 거기 있다.", when: { var: ajin_photo, op: ne, value: deleted } }
-      - say: { channel: action, with: [도윤], text: "사진첩 맨 끝으로 내린다. 휴지통까지 비운 자리에는 미끄럼틀 위 아이 한 장뿐이다.", when: { var: ajin_photo, op: eq, value: deleted } }
-      - say: { channel: action, with: [도윤], text: "지수와의 대화방은 오늘 아침 '반차 냈어'에서 멈춰 있다." }
+      - say: { channel: action, with: [서윤], text: "검색창에 유하린을 쳐 본다. 결과가 없다." }
+      - say: { channel: action, with: [서윤], text: "사진첩 맨 끝으로 내린다. 교실 창가의 여자아이가 아직 거기 있다.", when: { var: ajin_photo, op: ne, value: deleted } }
+      - say: { channel: action, with: [서윤], text: "사진첩 맨 끝으로 내린다. 휴지통까지 비운 자리에는 미끄럼틀 위 아이 한 장뿐이다.", when: { var: ajin_photo, op: eq, value: deleted } }
+      - say: { channel: action, with: [서윤], text: "지수와의 대화방은 오늘 아침 '반차 냈어'에서 멈춰 있다." }
       - set: { home_phone: true }
       - goto: e3_home_look
 
   e3_home_jisu:
     title: "안방 문"
     actions:
-      - say: { channel: action, with: [도윤], text: "문이 한 뼘 열려 있다. 불은 꺼져 있다." }
-      - say: { channel: action, with: [도윤], text: "지수는 벽 쪽으로 돌아누워 있다. 자는 숨소리가 아니다." }
-      - say: { channel: action, with: [도윤], text: "도윤은 문고리를 잡았다가 그대로 둔다." }
+      - say: { channel: action, with: [서윤], text: "문이 한 뼘 열려 있다. 불은 꺼져 있다." }
+      - say: { channel: action, with: [서윤], text: "지수는 벽 쪽으로 돌아누워 있다. 자는 숨소리가 아니다." }
+      - say: { channel: action, with: [서윤], text: "서윤은 문고리를 잡았다가 그대로 둔다." }
       - set: { home_jisu: true }
       - goto: e3_home_look
 
   e3_home_box:
     title: "엄마 상자"
     actions:
-      - say: { channel: action, with: [도윤], text: "베란다 수납장 맨 아래 칸에서 엄마 상자를 꺼낸다. 테이프가 누렇게 말라 있다." }
-      - say: { channel: action, with: [도윤], text: "보험 증권과 통장 사이에 종이 한 장이 끼어 있다.", continueLabel: "꺼낸다" }
+      - say: { channel: action, with: [서윤], text: "베란다 수납장 맨 아래 칸에서 엄마 상자를 꺼낸다. 테이프가 누렇게 말라 있다." }
+      - say: { channel: action, with: [서윤], text: "보험 증권과 통장 사이에 종이 한 장이 끼어 있다.", continueLabel: "꺼낸다" }
       - say: { channel: record, with: [], text: "퇴원 확인서 · 2016년 3월 29일 · 발급처 정림의원" }
       - say: { channel: narration, with: [], text: "스무 살 때 엄마가 한 번 보여 준 종이다. 사고 뒤에 있었던 병원이라고 했다." }
       - get: discharge_paper
@@ -114,8 +114,8 @@ scenes:
   e3_home_leave:
     title: "검색"
     actions:
-      - say: { channel: action, with: [도윤], text: "지도에 정림의원을 친다. 버스로 사십 분. 3층 칸에만 영어가 적혀 있다." }
-      - say: { channel: action, with: [도윤], text: "도윤은 화요일 오후 반차를 올린다." }
+      - say: { channel: action, with: [서윤], text: "지도에 정림의원을 친다. 버스로 사십 분. 3층 칸에만 영어가 적혀 있다." }
+      - say: { channel: action, with: [서윤], text: "서윤은 화요일 오후 반차를 올린다." }
       - goto: e3_clinic
 
   e3_clinic:
@@ -125,29 +125,31 @@ scenes:
       - bg: { id: clinic_hall, transition: cut }
       - music: cold_room
       - place: "오후 · 정림의원 1층"
-      - char: { id: 도윤, position: right }
-      - say: { channel: action, with: [도윤], text: "1층은 내과와 피부과다. 엘리베이터 옆 안내판에서 3층 칸에만 영어가 적혀 있다." }
+      - char: { id: 서윤, position: right }
+      - say: { channel: action, with: [서윤], text: "1층은 내과와 피부과다. 엘리베이터 옆 안내판에서 3층 칸에만 영어가 적혀 있다." }
       - say: { channel: record, with: [], text: "3F · ERASE" }
       - bg: { id: surgery, transition: cut }
       - place: "3층 · 상담실"
       - char: { id: 상담사, position: left }
-      - say: { char: 상담사, with: [도윤], text: "본인 확인됐습니다. 화면 보시겠어요?" }
+      - say: { char: 상담사, with: [서윤], text: "본인 확인됐습니다. 화면 보시겠어요?" }
+      - say: { channel: record, with: [], text: "한서윤 님 · 시술 이력 2건" }
+      - say: { channel: action, with: [서윤, 상담사], text: "상담사가 목록 맨 아래 칸을 누른다. 위 칸은 열지 않는다." }
       - say: { channel: record, with: [], text: "신청인 본인 · 2016년 3월 29일 시술 완료 · 시술 범위: 기억 · 성명 · 안면", continueLabel: "화면을 끝까지 읽는다" }
       - bg: { id: surgery_reveal, transition: cut }
       - say: { channel: record, with: [], text: "시술 전 성명 유하린 · 열여덟" }
       - say: { channel: record, with: [], text: "동의서 사본 · 신청인 유하린 · 보호자 동의 한경숙(모)" }
-      - say: { channel: action, with: [도윤, 상담사], text: "유하린, 이름 끝에 작은 점이 있다. 그 아래 한경숙은 엄마 글씨다." }
-      - say: { channel: action, with: [도윤, 상담사], text: "엄마는 경숙의 ㄱ을 늘 길게 뺐다." }
+      - say: { channel: action, with: [서윤, 상담사], text: "유하린, 이름 끝에 작은 점이 있다. 그 아래 한경숙은 엄마 글씨다." }
+      - say: { channel: action, with: [서윤, 상담사], text: "엄마는 경숙의 ㄱ을 늘 길게 뺐다." }
       - music: null
       - wait: 1200
-      - say: { channel: thought, with: [도윤, 상담사], text: "사고가 아니었다. 내가 신청했다.", wait: 2400, unskippable: true }
-      - say: { char: 상담사, with: [도윤], text: "저희 시술은 본인만 바꿉니다. 다른 분들의 기억이나 기기 속 기록은 그대로예요." }
-      - say: { char: 도윤.hollow, with: [상담사], text: "그럼 저를 기억하는 사람은요." }
-      - say: { char: 상담사, with: [도윤], text: "그대로 기억하고 계시겠죠." }
-      - say: { channel: action, with: [도윤, 상담사], text: "상담사가 화면을 닫으려 한다." }
-      - say: { char: 도윤.hollow, with: [상담사], text: "……한 번 더 받을 수도 있어요?" }
-      - say: { channel: action, with: [도윤, 상담사], text: "상담사는 놀라지 않는다." }
-      - say: { char: 상담사, with: [도윤], text: "기간을 정해서 받으시는 분들이 있어요. 원하시면 날짜를 잡아 드릴게요." }
+      - say: { channel: thought, with: [서윤, 상담사], text: "사고가 아니었다. 내가 신청했다.", wait: 2400, unskippable: true }
+      - say: { char: 상담사, with: [서윤], text: "저희 시술은 본인만 바꿉니다. 다른 분들의 기억이나 기기 속 기록은 그대로예요." }
+      - say: { char: 서윤.hollow, with: [상담사], text: "그럼 저를 기억하는 사람은요." }
+      - say: { char: 상담사, with: [서윤], text: "그대로 기억하고 계시겠죠." }
+      - say: { channel: action, with: [서윤, 상담사], text: "상담사가 화면을 닫으려 한다." }
+      - say: { char: 서윤.hollow, with: [상담사], text: "……한 번 더 받을 수도 있어요?" }
+      - say: { channel: action, with: [서윤, 상담사], text: "상담사는 놀라지 않는다." }
+      - say: { char: 상담사, with: [서윤], text: "기간을 정해서 받으시는 분들이 있어요. 원하시면 날짜를 잡아 드릴게요." }
       - choice:
           key: e3_booking
           prompt: "상담사가 달력 화면을 연다."
@@ -161,7 +163,7 @@ scenes:
 
   e3_booked:
     actions:
-      - say: { char: 도윤, with: [상담사], text: "……잡아 주세요." }
+      - say: { char: 서윤, with: [상담사], text: "……잡아 주세요." }
       - say:
           channel: message
           thread: 정림의원
@@ -169,17 +171,17 @@ scenes:
           speakerName: 정림의원
           with: []
           text: "예약 완료 · 4월 27일(화) 오전 10시."
-      - say: { char: 상담사, with: [도윤], text: "2016년 동의서 사본은 따로 신청하셔야 해요." }
-      - say: { char: 상담사, with: [도윤], text: "일주일 걸리고, 1층 원무과에서 찾아가시면 됩니다." }
-      - say: { char: 도윤, with: [상담사], text: "그것도 해 주세요." }
+      - say: { char: 상담사, with: [서윤], text: "2016년 동의서 사본은 따로 신청하셔야 해요." }
+      - say: { char: 상담사, with: [서윤], text: "일주일 걸리고, 1층 원무과에서 찾아가시면 됩니다." }
+      - say: { char: 서윤, with: [상담사], text: "그것도 해 주세요." }
       - goto: e3_elevator
 
   e3_leave:
     actions:
-      - say: { char: 도윤, with: [상담사], text: "아니요. 오늘은 됐어요." }
-      - say: { char: 상담사, with: [도윤], text: "2016년 동의서 사본은 따로 신청하셔야 해요." }
-      - say: { char: 상담사, with: [도윤], text: "일주일 걸리고, 1층 원무과에서 찾아가시면 됩니다." }
-      - say: { char: 도윤, with: [상담사], text: "그건 해 주세요." }
+      - say: { char: 서윤, with: [상담사], text: "아니요. 오늘은 됐어요." }
+      - say: { char: 상담사, with: [서윤], text: "2016년 동의서 사본은 따로 신청하셔야 해요." }
+      - say: { char: 상담사, with: [서윤], text: "일주일 걸리고, 1층 원무과에서 찾아가시면 됩니다." }
+      - say: { char: 서윤, with: [상담사], text: "그건 해 주세요." }
       - goto: e3_elevator
 
   e3_elevator:
@@ -188,12 +190,12 @@ scenes:
       - move: { id: 상담사, style: exit }
       - bg: { id: clinic_hall, transition: cut }
       - place: "엘리베이터 안"
-      - say: { channel: action, with: [도윤], text: "엘리베이터에서 도윤은 아진에게 처음으로 먼저 메시지를 보낸다." }
+      - say: { channel: action, with: [서윤], text: "엘리베이터에서 서윤은 아진에게 처음으로 먼저 메시지를 보낸다." }
       - say:
           channel: message
           thread: 사진관
           side: me
-          char: 도윤
+          char: 서윤
           with: []
           when: { var: number_deleted, op: eq, value: false }
           text: "하린이 다니던 학교, 어디예요?"
@@ -201,11 +203,11 @@ scenes:
           channel: message
           thread: "010-4418-2706"
           side: me
-          char: 도윤
+          char: 서윤
           with: []
           when: { var: number_deleted, op: eq, value: true }
           text: "하린이 다니던 학교, 어디예요?"
-      - say: { channel: action, with: [도윤], text: "1은 금방 사라진다. 답은 엘리베이터가 1층에 닿고 나서 온다." }
+      - say: { channel: action, with: [서윤], text: "1은 금방 사라진다. 답은 엘리베이터가 1층에 닿고 나서 온다." }
       - say:
           channel: message
           thread: 사진관
@@ -250,44 +252,44 @@ scenes:
   e3_walked_past:
     title: "지나간 사람"
     actions:
-      - say: { channel: action, with: [도윤], text: "도윤은 읽기만 하고 휴대폰을 주머니에 넣는다." }
+      - say: { channel: action, with: [서윤], text: "서윤은 읽기만 하고 휴대폰을 주머니에 넣는다." }
       - bg: { id: couple_home, transition: fade, duration: 600 }
       - music: wind
-      - place: "그날 밤 8시 · 도윤과 지수의 집"
+      - place: "그날 밤 8시 · 서윤과 지수의 집"
       - char: { id: 지수, position: left }
-      - say: { channel: action, with: [도윤, 지수], text: "여덟 시에 도윤은 식탁에서 청첩장 봉투에 주소를 쓰고 있다." }
-      - say: { char: 지수, with: [도윤], text: "틀리면 말해. 봉투 남는 거 없어." }
+      - say: { channel: action, with: [서윤, 지수], text: "여덟 시에 서윤은 식탁에서 청첩장 봉투에 주소를 쓰고 있다." }
+      - say: { char: 지수, with: [서윤], text: "틀리면 말해. 봉투 남는 거 없어." }
       - move: { id: 지수, style: exit }
       - say: { channel: card, with: [], text: "5월 1일", autoAdvance: 1500 }
       - bg: { id: photo_studio, transition: fade, duration: 600 }
-      - place: "결혼식장 · 신랑 대기실"
+      - place: "결혼식장 · 신부 대기실"
       - char: { id: 실장, position: left }
-      - say: { char: 실장, with: [도윤], text: "신랑님, 어깨 힘 빼시고요. 신부님 보세요." }
-      - say: { channel: action, with: [도윤], text: "사진은 원래대로 실장님이 찍는다. 셔터는 한 번도 멈추지 않는다." }
+      - say: { char: 실장, with: [서윤], text: "신부님, 어깨 힘 빼시고요. 신랑님 보세요." }
+      - say: { channel: action, with: [서윤], text: "사진은 원래대로 실장님이 찍는다. 셔터는 한 번도 멈추지 않는다." }
       - move: { id: 실장, style: exit }
       - char: { id: 지수, position: left }
-      - say: { char: 지수, with: [도윤], text: "원본 보내 준 작가님은 안 오셨네." }
-      - say: { char: 도윤, with: [지수], text: "응." }
-      - say: { channel: action, with: [도윤, 지수], text: "신랑 측 첫 줄에는 윤주임이 앉아 있다. 혼주석은 비어 있다." }
-      - say: { channel: action, with: [도윤, 지수], text: "로비 화환 리본에 정아진이라는 이름이 적혀 있다. 도윤은 그 앞을 지나간다." }
+      - say: { char: 지수, with: [서윤], text: "원본 보내 준 작가님은 안 오셨네." }
+      - say: { char: 서윤, with: [지수], text: "응." }
+      - say: { channel: action, with: [서윤, 지수], text: "신부 측 첫 줄에는 윤주임이 앉아 있다. 혼주석은 비어 있다." }
+      - say: { channel: action, with: [서윤, 지수], text: "로비 화환 리본에 정아진이라는 이름이 적혀 있다. 서윤은 그 앞을 지나간다." }
       - say:
           channel: action
-          with: [도윤, 지수]
+          with: [서윤, 지수]
           when: { var: ajin_photo, op: ne, value: deleted }
           text: "신혼여행 가는 비행기에서 지수가 원본 폴더를 넘기다 마지막 장에서 멈춘다."
       - say:
           char: 지수
-          with: [도윤]
+          with: [서윤]
           when: { var: ajin_photo, op: ne, value: deleted }
           text: "이건 누구야? 교복 입은 애."
       - say:
-          char: 도윤
+          char: 서윤
           with: [지수]
           when: { var: ajin_photo, op: ne, value: deleted }
           text: "잘못 들어온 거래."
       - say:
           channel: action
-          with: [도윤, 지수]
+          with: [서윤, 지수]
           when: { var: ajin_photo, op: eq, value: deleted }
           text: "신혼여행 가는 비행기에서 지수가 원본 폴더를 끝까지 넘긴다. 사진은 311장에서 끝난다."
       - ending: walked_past
@@ -299,43 +301,43 @@ scenes:
       - music: wind
       - place: "그날 밤 8시 · 새솔고 3학년 2반"
       - char: { id: 어른아진, position: left }
-      - say: { channel: action, with: [어른아진, 도윤], text: "아진은 교문 앞에 서 있었다. 해마다 앨범을 찍는 사람이라 경비 아저씨가 손을 흔들고 문을 열어 준다." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "창가 셋째 줄. 아진이 의자 하나를 끌어낸다." }
-      - say: { char: 어른아진, with: [도윤], text: "여기가 걔 자리." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "도윤은 앉지 않는다. 아진이 대신 옆자리에 앉는다." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "아진은 교문 앞에 서 있었다. 해마다 앨범을 찍는 사람이라 경비 아저씨가 손을 흔들고 문을 열어 준다." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "창가 셋째 줄. 아진이 의자 하나를 끌어낸다." }
+      - say: { char: 어른아진, with: [서윤], text: "여기가 걔 자리." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "서윤은 앉지 않는다. 아진이 대신 옆자리에 앉는다." }
       - say:
           char: 어른아진
-          with: [도윤]
+          with: [서윤]
           when: { var: gap_told, op: eq, value: true }
           text: "사고라고 하셨죠. 첫날."
       - say:
           char: 어른아진
-          with: [도윤]
+          with: [서윤]
           when: { var: gap_told, op: eq, value: false }
           text: "하린이 아니라고 하셨죠. 오늘은 왜 물어보셨어요?"
-      - say: { char: 도윤, with: [어른아진], text: "오늘 병원에 갔었어요." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "아진은 더 묻지 않는다. 운동장에 조명이 하나만 켜져 있다." }
-      - say: { char: 어른아진, with: [도윤], text: "목요일 밤에 단톡에서 일이 있었어요. 그건 걔가 더 잘 알 거고." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "아진이 책상 모서리를 손톱으로 긁는다." }
-      - say: { char: 어른아진, with: [도윤], text: "다음 날 이 자리 비워 뒀어요. 민재는 따로 먹으라고 하고." }
-      - say: { char: 어른아진, with: [도윤], text: "급식이 카레였어요. 진짜 카레." }
-      - say: { char: 어른아진, with: [도윤], text: "월요일에 하린이 어머니가 학교에 오셨어요. 전학 간다고." }
-      - say: { char: 어른아진, with: [도윤], text: "어디로 가냐고 물었더니 병원 이름을 알려 주셨어요. 정류장에 붙어 있던 데요." }
-      - say: { char: 어른아진, with: [도윤], text: "다음 날 수업 빼고 갔어요. 사진반 카메라 반납도 안 하고." }
-      - say: { char: 어른아진, with: [도윤], text: "비가 왔는데, 1층 유리문 밖에서 네 시간 기다렸어요." }
-      - say: { char: 어른아진, with: [도윤], text: "처음 보는 사람이 나왔어요." }
-      - say: { char: 어른아진.awkward, with: [도윤], text: "근데 그 사람이 간호사 선생님 말을 듣고 웃더라고요. 눈이 없어지게." }
-      - say: { char: 어른아진, with: [도윤], text: "그래서 알았어요." }
-      - say: { char: 도윤.hollow, with: [어른아진], text: "……" }
+      - say: { char: 서윤, with: [어른아진], text: "오늘 병원에 갔었어요." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "아진은 더 묻지 않는다. 운동장에 조명이 하나만 켜져 있다." }
+      - say: { char: 어른아진, with: [서윤], text: "목요일 밤에 단톡에서 일이 있었어요. 그건 걔가 더 잘 알 거고." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "아진이 책상 모서리를 손톱으로 긁는다." }
+      - say: { char: 어른아진, with: [서윤], text: "다음 날 이 자리 비워 뒀어요. 민재는 따로 먹으라고 하고." }
+      - say: { char: 어른아진, with: [서윤], text: "급식이 카레였어요. 진짜 카레." }
+      - say: { char: 어른아진, with: [서윤], text: "월요일에 하린이 어머니가 학교에 오셨어요. 전학 간다고." }
+      - say: { char: 어른아진, with: [서윤], text: "어디로 가냐고 물었더니 병원 이름을 알려 주셨어요. 정류장에 붙어 있던 데요." }
+      - say: { char: 어른아진, with: [서윤], text: "다음 날 수업 빼고 갔어요. 사진반 카메라 반납도 안 하고." }
+      - say: { char: 어른아진, with: [서윤], text: "비가 왔는데, 1층 유리문 밖에서 네 시간 기다렸어요." }
+      - say: { char: 어른아진, with: [서윤], text: "처음 보는 사람이 나왔어요." }
+      - say: { char: 어른아진.awkward, with: [서윤], text: "근데 그 사람이 간호사 선생님 말을 듣고 웃더라고요. 눈이 없어지게." }
+      - say: { char: 어른아진, with: [서윤], text: "그래서 알았어요." }
+      - say: { char: 서윤.hollow, with: [어른아진], text: "……" }
       - wait: 900
-      - say: { char: 어른아진, with: [도윤], text: "그 사람이 제 앞을 그냥 지나갔어요. 저를 한 번도 안 보고요. 비를 다 맞으면서.", wait: 2200, unskippable: true, delivery: "sad" }
-      - say: { channel: action, with: [도윤, 어른아진], text: "교실 시계가 한 칸 넘어간다." }
-      - say: { char: 어른아진, with: [도윤], text: "그 자리는 졸업할 때까지 비워 뒀어요. 담임이 치우라고 했는데." }
-      - say: { channel: action, with: [도윤, 어른아진], text: "아진이 휴대폰을 꺼냈다가 도로 넣는다." }
-      - say: { char: 어른아진, with: [도윤], text: "그날 밤에 하린이한테 톡을 열한 개 보냈어요. 지금도 1이 안 없어져요." }
-      - say: { char: 도윤, with: [어른아진], text: "뭐라고 보냈어요?" }
-      - say: { channel: action, with: [도윤, 어른아진], text: "아진은 한참 대답하지 않는다." }
-      - say: { char: 어른아진, with: [도윤], text: "그 폰, 사진관에 있어요. 충전기 꽂으면 켜져요." }
+      - say: { char: 어른아진, with: [서윤], text: "그 사람이 제 앞을 그냥 지나갔어요. 저를 한 번도 안 보고요. 비를 다 맞으면서.", wait: 2200, unskippable: true, delivery: "sad" }
+      - say: { channel: action, with: [서윤, 어른아진], text: "교실 시계가 한 칸 넘어간다." }
+      - say: { char: 어른아진, with: [서윤], text: "그 자리는 졸업할 때까지 비워 뒀어요. 담임이 치우라고 했는데." }
+      - say: { channel: action, with: [서윤, 어른아진], text: "아진이 휴대폰을 꺼냈다가 도로 넣는다." }
+      - say: { char: 어른아진, with: [서윤], text: "그날 밤에 하린이한테 톡을 열한 개 보냈어요. 지금도 1이 안 없어져요." }
+      - say: { char: 서윤, with: [어른아진], text: "뭐라고 보냈어요?" }
+      - say: { channel: action, with: [서윤, 어른아진], text: "아진은 한참 대답하지 않는다." }
+      - say: { char: 어른아진, with: [서윤], text: "그 폰, 사진관에 있어요. 충전기 꽂으면 켜져요." }
       - choice:
           key: e3_ajin
           prompt: "아진이 옆자리에 앉아 창밖을 본다."
@@ -349,19 +351,19 @@ scenes:
 
   e3_sorry:
     actions:
-      - say: { char: 도윤, with: [어른아진], text: "기억은 안 나요. 그래도, 미안해요." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "아진이 웃는다. 이번엔 손이 카메라 끈으로 가지 않는다." }
-      - say: { char: 어른아진, with: [도윤], text: "기억 안 나는 사람이 왜 사과를 해." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "말해 놓고 아진이 먼저 창 쪽으로 고개를 돌린다." }
-      - say: { char: 어른아진, with: [도윤], text: "목요일에 와요. 마감하고." }
+      - say: { char: 서윤, with: [어른아진], text: "기억은 안 나요. 그래도, 미안해요." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "아진이 웃는다. 이번엔 손이 카메라 끈으로 가지 않는다." }
+      - say: { char: 어른아진, with: [서윤], text: "기억 안 나는 사람이 왜 사과를 해." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "말해 놓고 아진이 먼저 창 쪽으로 고개를 돌린다." }
+      - say: { char: 어른아진, with: [서윤], text: "목요일에 와요. 마감하고." }
       - goto: e3_lab
 
   e3_not_me:
     actions:
-      - say: { char: 도윤, with: [어른아진], text: "그건 제가 아니에요. 하린이죠." }
-      - say: { char: 어른아진.awkward, with: [도윤], text: "응. 맞아." }
-      - say: { channel: action, with: [어른아진, 도윤], text: "아진이 옆자리에서 일어선다. 의자는 제자리에 넣지 않는다." }
-      - say: { char: 어른아진, with: [도윤], text: "목요일 마감 뒤에 오세요. 읽든 안 읽든." }
+      - say: { char: 서윤, with: [어른아진], text: "그건 제가 아니에요. 하린이죠." }
+      - say: { char: 어른아진.awkward, with: [서윤], text: "응. 맞아." }
+      - say: { channel: action, with: [어른아진, 서윤], text: "아진이 옆자리에서 일어선다. 의자는 제자리에 넣지 않는다." }
+      - say: { char: 어른아진, with: [서윤], text: "목요일 마감 뒤에 오세요. 읽든 안 읽든." }
       - goto: e3_lab
 
   e3_lab:
@@ -369,7 +371,7 @@ scenes:
     pov: "유하린"
     actions:
       - move: { id: 어른아진, style: exit }
-      - move: { id: 도윤, style: exit }
+      - move: { id: 서윤, style: exit }
       - say: { channel: card, with: [], text: "열한 해 전 · 3월 24일 목요일", autoAdvance: 1500 }
       - bg: { id: science_room, transition: cut }
       - music: neon

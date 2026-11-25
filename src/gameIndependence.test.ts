@@ -19,7 +19,7 @@ const forbiddenSampleRules = [
   { pattern: /\blive2dtest\b/i, label: 'sample game id: live2dtest' },
   { pattern: /\bmuwon\b/i, label: 'sample game id: muwon' },
   { pattern: /\b8bit-heart\b|game-list\/tutorial\b/i, label: 'sample game id: 8bit-heart / tutorial' },
-  { pattern: /한도윤|유하린|박준성|윤재/, label: 'sample character name' },
+  { pattern: /한도윤|한서윤|유하린|박준성|윤재/, label: 'sample character name' },
   { pattern: /서연|막쇠|한명재/, label: 'sample character name' },
   { pattern: /코난|코고로|미란/, label: 'sample character name' },
   { pattern: /\bengine-showcase\b/i, label: 'sample tag: engine-showcase' },
