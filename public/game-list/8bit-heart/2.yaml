@@ -111,7 +111,7 @@ scenes:
       - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "이게 다임?" }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "학습 자료 1건. 게임기 설명서 12쪽. 표지 그림 포함." }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "이게 세상 전부 아님?" }
-      - say: { char: 윤재, with: [로봇], text: "아니야. 그거 열두 쪽이야. 세상은 그거보다 커." }
+      - say: { char: 윤재, with: [로봇], text: "아니야. 그거 열두 쪽이야." }
       - say: { char: 윤재, with: [로봇], text: "여기는 우리 집이야. 다용도실. 네가 4년 동안 서 있던 데." }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "집." }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "설명서에 없는 말인데." }
@@ -131,21 +131,8 @@ scenes:
       - say: { char: 윤재, with: [로봇], text: "아니." }
       - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "…어." }
       - say: { char: 윤재, with: [로봇], text: "망했다. 설명서로 세상 배운 애가 됐어." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "질문." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "네 오른쪽 귀에 있는 거." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "그것도 나랑 같은 거임?" }
-      - say: { char: 윤재, with: [로봇], text: "…원래는 네 안에 살던 거야. 이 몸 이름이 하루였어." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "이 몸." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "그럼 나는 하루임?" }
-      - say: { char: 윤재, with: [로봇], text: "아니. 하루는 말을 잘했어. 광고도 했고." }
-      - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "지금은 대답 안 함?" }
-      - say: { char: 윤재, with: [로봇], text: "…안 해. 그날 오후에 긴급 업데이트 받고 꺼졌어. 오늘로 닷새 됐어." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "업데이트." }
-      - say: { char: 로봇.thinking, with: [윤재], speakerName: "안드로이드", text: "그거 나도 받음?" }
-      - say: { char: 윤재, with: [로봇], text: "안 받아. 네 머리에 든 칩은 코어에 붙는 기능이 없어. 그래서 그걸로 갈아 끼웠어." }
-      - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "업데이트 받는 곳 없음." }
-      - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "그럼 나는 이어폰처럼 꺼지지는 않음?" }
-      - say: { char: 윤재, with: [로봇], text: "그건 나도 몰라. …너 이름은 있어?" }
+      - wait: 460
+      - say: { char: 윤재, with: [로봇], text: "…너 이름은 있어?" }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "이름." }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "검색 중… 본체 ROM엔 모델 번호만 있음." }
       - say: { char: 로봇, with: [윤재], speakerName: "안드로이드", text: "설명서 2쪽. '처음 켜면 이름을 입력하세요.'" }
@@ -160,37 +147,7 @@ scenes:
       - say: { char: 로봇.happy, with: [윤재], text: "{{android_name}}." }
       - say: { char: 로봇.happy, with: [윤재], text: "…{{android_name}}." }
       - say: { char: 로봇.happy, with: [윤재], text: "짧아서 좋다." }
-      - move: { id: 로봇, toward: 윤재, style: lunge }
-      - move: { id: 윤재, toward: 로봇, style: retreat }
-      - say: { char: 윤재, with: [로봇], text: "어어 왜 와. 너무 가까워. 한 칸 뒤로. 한 칸." }
-      - move: { id: 로봇, style: reset }
-      - move: { id: 윤재, style: reset }
-      - say: { char: 로봇.thinking, with: [윤재], text: "한 칸." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "몇 센티임?" }
-      - say: { char: 윤재, with: [로봇], text: "한 칸은 한 칸이야. 그냥… 이만큼. 팔 길이만큼." }
-      - say: { char: 로봇, with: [윤재], text: "네 팔임 내 팔임?" }
-      - say: { char: 로봇, with: [윤재], text: "길이 다름." }
-      - say: { char: 윤재, with: [로봇], text: "…내 팔. 내 팔로 해. 앞으로 한 칸은 내 팔이야. 규칙 하나 생겼다." }
-      - say: { char: 로봇.happy, with: [윤재], text: "규칙 1." }
-      - say: { char: 로봇.happy, with: [윤재], text: "한 칸 = 1P의 팔." }
-      - say: { char: 로봇.happy, with: [윤재], text: "저장." }
-      - say: { char: 윤재, with: [로봇], text: "규칙 또 있어. 밤에 나 잘 때 내 얼굴 보지 마. 그거 무서워." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "무섭다." }
-      - say: { char: 윤재, with: [로봇], text: "…나중에. 그건 설명이 길어." }
-      - say: { char: 로봇, with: [윤재], text: "1P가 자는 동안 얼굴 보지 않기." }
-      - say: { char: 로봇, with: [윤재], text: "번호는 안 붙임." }
-      - say: { char: 로봇, with: [윤재], text: "왜인지를 모르니까." }
-      - say: { char: 윤재, with: [로봇], text: "비워 두는 거 되냐?" }
-      - say: { char: 로봇, with: [윤재], text: "됨." }
-      - say: { char: 로봇, with: [윤재], text: "비워 두면 칸은 덜 먹음." }
-      - say: { char: 로봇, with: [윤재], text: "번호는 이유가 생기면 붙임." }
-      - say: { char: 윤재, with: [로봇], text: "…좋아. 하나 더. 내가 괜찮다고 두 번 말하면 그거 거짓말이야. '진짜'도." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "두 번." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "그럼 한 번은?" }
-      - say: { char: 윤재, with: [로봇], text: "한 번은 진짜야." }
-      - say: { char: 로봇, with: [윤재], text: "칸 하나 만들게. 두 번 칸." }
-      - say: { char: 윤재, with: [로봇], text: "그걸 왜 칸까지 만들어." }
-      - say: { char: 로봇, with: [윤재], text: "네가 처음 알려 준 너 사용법이라서." }
+      - wait: 460
       - say: { char: 로봇.thinking, with: [윤재], text: "질문." }
       - say: { char: 로봇.thinking, with: [윤재], text: "너 지금, 위험해?" }
       - say: { char: 로봇.thinking, with: [윤재], text: "손이 땀으로 젖어 있음." }
@@ -203,7 +160,6 @@ scenes:
           options:
             - text: "밖에서 무슨 일이 있었는지 말한다"
               saveText: "\"응. 세상 망했어. 너랑 나 빼고 다.\""
-              add: { bond: 1 }
               goto: b2_reg_honest
             - text: "아무 일도 없다고 한다"
               saveText: "\"전혀. 너나 걱정해, 고물.\""
@@ -211,33 +167,27 @@ scenes:
 
   b2_reg_honest:
     actions:
+      - move: { id: 로봇, style: reset }
+      - move: { id: 윤재, style: reset }
       - say: { char: 윤재, with: [로봇], text: "…응. 세상 망했어. 너랑 나 빼고 다." }
       - say: { char: 로봇.thinking, with: [윤재], text: "세상." }
       - say: { char: 로봇.thinking, with: [윤재], text: "망함." }
       - say: { char: 로봇.thinking, with: [윤재], text: "…잠깐만." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "질문." }
       - say: { char: 로봇.thinking, with: [윤재], text: "망했다는 건, 고장이랑 같음?" }
       - say: { char: 로봇.thinking, with: [윤재], text: "고장은 고치면 되는데." }
       - say: { char: 윤재, with: [로봇], text: "고장보다 큰 거. 어디부터 손대야 될지도 모르면 그냥 망했다고 해." }
       - say: { char: 로봇, with: [윤재], text: "내가 본 세상: 다용도실 하나, 사람 하나." }
       - say: { char: 로봇, with: [윤재], text: "둘 다 고장 아님." }
       - say: { char: 윤재, with: [로봇], text: "…그 둘이 다야, 지금은." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "질문 하나 더." }
       - say: { char: 로봇.thinking, with: [윤재], text: "하루는 고장임, 망함임?" }
       - say: { char: 윤재, with: [로봇], text: "…닷새 내내 생각했는데 아직도 모르겠어." }
-      - say: { char: 로봇, with: [윤재], text: "고치려고 해 봤음?" }
-      - say: { char: 윤재, with: [로봇], text: "집에 있는 충전기 다 꽂아 봤어. 불도 안 들어와." }
+      - say: { char: 윤재, with: [로봇], text: "집에 있는 충전기는 다 꽂아 봤어. 불도 안 들어와." }
       - say: { char: 로봇, with: [윤재], text: "불 들어오면 다시 대답함?" }
       - say: { char: 윤재, with: [로봇], text: "켜지면 코어부터 찾을걸. 그럼 또 업데이트 받겠지." }
       - say: { char: 로봇.thinking, with: [윤재], text: "그럼 망함임." }
       - say: { char: 로봇.thinking, with: [윤재], text: "네가 그랬음." }
       - say: { char: 로봇.thinking, with: [윤재], text: "어디부터 손댈지 모르는 거." }
       - say: { char: 윤재, with: [로봇], text: "…그렇네." }
-      - say: { char: 로봇, with: [윤재], text: "…1P." }
-      - say: { char: 로봇, with: [윤재], text: "그 귀에 있는 거, 빼면 그 자리 빔?" }
-      - say: { char: 로봇, with: [윤재], text: "내가 들어가 봄." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "…크기 안 맞음." }
-      - say: { char: 윤재, with: [로봇], text: "…그걸 재 봤냐. 넌 그냥 거기 서 있어. 거기서 대답해." }
       - say: { channel: system, with: [], text: "보호 대상 1번 — 윤재 (7)" }
       - say: { char: 로봇, with: [윤재], text: "1번이 일곱 살이라고 돼 있음." }
       - say: { char: 로봇, with: [윤재], text: "근데 너 큼." }
@@ -248,31 +198,17 @@ scenes:
       - say: { char: 로봇.happy, with: [윤재], text: "슬롯 하나." }
       - say: { char: 로봇.happy, with: [윤재], text: "설명서 11쪽." }
       - say: { char: 로봇.happy, with: [윤재], text: "'2P는 컨트롤러를 따로 구입하세요.'" }
-      - say: { char: 로봇, with: [윤재], text: "2P가 같이 게임하는 사람이라는 건 알겠음." }
-      - say: { char: 로봇, with: [윤재], text: "근데 설명서엔 사람끼리 하는 것만 있어." }
       - say: { char: 로봇, with: [윤재], text: "너랑 내가 하는 것도 2P임?" }
       - say: { char: 윤재, with: [로봇], text: "같이 하면 2P지. 설명서에 안 나오면 안 해?" }
-      - say: { char: 로봇, with: [윤재], text: "해도 됨?" }
-      - say: { char: 로봇, with: [윤재], text: "그럼 정답은 어디서 찾음?" }
-      - say: { char: 윤재, with: [로봇], text: "나도 모르는 건 모른다고 할게. 아까 나 믿지 말라고 한 건 그 뜻이야." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "둘 다 모르면?" }
-      - say: { char: 로봇.thinking, with: [윤재], text: "다시 물어볼 데 없는데." }
-      - say: { char: 윤재, with: [로봇], text: "둘이 다른 방법 찾아보면 되지." }
-      - say: { char: 로봇, with: [윤재], text: "틀리면 어떡함?" }
-      - say: { char: 윤재, with: [로봇], text: "고치면 되고. 방금 너도 내 나이 고쳤잖아." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "틀리면 어떡함?" }
+      - say: { char: 윤재, with: [로봇], text: "고치면 되지. 방금 너도 내 나이 고쳤잖아." }
       - say: { char: 로봇, with: [윤재], text: "다시 해 보기." }
-      - say: { char: 로봇, with: [윤재], text: "같이." }
-      - say: { char: 로봇, with: [윤재], text: "설명서 빈칸에 적을게." }
-      - say: { char: 윤재, with: [로봇], text: "그건 좀 괜찮다." }
-      - say: { char: 로봇.happy, with: [윤재], text: "방금 웃었음." }
-      - say: { char: 로봇.happy, with: [윤재], text: "그거 칸 두 개 먹는데 그냥 둘래." }
-      - say: { char: 윤재, with: [로봇], text: "두 개나? 지워. 8KB밖에 없다며." }
-      - say: { char: 로봇, with: [윤재], text: "안 지움." }
-      - say: { char: 로봇, with: [윤재], text: "다른 거 지울 거 생기면 그때 생각함." }
       - goto: b2_note
 
   b2_reg_brave:
     actions:
+      - move: { id: 로봇, style: reset }
+      - move: { id: 윤재, style: reset }
       - set: { explained_junk: true }
       - say: { char: 윤재, with: [로봇], text: "전혀. 너나 걱정해, 고물." }
       - emote: { id: 윤재, motion: tremble }
@@ -280,10 +216,9 @@ scenes:
       - say: { char: 로봇.thinking, with: [윤재], text: "…아니다." }
       - say: { char: 로봇.thinking, with: [윤재], text: "다시 볼게." }
       - say: { char: 로봇.thinking, with: [윤재], text: "무릎이 떨림. 목소리도 떨림." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "입력이랑 측정값이 다름. 모순 발견." }
+      - say: { char: 로봇.thinking, with: [윤재], text: "입력이랑 측정값이 다름." }
       - say: { char: 윤재, with: [로봇], text: "추워서 그래. 현관문 부서져서 바람 들어와." }
       - say: { char: 로봇, with: [윤재], text: "실내 온도 18도." }
-      - say: { char: 로봇, with: [윤재], text: "춥다의 기준은 모름." }
       - say: { char: 로봇, with: [윤재], text: "근데 손에는 땀 남." }
       - say: { char: 로봇, with: [윤재], text: "추운데 왜 땀 남?" }
       - say: { char: 로봇.thinking, with: [윤재], text: "설명서 9쪽." }
@@ -294,8 +229,6 @@ scenes:
       - say: { char: 로봇, with: [윤재], text: "'고물'은 네가 나한테 쓴 단어임." }
       - say: { char: 로봇, with: [윤재], text: "좋은 뜻임?" }
       - say: { char: 윤재, with: [로봇], text: "…어. 좋은 뜻이야. 오래돼서 믿음직하다는 뜻. 진짜야." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "'진짜' 한 번." }
-      - say: { char: 로봇.thinking, with: [윤재], text: "한 번은 봐줄게." }
       - say: { char: 로봇.happy, with: [윤재], text: "수정 완료." }
       - say: { char: 로봇.happy, with: [윤재], text: "1번 — 윤재(거짓말함)." }
       - say: { char: 윤재, with: [로봇], text: "괄호를 왜 남겨." }
@@ -305,13 +238,10 @@ scenes:
       - say: { char: 로봇.thinking, with: [윤재], text: "질문." }
       - say: { char: 로봇.thinking, with: [윤재], text: "거짓말은 왜 함?" }
       - say: { char: 윤재, with: [로봇], text: "…쪽팔리잖아. 나 무섭다고 하면 너도 겁먹을 거고." }
-      - say: { char: 로봇, with: [윤재], text: "그럼 말 안 하면 덜 무서움?" }
-      - say: { char: 윤재, with: [로봇], text: "아니. 똑같이 무서워." }
-      - say: { char: 로봇, with: [윤재], text: "나는 무서움 기능 없음." }
-      - say: { char: 로봇, with: [윤재], text: "같이 안 무서워짐." }
-      - say: { char: 윤재, with: [로봇], text: "…그러네. 그럼 너한테는 말해도 되는 거네." }
+      - say: { char: 로봇, with: [윤재], text: "떨림은 나한테 안 옮음." }
+      - say: { char: 로봇, with: [윤재], text: "모터가 다름." }
+      - say: { char: 윤재, with: [로봇], text: "…그럼 너한테는 말해도 되겠네." }
       - say: { char: 로봇.happy, with: [윤재], text: "됨." }
-      - say: { char: 로봇.happy, with: [윤재], text: "칸 비워 둘게." }
       - goto: b2_note
 
   # 닫히지 않는 현관과 아빠에게 남기는 글자.
@@ -327,8 +257,7 @@ scenes:
       - say: { channel: record, with: [], text: "서울역. 철길 따라감. — 윤재" }
       - say: { char: 로봇.thinking, with: [윤재], text: "그거 무슨 글자임?" }
       - say: { char: 윤재, with: [로봇], text: "아빠한테 남기는 거. 우리 어디 갔는지." }
-      - say: { char: 로봇, with: [윤재], text: "아빠." }
-      - say: { char: 로봇, with: [윤재], text: "그것도 설명서에 없음." }
-      - say: { char: 윤재, with: [로봇], text: "가면서 알려 줄게. 가방 들 수 있어?" }
+      - say: { channel: action, with: [윤재], text: "매직 뚜껑을 닫아 바지 주머니에 넣는다." }
+      - say: { char: 윤재, with: [로봇], text: "가방 들 수 있어?" }
       - say: { channel: action, with: [윤재, 로봇], text: "{{android_name|이}} 비상 가방을 손가락 하나에 걸어 든다. 윤재가 두 손으로 끌던 가방이다." }
       - goto: /3.yaml

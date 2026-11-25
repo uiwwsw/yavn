@@ -251,6 +251,11 @@ export type SayAction = {
     thread?: string;
     /** message channel: a photo or clip sent with the line, or instead of it. */
     media?: PhoneMediaSource;
+    /**
+     * message channel: the messenger's unread count beside the bubble. `true` prints 1, a
+     * number prints that number (a group chat), and `false`, `0` or nothing prints nothing.
+     */
+    unread?: boolean | number;
     /** Erase the line on screen once it has been read (message, record, thought, …). */
     erase?: boolean;
     autoAdvance?: number;
@@ -782,6 +787,8 @@ export type StoryLogEntry =
       avatar?: string;
       /** message channel only: the photo or clip this message carried. */
       media?: PhoneMedia;
+      /** message channel only: how many had not read it, already resolved to a count of 1 or more. */
+      unread?: number;
       text: string;
       chapterPath?: string;
       sceneId: string;

@@ -21,10 +21,10 @@
     <!-- readable text -->
     <text x="200" y="215" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="25" font-weight="700" fill="#2f221a" text-anchor="middle">감청 주머니 삼백</text>
     <path d="M112 244 c12 -3 22 3 34 0 c10 -3 16 3 26 0" fill="none" stroke="#2f221a" stroke-width="3"/>
-    <!-- small red mark -->
+    <!-- red seal where the buyer's name should be: bottom-right corner broken off -->
     <g transform="rotate(-6 282 244)">
-      <rect x="270" y="232" width="24" height="24" fill="#c46240"/>
-      <path d="M276 238 h12 v12 h-12 z" fill="none" stroke="#dbd3bd" stroke-width="2"/>
+      <path d="M266 228 h32 v22 l-6 4 l-1 4 h-25 z" fill="#c46240"/>
+      <path d="M271 233 h22 v15 l-4 3 h-18 z" fill="none" stroke="#dbd3bd" stroke-width="2"/>
     </g>
   </g>
 

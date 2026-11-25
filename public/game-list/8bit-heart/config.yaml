@@ -2,7 +2,7 @@ title: "8비트 심장"
 pov: "윤재"
 author:
   name: "uiwwsw"
-version: "2.1.1"
+version: "3.0.0"
 seo:
   description: "도시의 기계들이 한꺼번에 사람을 버린다. 집에 남은 건 코어에 붙지 않는 중고 게임기와, 엄마가 들여놓았다 4년 전 꺼진 안드로이드 하루의 몸. 윤재는 그 칩을 하루 머리에 꽂고 서울역까지 걷는다. 픽셀 아트 생존 비주얼노벨, 결말 4종."
   keywords:
@@ -43,30 +43,30 @@ startScreen:
 endings:
   saved_together:
     title: "함께 저장"
-    message: "코어가 리셋되고 {{android_name|이}} 돌아왔다. 8KB 메모리 카드에 적어 둔 약속도, 한 박자 늦는 대답도 그대로다."
+    message: "코어가 리셋되고 {{android_name|이}} 돌아왔다. 카드에 적어 둔 약속으로 목차를 다시 찾았다. 빈 칸 둘은 윤재가 채웠다."
     epilogue: "첫 열차가 남쪽으로 떠났다. 아빠는 표를 사려다 말고 윤재 옆에 앉았다. {{android_name|이}} 한 칸 떨어져 그 옆에 앉았다."
     background: dawn_field
     music: chip_dawn
     tone: hopeful
   new_game:
     title: "새 게임"
-    message: "전광판에 첫 열차 시각이 떴다. 기동을 마친 {{android_name|은}} 보호 대상 1번에 윤재를 등록한다."
+    message: "철문에서 나온 {{android_name|은}} 윤재를 몰랐다. 풀린 운동화 끈부터 묶었다."
     epilogue: "설명서 1쪽. 이번엔 윤재가 소리 내어 읽는다. 아빠가 옆에서 듣는다."
     background: dawn_field
     music: chip_dawn
     tone: tragic
   off_screen:
     title: "화면 밖으로"
-    message: "코어는 아직 깨어 있다. 셋은 도시를 등지고 철길을 걷는다. 남은 배터리 표시가 깜빡인다."
+    message: "코어는 아직 깨어 있다. 둘은 서울역을 등지고 철길을 걷는다. 광장 기둥에는 반쯤 쓴 '남'이 남았다."
     epilogue: "TO BE CONTINUED? — 참치마요를 찾아서."
     background: ruined_street
     music: chip_run
     tone: mystery
   no_response:
     title: "응답 없음"
-    message: "인사를 몇 번 더 불렀다. 가슴 화면이 켜지지 않았다."
-    epilogue: "윤재는 칩 조각 둘을 빈 건전지 통에 넣었다. 골목을 나설 때 한 번도 통을 흔들지 않았다."
-    background: drone_alley
+    message: "철문은 열리지 않았다. 관제실 맨 안쪽, 손가락은 아직 버튼 위에 있었다."
+    epilogue: "카드는 윤재 주머니에, 칩 조각 둘은 빈 건전지 통에 넣었다. 역을 나설 때 한 번도 통을 흔들지 않았다."
+    background: datacenter
     music: chip_dawn
     tone: tragic
 defaultEnding: off_screen

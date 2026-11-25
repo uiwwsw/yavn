@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><!-- 혜민서 평상의 빈 약주머니: 남빛 무명, 끈이 손가락에 감겼던 자국 -->
+  <g transform="rotate(8 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- limp empty pouch -->
+    <path d="M128 168 C102 214 104 292 140 318 C176 340 232 338 258 312 C286 282 282 214 258 170 C232 182 156 182 128 168 Z" fill="#3d5a74" stroke="#2f221a" stroke-width="3"/>
+    <path d="M236 182 C262 214 270 276 248 306 C236 320 216 328 196 330 C232 312 248 262 226 184 Z" fill="#30495d"/>
+    <!-- slack mouth, nothing inside -->
+    <path d="M122 166 C150 148 236 148 264 168 C236 190 150 190 122 166 Z" fill="#3d5a74" stroke="#2f221a" stroke-width="3"/>
+    <path d="M140 167 C164 158 222 158 246 168 C222 178 164 178 140 167 Z" fill="#1d2a36"/>
+    <!-- cotton weave -->
+    <g stroke="#567691" stroke-width="1.6" opacity="0.8">
+      <path d="M140 220 l110 0 M136 244 l118 0 M140 268 l112 0 M150 292 l96 0"/>
+      <path d="M170 196 l-2 126 M200 194 l0 136 M230 196 l2 124"/>
+    </g>
+    <!-- coarse side seam -->
+    <path d="M130 200 l-4 10 M128 226 l-4 10 M128 252 l-3 10 M132 278 l-2 10" stroke="#c6b083" stroke-width="2.5"/>
+    <!-- drawstring, twice-wound loop left open -->
+    <path d="M126 180 C160 194 224 194 260 180" fill="none" stroke="#b88a4a" stroke-width="4"/>
+    <path d="M260 180 C300 186 318 214 304 238 C292 258 262 252 266 230 C270 212 296 214 300 230" fill="none" stroke="#b88a4a" stroke-width="4"/>
+    <path d="M300 230 C306 250 322 262 334 268" fill="none" stroke="#b88a4a" stroke-width="4"/>
+    <circle cx="336" cy="270" r="5" fill="#b88a4a" stroke="#2f221a" stroke-width="2"/>
+    <!-- worn hatching -->
+    <g stroke="#2f221a" stroke-width="1.5" opacity="0.35">
+      <path d="M150 300 l10 -8 M170 306 l10 -8 M190 310 l10 -8"/>
+    </g>
+  </g>
+</svg>

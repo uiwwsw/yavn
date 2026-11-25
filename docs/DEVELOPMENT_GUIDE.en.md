@@ -102,7 +102,26 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 - The phone header shows the authored `say.thread` title, or the other person's name. An untitled group shows one name and the number of other correspondents. Incoming groups of messages show one name in group chats and one profile beside the last bubble. The header uses the same profiles: character `avatar` first, then static `base` art, then an initial.
 - Put only the message body in `say.text`; use `say.char` for the sender or `say.speakerName` for contacts without character art. Keep names and room labels out of the body. Give both incoming and outgoing messages the same `say.thread`, including the first outgoing message. If the thread is a character ID, the header resolves its display `name` and profile. Use `system` or `record` for search results rather than presenting them as messages.
 - `say.media` sends a photo or a clip — a path on its own, or `{ src, kind, alt }` — which is drawn without a bubble, and lets `say.text` be left out entirely. A message of up to three emoji is drawn large and bubble-less.
+- `say.unread` prints a messenger's small yellow unread count beside the bubble: `true` prints 1, a number prints that number (people in a group chat who have not read it, up to 999), and `false`, `0` or nothing prints nothing. See the 2026-11-25 update below.
 - New games built from the owner's stories: ERASE (4 chapters), ERASE: First to Erase (5 chapters) and 8-bit Heart (5 chapters). The ERASE pair carries content notes (sexual tension without description, HIV anxiety, self-destructive thoughts) with crisis-line and anonymous testing information.
+
+## Unread counts on phone messages (2026-11-25)
+
+```yaml
+- say:
+    channel: message
+    thread: 하린
+    side: me
+    speakerName: 아진
+    unread: true     # a yellow 1 beside the bubble
+    text: "하린아"
+- say: { channel: message, thread: 3반, side: me, speakerName: 아진, unread: 27, text: "다들 봤어?" }
+```
+
+- `say.unread` takes `true` (prints 1) or an integer from 0 to 999 (a group's count). It is a validation error outside `channel: message`.
+- The count sits outside the bubble by its bottom corner: left of a sent bubble (`side: me`), right of a received one (`side: them`). Photo-only messages get one too. Screen readers hear "Unread" (or "Unread by 27").
+- The count is stored with the line in the story log (`StoryLogEntry.unread`), so it stays on the same bubble after saving, loading or restoring from the story map. It does not clear itself when a reply arrives; use it for messages that stay unread. Existing saves and YAML are unaffected.
+- `sample.yaml` has a runnable `phone_unread` scene.
 
 ## Automatic location and story-time labels
 

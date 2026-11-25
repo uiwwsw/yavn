@@ -43,6 +43,8 @@ type DialogState = {
   /** message channel: the speaker's profile picture and the attachment, already resolved. */
   avatar?: string;
   media?: PhoneMedia;
+  /** message channel: the unread count printed beside the bubble, 1 or more. */
+  unread?: number;
   erase?: boolean;
   continueLabel?: string;
   continueAt?: { x: number; y: number };
@@ -414,7 +416,7 @@ export const useVNStore = create<VNState>((set) => ({
       // on the phone is a message in its own right and must keep its channel to stay in the
       // thread. Clearing drops the attachment with it, so it cannot outlive its message.
       ...(dialog.fullText === '' && dialog.media === undefined
-        ? { channel: 'dialogue' as const, continueLabel: undefined, continueAt: undefined, avatar: undefined, media: undefined }
+        ? { channel: 'dialogue' as const, continueLabel: undefined, continueAt: undefined, avatar: undefined, media: undefined, unread: undefined }
         : {}),
       // The lock exists only while glyphs are still being revealed.
       ...(dialog.typing === false ? { unskippable: false } : {}),

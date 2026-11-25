@@ -69,8 +69,25 @@ describe('무원 — 한성 검안록', () => {
   it('reaches every ending from the story', () => {
     const declared = Object.keys(asRecord(readYaml('config.yaml').endings));
     const used = new Set(chapters.flatMap((chapter) => collectKey(chapter, 'ending')).map(String));
-    expect(declared.sort()).toEqual(['covered_ledger', 'forced_confession', 'late_muwon', 'muwon', 'price_of_silence']);
+    expect(declared.sort()).toEqual(['covered_ledger', 'forced_confession', 'half_verdict', 'late_muwon', 'muwon', 'price_of_silence']);
     declared.forEach((ending) => expect(used.has(ending), ending).toBe(true));
+  });
+
+  it('only raises the judge’s trust through choices a player can skip', () => {
+    // standing_vouched needs trust_dowon ≥ 2. Every +1 must sit behind an optional act —
+    // a forced right answer would make the trial’s standing branch a foregone conclusion.
+    const raisers = chapters.flatMap((chapter, index) =>
+      Object.entries(asRecord(chapter.scenes))
+        .filter(([, scene]) => collectKey(scene, 'add').some((add) => Object.prototype.hasOwnProperty.call(asRecord(add), 'trust_dowon')))
+        .map(([id]) => `${index}:${id}`),
+    );
+    expect(raisers.sort()).toEqual(['0:c1_show_hands', '2:c3_clean_confront', '3:c4_reason']);
+  });
+
+  it('keeps no trial line that waits on a state the trial can never have', () => {
+    // A player who lost Deokgu never reaches the trial; lines for that case would be dead.
+    const trial = readSource('4.yaml');
+    expect(trial).not.toMatch(/var: deokgu_saved/);
   });
 
   it('keeps lines short enough for the dialogue box', () => {

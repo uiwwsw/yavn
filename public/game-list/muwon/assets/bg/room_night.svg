@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+<defs>
+  <!-- 램프 빛 번짐 (불꽃 중심) -->
+  <radialGradient id="lamp-glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#f8e5bb" stop-opacity="0.45"/>
+    <stop offset="0.35" stop-color="#f8e5bb" stop-opacity="0.18"/>
+    <stop offset="1" stop-color="#f8e5bb" stop-opacity="0"/>
+  </radialGradient>
+  <!-- 바닥 그라데이션 -->
+  <linearGradient id="night-floor" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1a1410"/>
+    <stop offset="0.5" stop-color="#120d0a"/>
+    <stop offset="1" stop-color="#0c0806"/>
+  </linearGradient>
+  <!-- 벽 그라데이션 -->
+  <linearGradient id="night-wall" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#181210"/>
+    <stop offset="0.5" stop-color="#100c09"/>
+    <stop offset="1" stop-color="#0a0806"/>
+  </linearGradient>
+  <!-- 창호지 색 (단색, 달빛 남색) -->
+  <linearGradient id="paper-door" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1e2535"/>
+    <stop offset="0.5" stop-color="#1a2030"/>
+    <stop offset="1" stop-color="#1e2535"/>
+  </linearGradient>
+  <!-- 한지 책 색 (등잔 빛 받는 옅은 색) -->
+  <linearGradient id="book-paper" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#3a3328"/>
+    <stop offset="0.5" stop-color="#322d24"/>
+    <stop offset="1" stop-color="#3a3328"/>
+  </linearGradient>
+  <!-- 나무 결 패턴 -->
+  <pattern id="wood-grain" width="60" height="60" patternUnits="userSpaceOnUse">
+    <path d="M0 30 Q15 25 30 30 Q45 35 60 30" fill="none" stroke="#2a2018" stroke-width="0.5" opacity="0.4"/>
+    <path d="M0 45 Q15 40 30 45 Q45 50 60 45" fill="none" stroke="#2a2018" stroke-width="0.4" opacity="0.3"/>
+  </pattern>
+  <!-- 벽 질감 -->
+  <pattern id="wall-grain" width="100" height="100" patternUnits="userSpaceOnUse">
+    <path d="M20 50 Q50 45 80 50" fill="none" stroke="#1a1410" stroke-width="0.3" opacity="0.2"/>
+    <path d="M50 20 Q55 50 50 80" fill="none" stroke="#1a1410" stroke-width="0.2" opacity="0.15"/>
+  </pattern>
+</defs>
+
+<!-- 배경 기본색 -->
+<rect width="1600" height="900" fill="#0a0806"/>
+<!-- 벽 -->
+<rect width="1600" height="580" fill="url(#night-wall)"/>
+<rect x="0" y="0" width="1600" height="580" fill="url(#wall-grain)" opacity="0.3"/>
+
+<!-- 천장 서까래 끝 (짧은 둥근 나무 단면 몇 개) -->
+<circle cx="150" cy="60" r="18" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+<circle cx="400" cy="55" r="16" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+<circle cx="650" cy="65" r="17" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+<circle cx="900" cy="58" r="15" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+<circle cx="1150" cy="62" r="18" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+<circle cx="1400" cy="57" r="16" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+
+<!-- 벽-천장 경계선 -->
+<path d="M0 180 H1600" fill="none" stroke="#0a0705" stroke-width="2" stroke-linecap="round"/>
+
+<!-- 왼쪽 창호지 문 (미닫이 한 짝) -->
+<!-- 문틀 -->
+<path d="M80 180 L120 180 L120 580 L80 580 Z" fill="#1a120d" stroke="#120d0a" stroke-width="2"/>
+<path d="M300 180 L340 180 L340 580 L300 580 Z" fill="#1a120d" stroke="#120d0a" stroke-width="2"/>
+<path d="M80 180 L340 180" fill="none" stroke="#1a120d" stroke-width="4" stroke-linecap="round"/>
+<path d="M80 580 L340 580" fill="none" stroke="#1a120d" stroke-width="4" stroke-linecap="round"/>
+<!-- 문살 격자 (가로세로 칸) -->
+<g stroke="#1a120d" stroke-width="2" stroke-linecap="round">
+  <!-- 세로 살 -->
+  <path d="M130 180 L130 580"/>
+  <path d="M180 180 L180 580"/>
+  <path d="M230 180 L230 580"/>
+  <path d="M280 180 L280 580"/>
+  <!-- 가로 살 -->
+  <path d="M80 250 L340 250"/>
+  <path d="M80 320 L340 320"/>
+  <path d="M80 390 L340 390"/>
+  <path d="M80 460 L340 460"/>
+  <path d="M80 530 L340 530"/>
+</g>
+<!-- 창호지 칸 (아주 옅은 달빛 남색, 단색) -->
+<g fill="url(#paper-door)">
+  <rect x="82" y="182" width="46" height="66" rx="1"/>
+  <rect x="132" y="182" width="46" height="66" rx="1"/>
+  <rect x="182" y="182" width="46" height="66" rx="1"/>
+  <rect x="232" y="182" width="46" height="66" rx="1"/>
+  <rect x="282" y="182" width="46" height="66" rx="1"/>
+
+  <rect x="82" y="252" width="46" height="66" rx="1"/>
+  <rect x="132" y="252" width="46" height="66" rx="1"/>
+  <rect x="182" y="252" width="46" height="66" rx="1"/>
+  <rect x="232" y="252" width="46" height="66" rx="1"/>
+  <rect x="282" y="252" width="46" height="66" rx="1"/>
+
+  <rect x="82" y="322" width="46" height="66" rx="1"/>
+  <rect x="132" y="322" width="46" height="66" rx="1"/>
+  <rect x="182" y="322" width="46" height="66" rx="1"/>
+  <rect x="232" y="322" width="46" height="66" rx="1"/>
+  <rect x="282" y="322" width="46" height="66" rx="1"/>
+
+  <rect x="82" y="392" width="46" height="66" rx="1"/>
+  <rect x="132" y="392" width="46" height="66" rx="1"/>
+  <rect x="182" y="392" width="46" height="66" rx="1"/>
+  <rect x="232" y="392" width="46" height="66" rx="1"/>
+  <rect x="282" y="392" width="46" height="66" rx="1"/>
+
+  <rect x="82" y="462" width="46" height="66" rx="1"/>
+  <rect x="132" y="462" width="46" height="66" rx="1"/>
+  <rect x="182" y="462" width="46" height="66" rx="1"/>
+  <rect x="232" y="462" width="46" height="66" rx="1"/>
+  <rect x="282" y="462" width="46" height="66" rx="1"/>
+
+  <rect x="82" y="532" width="46" height="46" rx="1"/>
+  <rect x="132" y="532" width="46" height="46" rx="1"/>
+  <rect x="182" y="532" width="46" height="46" rx="1"/>
+  <rect x="232" y="532" width="46" height="46" rx="1"/>
+  <rect x="282" y="532" width="46" height="46" rx="1"/>
+</g>
+
+<!-- 문에서 바닥으로 떨어지는 달빛 (문 아래쪽에서 시작) -->
+<path d="M120 580 Q180 700 280 900" fill="none" stroke="#2a3a55" stroke-width="60" stroke-linecap="round" opacity="0.08"/>
+<path d="M120 580 Q160 700 240 900" fill="none" stroke="#2a3a55" stroke-width="40" stroke-linecap="round" opacity="0.05"/>
+<path d="M120 580 Q140 700 200 900" fill="none" stroke="#2a3a55" stroke-width="25" stroke-linecap="round" opacity="0.03"/>
+
+<!-- 바닥 -->
+<path d="M0 580 H1600 L1500 900 L100 900 Z" fill="url(#night-floor)" stroke="#1a120d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 낮은 벽 밑선 -->
+<path d="M0 580 H1600" fill="none" stroke="#1a120d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- 조선 등잔 (서안 왼쪽 옆 바닥) -->
+<!-- 등잔대: 가는 나무 기둥 (폭 12px, 높이 180px) + 바닥 받침(납작한 원반) -->
+<!-- 기둥 -->
+<path d="M480 400 L492 400 L492 580 L480 580 Z" fill="#2a1f15" stroke="#1a120d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 바닥 받침 (납작한 원반) -->
+<ellipse cx="486" cy="582" rx="22" ry="5" fill="#1a120d" stroke="#120d0a" stroke-width="1.5"/>
+<ellipse cx="486" cy="582" rx="18" ry="3" fill="#221810"/>
+<!-- 기둥 위 작고 얕은 흙 접시 (종지, 폭 45px, 높이 12px) -->
+<path d="M463.5 388 Q486 376 508.5 388 Q486 382 463.5 388 Z" fill="#3a2f22" stroke="#2a1f15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M468 388 Q486 382 504 388" fill="none" stroke="#2a1f15" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+<!-- 작은 불꽃 하나 (높이 23px, 물방울 모양, 노란 심에 주황 테) -->
+<path d="M486 388 Q481 375 486 365 Q491 375 486 388 Z" fill="#fff3b0" stroke="#e8a838" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+<path d="M486 386 Q482 378 486 372 Q490 378 486 386 Z" fill="#fff8d0" opacity="0.9"/>
+<!-- 빛 번짐 (불꽃 중심) -->
+<ellipse cx="486" cy="370" rx="180" ry="140" fill="url(#lamp-glow)"/>
+
+<g transform="translate(-130 0)">
+<!-- 앉은뱅이 책상 (서안) - 낮고 길다: 폭 300px, 상판 두께 14px, 다리 높이 45px -->
+<!-- 위치: 중앙 영역, 상판 y=440~454, 다리 y=454~499, 바닥 y=580 (원근감) -->
+<!-- 상판 (양 끝 살짝 위로 말림) -->
+<path d="M650 440
+         Q700 430 800 430
+         Q900 430 950 440
+         L950 454
+         Q900 460 800 460
+         Q700 460 650 454 Z"
+      fill="url(#wood-grain)" stroke="#1a120d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 상판 윗면 하이라이트 (등잔 빛 받는 부분) -->
+<path d="M670 442
+         Q750 438 800 438
+         Q850 438 930 442
+         L930 448
+         Q850 450 800 450
+         Q750 450 670 448 Z"
+      fill="none" stroke="#3a3025" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+
+<!-- 다리 (4개, 높이 45px) -->
+<path d="M670 454 L670 499" fill="none" stroke="#1a120d" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M930 454 L930 499" fill="none" stroke="#1a120d" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M670 460 L670 499" fill="none" stroke="#120d0a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+<path d="M930 460 L930 499" fill="none" stroke="#120d0a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+
+<!-- 상판 위 펼친 책 한 권 (양쪽 면 보이는 얇은 직사각형 두 개, 한지색) -->
+<!-- 책 왼쪽 면 -->
+<path d="M720 430 L780 430 L780 450 L720 450 Z" fill="url(#book-paper)" stroke="#2a2218" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 책 오른쪽 면 -->
+<path d="M780 430 L840 430 L840 450 L780 450 Z" fill="url(#book-paper)" stroke="#2a2218" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 책 등 (가운데 선) -->
+<path d="M780 430 L780 450" fill="none" stroke="#221a12" stroke-width="1.5" stroke-linecap="round"/>
+<!-- 책 페이지 선들 (옅게) -->
+<path d="M725 435 L775 435" fill="none" stroke="#2a2218" stroke-width="0.5" stroke-linecap="round" opacity="0.3"/>
+<path d="M725 440 L775 440" fill="none" stroke="#2a2218" stroke-width="0.5" stroke-linecap="round" opacity="0.25"/>
+<path d="M725 445 L775 445" fill="none" stroke="#2a2218" stroke-width="0.5" stroke-linecap="round" opacity="0.2"/>
+<path d="M785 435 L835 435" fill="none" stroke="#2a2218" stroke-width="0.5" stroke-linecap="round" opacity="0.3"/>
+<path d="M785 440 L835 440" fill="none" stroke="#2a2218" stroke-width="0.5" stroke-linecap="round" opacity="0.25"/>
+<path d="M785 445 L835 445" fill="none" stroke="#2a2218" stroke-width="0.5" stroke-linecap="round" opacity="0.2"/>
+
+</g>
+<!-- 오른쪽 벽 아래 개어 쌓은 이불 (납작한 직사각형 3겹, 모서리 둥글게) -->
+<!-- 맨 아래 겹 -->
+<path d="M1120 560 L1340 560 L1340 660 L1120 660 Z" fill="#14100d" stroke="#1a120d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 중간 겹 -->
+<path d="M1135 545 L1325 545 L1325 635 L1135 635 Z" fill="#181310" stroke="#1a120d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 위 겹 -->
+<path d="M1150 535 L1310 535 L1310 615 L1150 615 Z" fill="#1c1612" stroke="#1a120d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- 이불 접힌 선들 -->
+<path d="M1160 550 L1300 550" fill="none" stroke="#2a2218" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+<path d="M1170 570 L1290 570" fill="none" stroke="#2a2218" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+<path d="M1180 590 L1280 590" fill="none" stroke="#2a2218" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+<!-- 등잔 빛이 왼쪽 면에 아주 옅게 닿음 -->
+<path d="M1120 560 L1120 660" fill="none" stroke="#3a3025" stroke-width="8" stroke-linecap="round" opacity="0.06"/>
+
+<!-- 벽 질감 라인 (은은하게) -->
+<path d="M400 180 L400 580" fill="none" stroke="#120d0a" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+<path d="M800 180 L800 580" fill="none" stroke="#120d0a" stroke-width="0.8" stroke-linecap="round" opacity="0.15"/>
+<path d="M1200 180 L1200 580" fill="none" stroke="#120d0a" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+
+</svg>

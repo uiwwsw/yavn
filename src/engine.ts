@@ -19,7 +19,7 @@ import { buildLive2DLoadKey, resetLive2DLoadTracker, waitForLive2DLoad } from '.
 import { resolveCharacterCalibration, resolveStageCameraState } from './stageCamera';
 import { useVNStore } from './store';
 import type { ParsedBaseYaml, ParsedChapterYaml, ParsedConfigYaml } from './parser';
-import { phoneAvatarPath } from './phoneThread';
+import { phoneAvatarPath, phoneUnreadCount } from './phoneThread';
 import { collectChapterAssetPaths, collectStartupAssetPaths } from './preload';
 import { ReadHistory, readLineKey } from './readHistory';
 import { interpolateText, resolvePlayerName } from './textVariables';
@@ -538,11 +538,13 @@ function reconstructStoryMapCheckpoints(reference: SaveProgress, chapters: Prepa
       const channel = resolveDialogueChannel(action.say.channel, speakerId);
       const speaker = resolveLineSpeakerName(game, sceneId, vars, action.say.speakerName, speakerId, channel);
       const avatar = channel === 'message' ? resolveMessageAvatar(game, useVNStore.getState().baseUrl, speakerId) : undefined;
+      const unread = channel === 'message' ? phoneUnreadCount(action.say.unread) : undefined;
       appendLog({ kind: 'dialogue', chapterPath: path, sceneId, actionIndex,
         speaker, channel,
         ...(channel === 'message' ? { side: action.say.side ?? 'them', speakerId } : {}),
         ...(action.say.thread ? { thread: action.say.thread } : {}),
         ...(avatar ? { avatar } : {}),
+        ...(unread ? { unread } : {}),
         text: parseInlineSpeed(interpolateText(action.say.text ?? '', vars)).text });
     }
     if ('choice' in action || 'input' in action) {
@@ -5270,6 +5272,7 @@ function runActionsUntilPause(loopGuard: number): void {
     const phoneMedia = channel === 'message'
       ? resolveMessageMedia(state.baseUrl, action.say.media)
       : undefined;
+    const phoneUnread = channel === 'message' ? phoneUnreadCount(action.say.unread) : undefined;
     useVNStore.getState().setWaitingInput(true);
     useVNStore.getState().pushStoryLog({
       kind: 'dialogue',
@@ -5279,6 +5282,7 @@ function runActionsUntilPause(loopGuard: number): void {
       ...(action.say.thread ? { thread: action.say.thread } : {}),
       ...(phoneAvatar ? { avatar: phoneAvatar } : {}),
       ...(phoneMedia ? { media: phoneMedia } : {}),
+      ...(phoneUnread ? { unread: phoneUnread } : {}),
       text: parsed.text,
       chapterPath: getCurrentChapterPathKey(),
       sceneId: state.currentSceneId,
@@ -5299,6 +5303,7 @@ function runActionsUntilPause(loopGuard: number): void {
       side: action.say.side,
       avatar: phoneAvatar,
       media: phoneMedia,
+      unread: phoneUnread,
       erase: action.say.erase,
       continueLabel: action.say.continueLabel,
       continueAt: action.say.at,

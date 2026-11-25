@@ -256,6 +256,7 @@ scenes:
       - set: { c3_hand: true }
       - goto: c3_look
 
+
   c3_offer:
     title: "포교의 셈"
     actions:
@@ -330,11 +331,14 @@ scenes:
 
   c3_silence:
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 800, place: "이튿날 · 한성부 마당" }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 800, place: "9월 24일 아침 · 한성부 마당" }
       - music: night_well
       - say:
           channel: narration
-          text: "이튿날 덕구는 풀려났다. 분이 오라비도 다시 잡혀가지 않았다. 박씨 약방은 실화로 적혔다."
+          text: "이튿날 덕구는 풀려났다. 분이 오라비도 다시 잡혀가지 않았다."
+      - say:
+          channel: record
+          text: "박씨 약방 화재. 실화로 적음. 사망 한 명. 검안 없음."
       - char: { id: 서연, position: left }
       - char: { id: 막쇠, position: right }
       - say:
@@ -353,16 +357,77 @@ scenes:
           char: 막쇠
           with: [서연]
           text: "에이."
+      - bg: { id: hyeminseo, transition: fade, duration: 700, place: "9월 24일 오후 · 혜민서 약재실" }
+      - say:
+          channel: action
+          with: []
+          text: "점순 어미가 점순이를 업고 다시 왔다. 이마가 또 뜨겁다."
+      - say:
+          channel: dialogue
+          speakerName: "점순 어미"
+          with: [서연]
+          text: "장에서 새로 샀어요. 전의감 거래요. 비단 주머니라 값이 세 배던데."
+      - say:
+          channel: action
+          with: []
+          continueLabel: "주머니를 받아 든다"
+          text: "어미 손에 감청 주머니가 쥐여 있다."
+      - sticker: { id: c3_deal_pouch, image: fake_pill_sticker, x: 50, y: 34, width: "clamp(150px, 20%, 260px)", enter: fadeIn, inputLockMs: 300 }
+      - say:
+          channel: action
+          with: []
+          text: "냄새가 없다. 남은 반 환을 쪼갠다. 속이 희다."
+      - clearSticker: { id: c3_deal_pouch, leave: fadeOut }
       - say:
           channel: thought
-          with: [막쇠]
-          text: "가 보니 약방 처마에 감청 주머니가 걸려 있었다. 값을 묻는 사람이 둘 있었다."
+          with: []
+          text: "가져갈 데가 없다."
+      - say:
+          channel: action
+          with: []
+          text: "혜민서 청심원을 물에 개어 점순이 입에 흘려 넣는다."
+      - music: null
+      - say: { channel: card, with: [], text: "그날 밤", autoAdvance: 1300 }
+      - say:
+          channel: action
+          with: []
+          continueLabel: "뒷장을 편다"
+          text: "언해 맨 뒷장을 처음으로 편다."
+      - sticker: { id: c3_margin, image: eonhae_margin_sticker, x: 50, y: 32, width: "clamp(180px, 26%, 340px)", enter: fadeIn, inputLockMs: 600 }
+      - say:
+          channel: record
+          wait: 1200
+          text: "정조 십사 년 동짓달 열엿새 밤. 아이 둘 업혀 옴. 옆 약방 청심원을 한 환씩 먹였다 함."
+      - say:
+          channel: record
+          wait: 1200
+          text: "주머니는 남빛. 약 냄새 없음. 둘 다 그 밤을 넘기지 못함."
+      - say:
+          channel: record
+          text: "전의감에서 검험 나온 의관이 주머니를 거둬 감. 이름은 묻지 못함."
+      - say:
+          channel: record
+          text: "본 사람 의녀 송씨. 등잔 든 아이 {{player_name}}."
+      - say:
+          channel: action
+          with: []
+          text: "그 아래 빈칸에 한 줄을 적는다."
+      - say:
+          channel: record
+          text: "정조 십육 년 구월 스무나흘. 아이 하나 업혀 옴. 감청 주머니. 약 냄새 없음."
+      - say:
+          channel: action
+          with: []
+          wait: 1600
+          unskippable: true
+          text: "그 장을 다시 접는다."
+      - clearSticker: { id: c3_margin, leave: fadeOut }
       - ending: price_of_silence
 
   c3_confront_intro:
     title: "대질"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "한성부 마당" }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 23일 오후 · 한성부 마당" }
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - char: { id: 강치수, position: right }
@@ -403,14 +468,18 @@ scenes:
           prompt: "낫으로 그었다는 말과 맞지 않는 증좌는?"
           char: 강치수
           options:
-            - text: "상처 탁본 — 폭이 한 치"
+            - text: "상처 탁본"
+              saveText: "상처 탁본 — 폭이 한 치"
               when: { var: wound_rubbing, op: eq, value: true }
               goto: c3_r1_right
-            - text: "은비녀 — 검게 변하지 않았다"
+            - text: "은비녀"
+              saveText: "은비녀 — 검게 변하지 않았다"
               goto: c3_r1_wrong
-            - text: "감청 실 — 비단전 물건"
+            - text: "감청 실"
+              saveText: "감청 실 — 비단전 물건"
               goto: c3_r1_wrong
-            - text: "주머니 주문서 — 삼백 개"
+            - text: "주머니 주문서"
+              saveText: "주머니 주문서 — 삼백 개"
               goto: c3_r1_wrong
 
   c3_r1_wrong:
@@ -494,15 +563,18 @@ scenes:
           prompt: "불 속에서 죽었다는 말과 맞지 않는 증좌는?"
           char: 강치수
           options:
-            - text: "감청 실 — 비단전 물건"
+            - text: "감청 실"
+              saveText: "감청 실 — 비단전 물건"
               goto: c3_r2_wrong
-            - text: "덕구의 낫 — 날 폭 두 치"
+            - text: "덕구의 낫"
+              saveText: "덕구의 낫 — 날 폭 두 치"
               goto: c3_r2_wrong
-            - text: "닭 실험 기록 · 독살의 단서"
+            - text: "닭 실험 기록"
               saveText: "닭 실험 기록 — 불 전에 독"
               when: { var: poison_note, op: eq, value: true }
               goto: c3_r2_right
-            - text: "분이의 시장 — 목의 손자국"
+            - text: "분이의 시장"
+              saveText: "분이의 시장 — 목의 손자국"
               goto: c3_r2_wrong
 
   c3_r2_wrong:
@@ -545,14 +617,15 @@ scenes:
           prompt: "자백을 뒤집을 마지막 한 가지는?"
           char: 강치수
           options:
-            - text: "포교를 공범으로 지목한다"
+            - text: "포교가 주머니 얘기를 먼저 꺼냈다고 밝힌다"
               saveText: "포교가 범인과 한패라고 외친다"
               goto: c3_accuse_chisu
-            - text: "덕구가 왼손을 못 쓴다는 점을 밝힌다"
+            - text: "덕구의 손"
               saveText: "덕구는 왼손을 못 쓴다 — 상처는 왼손잡이의 것"
               when: { var: c3_hand, op: eq, value: true }
               goto: c3_r3_right
-            - text: "은비녀 — 검게 변하지 않았다"
+            - text: "은비녀"
+              saveText: "은비녀 — 검게 변하지 않았다"
               goto: c3_r3_wrong
 
   c3_r3_wrong:
@@ -573,11 +646,11 @@ scenes:
       - say:
           char: 서연.shock
           with: [강치수, 도원]
-          text: "포교 나리는 주머니를 알고 있었습니다! 범인과 한패예요!"
+          text: "나리. 포교 나리는 제가 올린 적 없는 주머니 얘기를 옥에서 먼저 꺼냈습니다."
       - say:
           char: 강치수.angry
           with: [서연, 도원]
-          text: "들으셨소, 판관 나리. 증좌 하나 없이 관원을 살인 공범으로 몰았소."
+          text: "들으셨소, 판관 나리. 증좌 하나 없이 관원을 범인 편으로 모는 거요."
       - say:
           char: 도원.troubled
           with: [서연]
@@ -602,17 +675,61 @@ scenes:
       - say:
           channel: thought
           with: []
-          text: "덕구는 끌려가다 오른손으로 풀어진 짚신 끈을 쥐었다. 옥에서 낫을 놓쳤던 건 그 반대쪽 손이다."
+          text: "덕구는 끌려가다 오른손으로 풀어진 짚신 끈을 쥐었다."
       - set: { deokgu_saved: false }
       - goto: c3_closed_case
 
   c3_closed_case:
     title: "대질이 끝난 뒤"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 26일 · 한성부 마당" }
+      - bg: { id: alley_night, transition: fade, duration: 800, place: "9월 26일 저녁 · 새남터 아래" }
       - music: night_well
-      - say: { channel: narration, with: [], text: "처결이 끝난 날 저녁, 옥졸이 덕구의 짚신 한 켤레를 내다 놓았다. 찾으러 오는 사람이 없었다." }
-      - say: { channel: action, with: [], text: "시장을 다시 보여 달랬더니 관아 서리가 접힌 공초만 내밀었다. 아랫줄에 덕구 이름과 손도장이 있었다." }
+      - say:
+          channel: narration
+          text: "처결이 끝난 시신을 거두는 건 오작인이다."
+      - char: { id: 서연, position: left }
+      - char: { id: 막쇠, position: right }
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아가씨, 발 쪽 좀 들어요."
+      - say:
+          channel: action
+          with: []
+          text: "막쇠가 덕구를 거적에 눕힌다. 나는 물을 떠 와 몸을 씻긴다."
+      - say:
+          channel: action
+          with: []
+          text: "왼손 손가락을 펴서 모아 보려 해도 끝까지 모이지 않는다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "…"
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700 }
+      - say:
+          channel: action
+          with: []
+          text: "시장을 보여 달랬더니 관아 서리가 접힌 공초만 내민다. 아랫줄에 덕구 이름과 손도장이 있다."
+      - say:
+          channel: action
+          with: []
+          text: "오른손 엄지다."
+      - music: null
+      - say: { channel: card, with: [], text: "그날 밤", autoAdvance: 1300 }
+      - say:
+          channel: action
+          with: []
+          continueLabel: "빈칸에 적는다"
+          text: "언해 앞쪽 빈칸에 처음으로 붓을 댄다."
+      - say:
+          channel: record
+          wait: 1600
+          unskippable: true
+          text: "짐꾼 덕구. 왼손으로는 낫을 쥐지 못함."
+      - say:
+          channel: action
+          with: []
+          text: "덕구의 짚신 한 켤레는 찾으러 오는 사람이 없어 내가 들고 나왔다."
       - ending: forced_confession
 
   c3_r3_right:
@@ -637,7 +754,23 @@ scenes:
           char: 강치수.angry
           with: [서연, 도원]
           text: "…판관 나리가 후회하실 거요."
+      - branch:
+          cases:
+            - when: { var: credibility, op: gte, value: 3 }
+              goto: c3_clean_confront
+          default: c3_release
+
+  c3_clean_confront:
+    actions:
       - add: { trust_dowon: 1 }
+      - say:
+          channel: action
+          with: [도원]
+          text: "도원이 공초 끝에 ‘의녀 검안과 대조함’이라고 적는다. 내 쪽을 한 번 본다."
+      - goto: c3_release
+
+  c3_release:
+    actions:
       - set: { deokgu_saved: true }
       - char: { id: 덕구, position: right }
       - effect: heal
@@ -654,14 +787,18 @@ scenes:
   c3_after:
     title: "사라진 서리"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 24일 · 한성부 마당" }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 24일 아침 · 한성부 마당" }
       - music: night_well
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - say:
           char: 도원
           with: [서연]
-          text: "분이 오라비는 관아 문지기로 세웠소. 포도청이 못 끌어가게. 오늘 아침엔 제 발로 나한테 인사하더군."
+          text: "분이 오라비는 관아 문지기로 세웠소. 포도청이 못 끌어가게."
+      - say:
+          char: 도원
+          with: [서연]
+          text: "오늘 아침엔 제 발로 나한테 인사하더군."
       - say:
           char: 도원
           when: { var: c1_brother, op: eq, value: true }
@@ -672,18 +809,282 @@ scenes:
           with: [서연]
           text: "그보다 의녀. 시장을 베껴 쓰던 서리 윤길이 이틀째 안 나오오."
       - say:
-          char: 도원
-          with: [서연]
-          text: "마지막으로 봤을 때 묻더군. 전의감에서 왜 분이의 시장을 빌려 갔느냐고."
-      - say:
           char: 서연.think
           with: [도원]
-          text: "전의감이면… 청심원을 짓는 곳 아닙니까."
+          text: "지게미 물어 적던 그분이요?"
       - say:
           char: 도원.troubled
           with: [서연]
-          text: "그렇소."
+          text: "윤길은 달마다 서빙고 얼음 출납 사본을 베끼오. 한성부를 거쳐 공조로 가는 거요."
+      - say:
+          char: 도원.troubled
+          with: [서연]
+          text: "그저께 저녁엔 대출 장부를 펴 놓고 한참 앉아 있더군."
+      - say:
+          channel: action
+          with: []
+          text: "소매 속 주문서를 만진다. 내밀까 하다가 만다."
+      - goto: c3_child
+
+  c3_child:
+    title: "점순 어미"
+    actions:
+      - bg: { id: hyeminseo, transition: fade, duration: 700, place: "9월 24일 오후 · 혜민서 약재실" }
+      - music: inquest
+      - char: { id: 서연, position: left }
+      - say:
+          channel: action
+          with: []
+          camera: wide
+          text: "점순 어미가 다시 왔다. 점순이를 업고 있다. 이마가 또 뜨겁다."
+      - say:
+          channel: dialogue
+          speakerName: "점순 어미"
+          with: [서연]
+          text: "열이 내리는 듯하더니 어젯밤부터 또 올라요. 장에서 새로 사서 반 환 먹였어요."
+      - say:
+          channel: dialogue
+          speakerName: "점순 어미"
+          with: [서연]
+          text: "지난번 건 옆 약방 거였는데 거기 불이 났잖아요. 이건 장에서요."
+      - say:
+          channel: dialogue
+          speakerName: "점순 어미"
+          with: [서연]
+          text: "전의감 거래요. 비단 주머니라 값이 세 배던데."
+      - say:
+          char: 서연
+          with: []
+          text: "그 주머니, 잠깐만요."
+      - say:
+          channel: action
+          with: []
+          continueLabel: "주머니를 받아 든다"
+          text: "어미 손에 주머니가 쥐여 있다."
+      - wait: 400
+      - say:
+          channel: action
+          with: []
+          text: "감청 비단이다. 바늘땀이 촘촘하다. 분이의 저고리 안섶에서 본 땀이다."
+      - say:
+          channel: action
+          with: []
+          text: "코에 대 본다. 아무 냄새도 나지 않는다."
+      - sticker: { id: c3_child_pouch, image: fake_pill_sticker, x: 50, y: 34, width: "clamp(150px, 20%, 260px)", enter: fadeIn, inputLockMs: 300 }
+      - say:
+          channel: action
+          with: []
+          text: "남은 반 환을 손톱으로 쪼갠다. 속이 희고, 손끝에 가루가 묻어난다."
+      - get: child_pouch
+      - clearSticker: { id: c3_child_pouch, leave: fadeOut }
+      - say:
+          char: 서연
+          with: []
+          text: "이거, 제가 가져갈게요. 혜민서 청심원을 드릴게요."
+      - say:
+          channel: dialogue
+          speakerName: "점순 어미"
+          with: [서연]
+          text: "그건 얼만데요?"
+      - say:
+          char: 서연
+          with: []
+          text: "제가 낼게요."
+      - say:
+          channel: action
+          with: []
+          text: "물에 갠 환을 점순이 입에 조금씩 흘려 넣는다. 작은 손을 쥐고 기다린다."
+      - say: { channel: card, with: [], text: "해 질 녘", autoAdvance: 1300 }
+      - say:
+          channel: action
+          with: []
+          wait: 1400
+          text: "열이 내린다. 점순이 손을 그때까지 쥐고 있다가 놓는다."
+      - say:
+          channel: action
+          with: []
+          text: "감청 주머니는 소매에 넣는다. 주문서와 같은 쪽이다."
+      - goto: c3_night
+
+  c3_night:
+    title: "막쇠의 이름"
+    actions:
+      - place: "9월 24일 밤 · 혜민서 약재실"
+      - music: null
+      - mood: { tone: warm, level: 1 }
+      - char: { id: 서연, position: left }
+      - char: { id: 막쇠, position: right }
+      - say:
+          channel: action
+          with: [서연, 막쇠]
+          text: "그날 밤 약재실에 막쇠가 왔다. 등잔을 들고 있다."
+      - branch:
+          cases:
+            - when: { var: makssoe_hurt, op: eq, value: true }
+              goto: c3_night_leg
+          default: c3_night_talk
+
+  c3_night_leg:
+    actions:
+      - say:
+          channel: action
+          with: [막쇠]
+          text: "왼발을 끌며 문턱을 넘는다. 책보다 막쇠의 바짓단부터 걷는다."
+      - say:
+          channel: action
+          with: [막쇠]
+          text: "발목이 부었고, 정강이에 덴 자리가 터져 있다."
+      - say:
+          char: 막쇠.hurt
+          with: [서연]
+          text: "아야. 살살."
+      - say:
+          channel: action
+          with: []
+          text: "물을 끓여 덴 데를 씻고, 부목을 대고 끈을 감는다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그 궤짝은 무사하우?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "네. 장부 한 장 통째로요."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "그럼 됐수."
+      - goto: c3_night_talk
+
+  c3_night_talk:
+    actions:
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "서리 하나 없어졌다며."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그런 건 꼭 송장으로 나와. 나오면 또 불려 갈 테니, 책에 시반은 뭐라 적혔나 들어 두려고."
+      - goto: c3_night_read
+
+  c3_night_read:
+    actions:
+      - sticker: { id: c3_book, image: eonhae_sticker, x: 50, y: 32, width: "clamp(180px, 26%, 340px)", enter: fadeIn }
+      - say:
+          channel: action
+          with: []
+          continueLabel: "둘째 장을 읽어 준다"
+          text: "언해 둘째 장을 편다. 막쇠가 등잔을 책 가까이 낮춘다."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "‘죽은 뒤 바닥에 닿아 있던 쪽에 붉은 얼룩이 생긴다.’"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "‘처음엔 누르면 빠지고, 오래되면 눌러도 안 빠진다.’"
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "맞수."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "근데 추우면 더디우. 겨울 송장은 이틀이 지나도 누르면 빠져. 그건 안 적혔수?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "…안 적혔어요."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그럼 적어요."
+      - say:
+          channel: action
+          with: []
+          wait: 900
+          text: "붓을 들었다가 내려놓는다. 막쇠는 더 말하지 않는다."
+      - clearSticker: { id: c3_book, leave: fadeOut }
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "옆집 닭 값은 냈수. 두 냥 달라는 걸 한 냥 반에."
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "깎으셨어요?"
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "닭이 늙었더라고."
+      - wait: 700
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아가씨, 내 이름은 어떻게 생겼수?"
+      - say:
+          channel: action
+          with: []
+          continueLabel: "막쇠라고 쓴다"
+          text: "약 싸는 종이 한 장을 편다. 붓에 먹을 찍는다."
+      - sticker: { id: c3_name_slip, image: name_slip_sticker, x: 50, y: 34, width: "clamp(150px, 20%, 260px)", enter: fadeIn, inputLockMs: 600 }
+      - say:
+          channel: action
+          with: []
+          wait: 1200
+          text: "막쇠가 종이를 등잔 가까이 들었다가, 멀리 들었다가, 다시 가까이 든다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "막 자는 집 같네."
+      - say:
+          char: 막쇠.grin
+          with: [서연]
+          text: "쇠는 사람이 서 있고."
+      - say:
+          channel: action
+          with: [막쇠]
+          text: "종이를 두 번 접어 머릿수건 안에 넣는다."
+      - clearSticker: { id: c3_name_slip, leave: fadeOut }
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "아가씨는 몇 살이우?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "열여덟이요. 아저씨는요?"
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "몰라."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "어미가 흉년 이듬해에 났다고만 했수. 어느 흉년인지는 안 물어봤고."
+      - say:
+          channel: action
+          with: [막쇠]
+          text: "막쇠가 턱으로 내 무릎의 책을 가리킨다. 뒷장이 아직 접혀 있다."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "그 장은 아직이우?"
+      - say:
+          char: 서연
+          with: [막쇠]
+          text: "네."
+      - say:
+          char: 막쇠
+          with: [서연]
+          text: "난 글을 못 읽으니 접으나 펴나 같수."
+      - say:
+          channel: action
+          with: []
+          text: "막쇠는 등잔을 들고 나간다. 약재실이 어두워져서 나도 등잔을 켠다."
+      - mood: off
       - say:
           channel: narration
-          text: "9월 25일 밤, 서빙고지기가 한성부 문을 두드렸다. 얼음 사이에서 사람이 나왔다고."
+          text: "9월 25일 저녁, 서빙고지기가 한성부 문을 두드렸다. 얼음 사이에서 사람이 나왔다고."
       - goto: /3.yaml

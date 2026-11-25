@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><!-- 궤짝째 끌어낸 박씨 장부 한 장: 가장자리만 그을림, 영수에 모서리 빈 도장 -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#926843"/><stop offset="0.55" stop-color="#845631"/><stop offset="0.553" stop-color="#6c4a2e"/><stop offset="1" stop-color="#6c4a2e"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddd4bb"/><stop offset="0.55" stop-color="#dbd3bd"/><stop offset="0.553" stop-color="#b0ab9b"/><stop offset="1" stop-color="#b0ab9b"/></linearGradient><linearGradient id="art-ink-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfcba5"/><stop offset="0.55" stop-color="#ddc9a4"/><stop offset="0.553" stop-color="#b2a388"/><stop offset="1" stop-color="#b2a388"/></linearGradient></defs>
+  <g transform="rotate(-4 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- leaf with only the edge scorched -->
+    <path d="M58 70 L338 60 L344 340 L62 348 Z" fill="url(#art-ink-1)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M58 70 L338 60 L340 84 L60 92 Z" fill="url(#art-ink-0)" opacity="0.85"/>
+    <path d="M318 62 L338 60 L344 340 L326 340 Z" fill="#845631" opacity="0.5"/>
+    <!-- ruled rows -->
+    <g stroke="#c59959" stroke-width="1.5" opacity="0.8">
+      <path d="M80 128 L322 122 M82 196 L324 190 M84 312 L322 306"/>
+    </g>
+    <text x="90" y="170" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="29" font-weight="700" fill="#2f221a">청심원 삼백 환</text>
+    <text x="90" y="232" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="23" font-weight="700" fill="#2f221a">구월 열아흐레 받음 — 한</text>
+    <!-- pasted receipt slip -->
+    <path d="M206 244 L320 240 L322 298 L208 302 Z" fill="url(#art-ink-2)" stroke="#2f221a" stroke-width="2.5"/>
+    <path d="M212 262 c10 -3 18 3 28 0" fill="none" stroke="#2f221a" stroke-width="2.5"/>
+    <!-- red seal with the bottom-right corner broken off -->
+    <g transform="rotate(-3 286 270)">
+      <path d="M262 250 h44 v30 l-8 5 l-1 6 h-35 z" fill="#c46240"/>
+      <path d="M268 256 h32 v20 l-6 4 h-26 z" fill="none" stroke="#dbd3bd" stroke-width="2"/>
+    </g>
+    <!-- grain -->
+    <g stroke="#c6b083" stroke-width="1.2" opacity="0.6">
+      <path d="M120 110 l12 1 M200 106 l10 0 M140 330 l12 0 M230 328 l10 1"/>
+    </g>
+  </g>
+</svg>

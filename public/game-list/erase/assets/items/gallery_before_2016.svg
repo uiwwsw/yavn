@@ -2,10 +2,10 @@
 <title>날짜 정보 없음 · 사진첩</title>
 <rect x="5" y="5" width="330" height="320" rx="18" fill="#151922" stroke="#586477" stroke-width="3"/>
 <g font-family="Apple SD Gothic Neo, Noto Sans KR, sans-serif" fill="#eef0f3">
-  <text x="23" y="40" font-size="20" font-weight="700">최근 항목</text>
+  <text x="23" y="40" font-size="20" font-weight="700">모든 사진</text>
   <path d="M23 54h294" stroke="#445064"/>
-  <text x="23" y="80" font-size="15" fill="#bcc5d0">2016년 3월</text>
-  <text x="317" y="80" text-anchor="end" font-size="15" fill="#bcc5d0">1,204장</text>
+  <text x="23" y="80" font-size="15" fill="#bcc5d0">2016년 3월 이전</text>
+  <text x="317" y="80" text-anchor="end" font-size="15" fill="#bcc5d0">1장</text>
   <path d="M23 95h294" stroke="#445064"/>
   <svg x="94" y="117" width="152" height="152" viewBox="63 57 278 296"><!-- art direction edition -->
 <defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dcd2c3"/><stop offset="0.45" stop-color="#d8cebf"/><stop offset="1" stop-color="#aca39a"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c38b77"/><stop offset="0.45" stop-color="#ba7a64"/><stop offset="1" stop-color="#956456"/></linearGradient><linearGradient id="art-ink-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddc3ac"/><stop offset="0.45" stop-color="#d9bca4"/><stop offset="1" stop-color="#ac9686"/></linearGradient><linearGradient id="art-ink-3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dabc82"/><stop offset="0.45" stop-color="#d5b471"/><stop offset="1" stop-color="#aa9060"/></linearGradient><linearGradient id="art-ink-4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ead5b5"/><stop offset="0.45" stop-color="#e8d2ae"/><stop offset="1" stop-color="#b8a68e"/></linearGradient></defs><title>어린 시절 사진</title>

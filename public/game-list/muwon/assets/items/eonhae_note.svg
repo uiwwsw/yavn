@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><!-- 무원록 언해: sijang.svg의 접힌 한지 두 장과 몸 그림을 펼친 책으로 옮김 · 시반 장 옆 빈칸에 첫 줄 -->
+<defs><linearGradient id="art-ink-0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfcba5"/><stop offset="0.55" stop-color="#ddc9a4"/><stop offset="0.553" stop-color="#b2a388"/><stop offset="1" stop-color="#b2a388"/></linearGradient><linearGradient id="art-ink-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddd4bb"/><stop offset="0.55" stop-color="#dbd3bd"/><stop offset="0.553" stop-color="#b0ab9b"/><stop offset="1" stop-color="#b0ab9b"/></linearGradient><linearGradient id="art-ink-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9734f"/><stop offset="0.55" stop-color="#c46240"/><stop offset="0.553" stop-color="#9e533a"/><stop offset="1" stop-color="#9e533a"/></linearGradient></defs>
+  <g transform="rotate(-3 200 200)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- thickness of the copied book -->
+    <path d="M34 296 L366 296 L360 322 L40 322 Z" fill="#b2a388" stroke="#2f221a" stroke-width="3"/>
+    <path d="M42 306 H358 M44 314 H356" stroke="#8d7f66" stroke-width="1.5"/>
+    <!-- open spread -->
+    <path d="M36 90 L200 84 L200 298 L34 298 Z" fill="url(#art-ink-0)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M200 84 L364 90 L366 298 L200 298 Z" fill="url(#art-ink-1)" stroke="#2f221a" stroke-width="3"/>
+    <path d="M200 84 L200 298" stroke="#2f221a" stroke-width="2"/>
+    <path d="M205 88 L205 296" stroke="#ceb990" stroke-width="3"/>
+    <!-- thumbed, folded corner -->
+    <path d="M338 89 L364 90 L365 118 Z" fill="#5d4a3a" stroke="#2f221a" stroke-width="2.5"/>
+    <path d="M338 89 L365 118" stroke="#2f221a" stroke-width="2"/>
+    <!-- printed frames; the wide band above them is the blank margin -->
+    <g fill="none" stroke="#2f221a" stroke-width="2.2">
+      <path d="M50 152 H190 V288 H50 Z"/>
+      <path d="M214 152 H352 V288 H214 Z"/>
+    </g>
+    <path d="M114 152 V288 M138 152 V288 M162 152 V288 M240 152 V288 M264 152 V288 M288 152 V288 M312 152 V288 " stroke="#2f221a" stroke-width="1" opacity="0.5" fill="none"/>
+    <!-- body chart, the part Makssoe could always read -->
+    <g transform="translate(4 86) scale(0.6)" fill="none" stroke="#2f221a" stroke-width="3.4">
+      <circle cx="131" cy="135" r="15"/>
+      <path d="M124 150 L123 160 M138 150 L139 160"/>
+      <path d="M123 160 C104 162 98 172 96 186 L90 240 M139 160 C158 162 164 172 166 186 L172 240"/>
+      <path d="M104 186 L108 252 L116 320 M158 186 L154 252 L146 320"/>
+      <path d="M108 252 L131 256 L154 252 M131 256 L130 320"/>
+    </g>
+    <!-- hanmun blocks with the hangul gloss beside each column -->
+    <g>
+      <path d="M126 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M136 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M150 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M160 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M174 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M184 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M228 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M238 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M252 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M262 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M276 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M286 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M300 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M310 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+      <path d="M324 160 V280" stroke="#2f221a" stroke-width="5.5" stroke-dasharray="7 3 5 6" stroke-linecap="butt" fill="none"/>
+      <path d="M334 160 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10 c-2 3 2 7 0 10 c2 3 -2 7 0 10" stroke="#2f221a" stroke-width="1.6" fill="none"/>
+    </g>
+    <!-- the teacher's notes in the margin, older and browner -->
+    <g fill="none" stroke="#6b5440" stroke-width="2.2">
+      <path d="M336 100 c-2.5 4 2.5 7 0 11 c2.5 4 -2.5 7 0 11 c-2.5 4 2.5 7 0 11 c2.5 4 -2.5 7 0 11"/>
+      <path d="M322 100 c-2.5 4 2.5 7 0 11 c2.5 4 -2.5 7 0 11 c-2.5 3 2.5 7 0 10"/>
+      <path d="M300 104 c-2.5 4 2.5 7 0 11 c2.5 4 -2.5 7 0 11 c-2.5 4 2.5 7 0 11 c2.5 1 -2.5 2 0 3"/>
+      <path d="M240 102 c-2.5 4 2.5 7 0 11 c2.5 4 -2.5 7 0 11 c-2.5 1 2.5 1 0 2"/>
+    </g>
+    <!-- 서연이 처음 쓴 한 줄: 시반 옆 빈칸, 끝에 막쇠의 이름 -->
+    <g fill="none" stroke="#1d1a17" stroke-width="2.8">
+      <path d="M180 98 c-2.5 4 2.5 7 0 11 c2.5 4 -2.5 7 0 11"/>
+    </g>
+    <g>
+      <text x="180" y="138" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="13" font-weight="800" fill="#1d1a17" text-anchor="middle">막</text>
+      <text x="180" y="152" font-family="AppleMyungjo, 'Nanum Myeongjo', serif" font-size="13" font-weight="800" fill="#1d1a17" text-anchor="middle">쇠</text>
+    </g>
+
+    <!-- paper grain -->
+    <g stroke="#c6b083" stroke-width="1.2" opacity="0.6">
+      <path d="M60 120 l14 1 M92 136 l10 -1 M256 138 l12 0 M280 110 l9 1 M70 292 l12 0 M300 292 l10 0"/>
+    </g>
+    <!-- indigo book cord -->
+    <path d="M200 298 c-5 16 6 28 0 44" fill="none" stroke="#2e4a62" stroke-width="4"/>
+    <path d="M196 342 l-3 14 M200 343 l0 15 M204 342 l3 14" stroke="#2e4a62" stroke-width="2.5"/>
+  </g>
+</svg>

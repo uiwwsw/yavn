@@ -10,6 +10,7 @@ Make choice-driven browser games with YAML scenes, dialogue, branching choices, 
 - Visual novel presentation, character direction, music and cinematic effects.
 - Story RPG progression through choices, state and inventory.
 - Numbered investigation targets, evidence review within choices, and explicit music stops. See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#narrative-and-presentation) for YAML examples.
+- Phone messenger scenes (`say.channel: message`) with chat threads, photos and clips, and a messenger's yellow unread count beside a bubble (`say.unread: true` or a group's number). See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#unread-counts-on-phone-messages-2026-11-25).
 - Chapter story maps, discovered paths and replay checkpoints.
 - Always-on autosave, three manual slots with scene previews, portable save backups, and a notice when a new version is deployed.
 - Automatic location/story-time labels on background changes, with reusable metadata and per-transition text/visibility overrides. See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#automatic-location-and-story-time-labels).

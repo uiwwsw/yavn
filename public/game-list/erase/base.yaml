@@ -8,33 +8,39 @@ assets:
     photo_studio: assets/bg/photo_studio.svg
     couple_home: assets/bg/couple_home.svg
     office: assets/bg/office.svg
+    cafeteria: assets/bg/office.svg
+    civil_office: assets/bg/office.svg
     classroom: assets/bg/classroom.svg
     harin_room: assets/bg/harin_room.svg
+    playground: assets/bg/playground.svg
     rooftop: assets/bg/rooftop.svg
     science_room: assets/bg/science_room.svg
     clinic_hall: assets/bg/clinic_hall.svg
-    two_bowls_sticker: assets/items/two_bowls.svg
-    harin_photo_sticker: assets/items/harin_classroom_photo.svg
-    earphone_sticker: assets/items/earphone_offer.svg
-    invitation_sticker: assets/items/invitation.svg
+    harin_photo_sticker: assets/items/harin_classroom_boy.svg
+    harin_slide_sticker: assets/items/harin_slide_photo.svg
+    closed_eye_cut_sticker: assets/items/closed_eye_cut.svg
+    snack_lunch_sticker: assets/items/snack_lunch.svg
     child_photo_sticker: assets/items/child_photo.svg
-    gallery_photo_sticker: assets/items/gallery_photo.svg
+    child_photo_back_sticker: assets/items/child_photo_back.svg
+    gallery_photo_sticker: assets/items/gallery_before_2016.svg
     butterfly_sticker: assets/items/pinned_butterfly.svg
-    phone_erased_sticker: assets/items/phone_erased.svg
   backgroundLabels:
     title: false
-    surgery: "ERASE 클리닉"
+    surgery: "정림의원 3층"
     consent_turn: false
     eyes_closed: false
-    surgery_reveal: "ERASE 클리닉"
+    surgery_reveal: "정림의원 3층"
     photo_studio: "사진관"
     couple_home: "도윤과 지수의 집"
     office: "영업2팀"
-    classroom: "3학년 교실"
+    cafeteria: "회사 식당"
+    civil_office: "주민센터"
+    classroom: "3학년 2반"
     harin_room: "하린의 방"
+    playground: "은행동 놀이터"
     rooftop: "회사 옥상"
     science_room: "과학실"
-    clinic_hall: "ERASE 클리닉 1층"
+    clinic_hall: "정림의원 1층"
   characters:
     도윤:
       name: "한도윤"
@@ -82,7 +88,7 @@ assets:
     하린:
       name: "유하린"
       placement: prompt-top
-      base: assets/char/harin.svg
+      base: assets/char/harin-boy.svg
       facing: left
       defaultDelivery: neutral
       defaultFraming: portrait
@@ -90,9 +96,9 @@ assets:
         portrait: { scale: 1, cropBottom: 0.3 }
         full: { scale: 1 }
       emotions:
-        blank: assets/char/harin-blank.svg
-        cry: assets/char/harin-cry.svg
-        sleep: assets/char/harin-sleep.svg
+        blank: assets/char/harin-boy-blank.svg
+        cry: assets/char/harin-boy-cry.svg
+        sleep: assets/char/harin-boy-sleep.svg
     민재:
       name: "서민재"
       placement: prompt-top
@@ -117,6 +123,12 @@ assets:
         full: { scale: 1 }
       emotions:
         awkward: assets/char/ajin-awkward.svg
+    엄마:
+      name: "엄마"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: calm
     의사:
       name: "의사"
       placement: prompt-top
@@ -135,6 +147,24 @@ assets:
       base: assets/char/voice.svg
       facing: left
       defaultDelivery: neutral
+    창구직원:
+      name: "창구 직원"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: neutral
+    원무과직원:
+      name: "원무과 직원"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: neutral
+    실장:
+      name: "실장"
+      placement: prompt-top
+      base: assets/char/voice.svg
+      facing: left
+      defaultDelivery: neutral
   music:
     cold_room: assets/music/cold-room.flac
     neon: assets/music/neon.flac
@@ -147,25 +177,26 @@ assets:
     monitor: assets/sfx/monitor.wav
 
 state:
-  deleted: 0
   gap_told: false
   ajin_photo: ""
   listened: false
-  walked_out: false
-  told_jisu: 0
+  told_first: false
+  number_deleted: false
   booked: false
   sorry: false
+  forgave: false
+  told_all: false
 
 inventory:
   invitation:
     name: "청첩장 시안"
-    description: "지수가 고른 글씨체로 인쇄한 청첩장 시안. 두 사람의 이름이 나란히 찍혀 있다."
+    description: "지수가 고른 글씨체로 인쇄한 청첩장 시안. 도윤이 눈을 감고 웃는 컷이 들어갔다."
     image: assets/items/invitation.svg
     category: "남은 것"
     order: 10
   child_photo:
     name: "어린 시절 사진"
-    description: "날짜가 남아 있지 않은 사진 한 장. 웃고 있는 아이의 눈이 가늘게 접혀 있다."
+    description: "미끄럼틀 꼭대기에서 손을 흔드는 아이. 날짜 정보가 남아 있지 않다."
     image: assets/items/child_photo.svg
     category: "남은 것"
     order: 20

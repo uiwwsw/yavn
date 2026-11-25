@@ -252,16 +252,18 @@ describe('8비트 심장', () => {
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '끝까지 함께하겠다고 약속한다',
       b4_save: '새끼손가락 약속',
+      b4_hold: '손바닥을 바지에 닦고 앉는다',
     });
     finished(run);
+    expect(run.state.resolvedEndingId).toBe('saved_together');
     expect(run.state.routeVars).toMatchObject({ b_battery: true, b_cpu: true, b_screen: true });
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(true);
     expect(heard(run.shown, '걔가 마지막으로 배운 게 신문지 세 겹')).toBe(true);
     // The stop is not the whole disaster. The father says three days on the landline, the block
     // comes apart while Yunjae waits, and a household robot knocks on his door.
     expect(heard(run.shown, '걸어서라도 온다고 한다. 사흘이면 온다고')).toBe(true);
-    // The reset is also the phone that went dead mid-sentence.
-    expect(heard(run.shown, '전광판이 돌아왔으면 집 전화도 신호가 갈까')).toBe(true);
+    // The reset is the departure board going dark over the waiting hall.
+    expect(heard(run.shown, '전광판의 광고가 꺼진다')).toBe(true);
     expect(heard(run.shown, '그러다 누가 유리를 깼다')).toBe(true);
     expect(heard(run.shown, '경찰 사이렌은 첫날 밤에 제일 많았다')).toBe(true);
     expect(heard(run.shown, '확인될 때까지 모시겠습니다')).toBe(true);
@@ -295,25 +297,53 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '네 몸도 엄마가 들여놓은 거야')).toBe(true);
     expect(heard(run.shown, '오늘이 여드레째야')).toBe(true);
     expect(heard(run.shown, '서울역 지하. 코어 관제실이 거기 있대')).toBe(true);
-    expect(heard(run.shown, '현관 문짝에는 ‘서울역’이라고 써 두고 왔다')).toBe(true);
-    // The three things he looked at on the third morning come back in chapter 3.
-    expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(true);
-    expect(heard(run.shown, '아빠가 그냥 안 받는 거면 좋겠어')).toBe(true);
+    // He leaves the same arrow on the line his father will walk, and the father reads all of it.
+    expect(heard(run.shown, '서울역 → — 윤재')).toBe(true);
+    expect(heard(run.shown, '기둥에 쓴 것도 봤다. 셔터에 쓴 것도.')).toBe(true);
+    // The three things he looked at on the fifth day come back in chapter 3.
+    expect(heard(run.shown, '집에 두고 온 게임기도 엄마가 사 준 거야')).toBe(true);
+    expect(heard(run.shown, '그냥 안 받는 거면 좋겠어')).toBe(true);
     expect(heard(run.shown, '천장에 하루 스피커 자국')).toBe(true);
+    expect(heard(run.shown, '결제자 서정은')).toBe(true);
     // Chapter 2 asked "믿어도 됨?" and got "아니." Chapter 4 answers it the other way.
     expect(heard(run.shown, '이번엔 어')).toBe(true);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(false);
-    expect(heard(run.shown, '그럼 나한테 하는 말도 욕임?')).toBe(true);
-    expect(heard(run.shown, '그거 좋은 뜻이라며.')).toBe(false);
-    // The robot learns the 'twice' rule from Yunjae after boot; a memory card cannot hear.
+    // The rules are made on the first night by the tracks, fourteen of them before the door.
     expect(heard(run.shown, '네가 처음 알려 준 너 사용법이라서')).toBe(true);
+    expect(heard(run.shown, '그 새벽 복도를 걸어간 것도 흰 몸통에 긴 팔이었다')).toBe(true);
+    expect(heard(run.shown, '규칙 14.')).toBe(true);
+    expect(heard(run.shown, '규칙대로 자는 얼굴 안 봤음')).toBe(true);
     expect(heard(run.shown, '카드에 같이 들어갔나 봄')).toBe(false);
-    expect(heard(run.shown, '미련 없는 사람은 점수를 카드에 안 옮김')).toBe(true);
-    // Father arrives at Seoul Station
+    // The robot never names a feeling and never has 'see you later' explained to it.
+    expect(heard(run.shown, '기분이라는 게 있는 줄 몰랐음')).toBe(false);
+    expect(heard(run.shown, '이거 농담이었구나')).toBe(false);
+    expect(heard(run.shown, '같은 말임?')).toBe(false);
+    expect(heard(run.shown, "1번 · '다녀올게' → 귀환 · 4분 12초")).toBe(true);
+    // The body his mother bought checks the knee before anything else. Nobody explains it.
+    expect(heard(run.shown, 'ROM · 보호 대상 넘어짐 → 무릎 확인')).toBe(true);
+    // The constitution is the table of contents; losing it to the drone is what the promise answers.
+    expect(heard(run.shown, '헌법 칸 비니까 다른 칸도 못 찾음')).toBe(true);
+    expect(heard(run.shown, 'SCAN: 인간 1 감지. 추적 개시.')).toBe(true);
+    expect(heard(run.shown, '이름 로딩 실패')).toBe(true);
+    expect(heard(run.shown, '칩 떼기 4분 전')).toBe(true);
+    expect(heard(run.shown, '미련 없는 사람은 점수를 카드에 안 옮김')).toBe(false);
+    // The wait is a night in the hall, and the father arrives inside it.
+    expect(heard(run.shown, '밤 11시')).toBe(true);
+    expect(heard(run.shown, '새벽 3시')).toBe(true);
+    expect(heard(run.shown, '이어폰 · 연결 없음')).toBe(true);
     expect(heard(run.shown, '문짝 봤다. 철길 따라왔다.')).toBe(true);
     expect(heard(run.shown, '…아니. 안 먹었어.')).toBe(true);
+    expect(heard(run.shown, '참치마요. 찬밥이다.')).toBe(true);
+    expect(heard(run.shown, '…다녀온다고 했어.')).toBe(true);
     expect(heard(run.shown, '…너도 밥은 먹었냐.')).toBe(true);
     expect(heard(run.shown, '질문. 2P임?')).toBe(true);
+    expect(heard(run.shown, '가면서 알려 준다고 했음')).toBe(false);
+    // The promise brings the index back. What it pointed at, Yunjae has to tell.
+    expect(heard(run.shown, 'RAM 07 · 비었음')).toBe(true);
+    expect(heard(run.shown, 'RAM 11 · 비었음')).toBe(true);
+    expect(heard(run.shown, '나한테 물어봐. 내가 그때 옆에 있었어.')).toBe(true);
+    expect(heard(run.shown, '그래도 내 몫은 있음.')).toBe(true);
+    expect(heard(run.shown, '하나가 생각나니까 다른 것도 났음')).toBe(false);
     // Seven peach pieces are divided equally before each side receives its portion.
     expect(heard(run.shown, '조각 일곱 개')).toBe(true);
     // Hiding behind the robot is a body pressed into one arm's length, not a menu result.
@@ -321,37 +351,44 @@ describe('8비트 심장', () => {
     expect(heard(run.shown, '그 새벽 현관에서처럼 두 손으로 입을 막는다')).toBe(true);
     expect(run.shown).toContain('3.5.');
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(true);
-    expect(heard(run.shown, '슬롯 비어 있음')).toBe(false);
   });
 
   it('아무 말도 못 하고 집도 안 보면 그 자리들이 비어 있다', async () => {
     await start('8bit-heart');
     const run = await play({
       b0_buy: CHEAP,
-      b1_haru: '입을 연다',
+      b1_haru: '말이 안 나온다',
       b1_home: '다용도실 문을 연다',
       b2_register: '아무 일도 없다고 한다',
       b3_snack: '복숭아를 내일로 남겨 둔다',
       b3_drone: '{{android_name}} 뒤에 숨는다',
       b3_promise: '대답을 내일로 미룬다',
-      b4_save: '슬롯을 비워 둔다',
+      b4_save: '최고 점수를 남긴다',
+      b4_hold: '손바닥을 바지에 닦고 앉는다',
     });
     finished(run);
     expect(heard(run.shown, '대답 안 해 줬어')).toBe(true);
     expect(heard(run.shown, '천을 다시 덮지 않고 문을 닫는다')).toBe(true);
     expect(heard(run.shown, '고물한테 거짓말한 사람')).toBe(true);
-    // Wiped, it still carries the one line his mother registered.
-    expect(heard(run.shown, '다 지워졌는데 엄마가 적은 줄은 남았다')).toBe(true);
+    // Wiped, it ties his shoe before it knows him, and still carries the line his mother registered.
+    expect(heard(run.shown, 'ROM · 보호 대상 신발 끈 → 묶기')).toBe(true);
+    expect(heard(run.shown, '윤재가 가슴 화면의 7에 엄지를 댄다')).toBe(true);
+    expect(heard(run.shown, '다 지워졌는데 엄마가 적은 줄은 남았다')).toBe(false);
     expect(heard(run.shown, '세 겹. 기록했습니다')).toBe(false);
-    expect(heard(run.shown, '집에 두고 온 게임기는 엄마가 사 준 거야')).toBe(false);
+    expect(heard(run.shown, '집에 두고 온 게임기도 엄마가 사 준 거야')).toBe(false);
     expect(heard(run.shown, '이번엔 어')).toBe(false);
-    expect(heard(run.shown, '그거 좋은 뜻이라며.')).toBe(true);
-    expect(heard(run.shown, '그럼 나한테 하는 말도 욕임?')).toBe(false);
-    const warning = run.shown.findIndex(text => text.includes('카드를 준비하면 최고 점수는 지워진다'));
-    expect(warning).toBeGreaterThan(-1);
-    expect(run.shown.findIndex(text => text.includes('HI-SCORE 0999990 — 삭제됨'))).toBeGreaterThan(warning);
-    expect(heard(run.shown, '슬롯 비어 있음')).toBe(true);
+    // The 'twice' rule is born on the first night; the lie he told at home was a single '진짜'.
+    expect(heard(run.shown, "집에서 '진짜'는 한 번이었음.")).toBe(true);
+    expect(heard(run.shown, '오늘이 그 내일임.')).toBe(true);
+    expect(heard(run.shown, '윤재가 그제야 새끼손가락을 내민다.')).toBe(true);
+    // Keeping the score keeps the score: nothing is deleted, and the wiped robot finds it.
+    expect(heard(run.shown, '새 기억을 넣으면 최고 점수는 지워진다')).toBe(true);
+    expect(heard(run.shown, 'HI-SCORE 0999990 — 삭제됨')).toBe(false);
+    expect(heard(run.shown, '기존 데이터 유지 · 읽기 전용 잠금')).toBe(true);
     expect(heard(run.shown, '기억 1건 저장 완료')).toBe(false);
+    expect(heard(run.shown, '…혼자 깨면 재미없어.')).toBe(true);
+    expect(heard(run.shown, '나한테 물어봐. 내가 그때 옆에 있었어.')).toBe(true);
+    expect(heard(run.shown, '그래도 내 몫은 있음.')).toBe(false);
     expect(run.state.resolvedEndingId).toBe('new_game');
     // Father arrives at Seoul Station
     expect(heard(run.shown, '문짝 봤다. 철길 따라왔다.')).toBe(true);
@@ -363,10 +400,10 @@ describe('8비트 심장', () => {
     const rescan = rebootLines.findIndex(text => text.includes('가방에서 설명서를 꺼내'));
     expect(rescan).toBeGreaterThan(-1);
     expect(rebootLines.findIndex(text => text.includes('설명서엔'))).toBeGreaterThan(rescan);
-    expect(heard(run.shown, '아껴 둔 복숭아도 다음 날 아침에 다 먹었고')).toBe(true);
+    expect(heard(run.shown, '아껴 둔 복숭아도 오늘 아침에 다 먹었고')).toBe(true);
   });
 
-  it('ends in the alley if Yunjae gives the drone a target', async () => {
+  it('running from the drone is a death that returns to the alley', async () => {
     await start('8bit-heart');
     const run = await play({
       b0_buy: CHEAP,
@@ -376,11 +413,39 @@ describe('8비트 심장', () => {
       b3_snack: '내 몫의 복숭아를 다 먹는다',
       b3_drone: '반대쪽으로 달아난다',
     });
-    finished(run);
-    expect(run.state).toMatchObject({ chapterIndex: 4, resolvedEndingId: 'no_response' });
+    expect(run.state.error).toBeUndefined();
+    expect(run.state.isFinished).toBeFalsy();
+    expect(run.state.gameOver).toMatchObject({ title: '네 번째 훑기' });
     expect(heard(run.shown, '가운데가 두 조각으로 갈라져 있다')).toBe(true);
-    // Father does not appear in no_response ending
     expect(heard(run.shown, '문짝 봤다')).toBe(false);
+  });
+
+  it('reaching through the door at three loses the robot, and the card goes home in a pocket', async () => {
+    await start('8bit-heart');
+    const run = await play({
+      b0_buy: CHEAP,
+      b1_haru: '신문지가 뭔지 설명한다',
+      b1_home: '다용도실 문을 연다',
+      b2_register: '밖에서 무슨 일이 있었는지 말한다',
+      b3_snack: '내 몫의 복숭아를 다 먹는다',
+      b3_drone: '{{android_name}} 뒤에 숨는다',
+      b3_promise: '끝까지 함께하겠다고 약속한다',
+      b4_save: '새끼손가락 약속',
+      b4_hold: '틈으로 손을 넣는다',
+    });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe('no_response');
+    // The rule was shown at the door before the night began.
+    expect(heard(run.shown, '문턱 넘어서 닿으면 나는 1번 물건.')).toBe(true);
+    expect(heard(run.shown, '개체 B 재분류: 개체 A의 장치')).toBe(true);
+    // The reset still happens; the father still comes; the robot does not.
+    expect(heard(run.shown, '현장 재가동 버튼 눌림')).toBe(true);
+    expect(heard(run.shown, '문짝 봤다. 철길 따라왔다.')).toBe(true);
+    expect(heard(run.shown, '…다녀온다고 했어.')).toBe(false);
+    expect(heard(run.shown, '오른손 검지가 아직 버튼 위에 있다')).toBe(true);
+    expect(heard(run.shown, 'SAVE SLOT 1 · 새끼손가락')).toBe(true);
+    expect(heard(run.shown, '설명서 열두 쪽이 세상 전부인 줄 알았어')).toBe(true);
+    expect(heard(run.shown, '돌아왔어.')).toBe(false);
   });
 
   it('reaches off_screen when fleeing without saving', async () => {
@@ -397,64 +462,86 @@ describe('8비트 심장', () => {
     });
     finished(run);
     expect(run.state.resolvedEndingId).toBe('off_screen');
-    // Father arrives on the tracks
-    expect(heard(run.shown, '그래. 같이 가자.')).toBe(true);
-    expect(heard(run.shown, '질문. 3P임?')).toBe(true);
+    // Leaving the station is leaving the place the father was told to come to.
+    expect(heard(run.shown, '문짝 봤다')).toBe(false);
+    expect(heard(run.shown, '거기까지 쓰자 매직이 더 나오지 않는다')).toBe(true);
+    expect(heard(run.shown, '길 건너 아파트 입구에서 가정 도우미 하나가')).toBe(true);
+    expect(heard(run.shown, '한 30초 걸려')).toBe(true);
+    expect(heard(run.shown, '밤 11시 · 서울역 대합실')).toBe(false);
   });
 });
 
 describe("ERASE", () => {
-  it("작가가 이름을 먼저 부른다", async () => {
+  // Every choice the story asks, answered the way the novel's main path answers it.
+  const mainPath = {
+    e1_school: "사실대로 말한다",
+    e1_photo: "남겨 둔다",
+    e2_listen: "그 사람 얘기를 더 해 달라고 한다",
+    e2_jisu: "사실대로 말한다",
+    e3_booking: "날짜를 잡는다",
+    e3_go: "교실로 간다",
+    e3_ajin: "미안하다고 한다",
+    e4_accept: "하린 대신 받는다",
+    e4_tell: "전부 말한다",
+    e5_final: "사진관으로 간다",
+  };
+
+  it("작가가 이름을 먼저 부르고, 프롤로그는 그 사람을 미리 알려 주지 않는다", async () => {
     await start("erase");
-    const run = await play({ e1_school: "사실대로 말한다", e1_photo: "남겨 둔다", e2_listen: "그 사람 얘기를 더 해 달라고 한다", e2_jisu: "사실대로 말한다", e3_ajin: "미안하다고 한다", e3_booking: "날짜를 잡는다", e4_tell: "전부 말한다", e5_final: "3층으로 올라간다" });
+    const run = await play({ ...mainPath, e5_final: "3층으로 올라간다" });
     finished(run);
     expect(run.state.resolvedEndingId).toBe("erase_loop");
 
     const harin = run.shown.findIndex(text => text === "……하린아.");
-    const school = run.shown.findIndex(text => text.includes("혹시 고등학교를 어디 나오셨어요?"));
+    const school = run.shown.findIndex(text => text.includes("혹시 고등학교 어디 나오셨어요?"));
     expect(harin).toBeGreaterThan(-1);
     expect(school).toBeGreaterThan(-1);
     expect(harin).toBeLessThan(school);
 
+    // The dot and the camera belong to the studio, not to the prologue.
+    const studio = run.shown.findIndex(text => text.includes("실장님 장염이세요"));
+    const dot = run.shown.findIndex(text => text.includes("작은 점"));
+    const camera = run.shown.findIndex(text => text.includes("카메라"));
+    expect(studio).toBeGreaterThan(-1);
+    expect(dot).toBeGreaterThan(studio);
+    expect(camera).toBeGreaterThan(studio);
+
     expect(heard(run.shown, "도윤이 이름을 쓰고 끝에 작은 점을 찍는다")).toBe(true);
-    // She asks before she sends, and the photo arrives inside the message.
-    expect(heard(run.shown, "사진 한 장만 보여 드려도 될까요?")).toBe(true);
-    expect(heard(run.shown, "제가 열여덟 살 때 찍은 거예요. 같은 반 친구요.")).toBe(true);
+    // The 2016 photo comes in the bundle of originals, and he is the one who asks.
+    expect(heard(run.shown, "마지막 건 뭐예요?")).toBe(true);
+    expect(heard(run.shown, "잘못 들어갔어요. 지워 주세요.")).toBe(true);
     expect(heard(run.shown, "도윤의 사진첩은 2016년 3월에서 시작한다")).toBe(true);
     expect(heard(run.shown, "도윤은 그 앞을 지나간다.")).toBe(true);
+    // Jisu finds out what the second erasure took from her.
+    expect(heard(run.shown, "이걸 언제 찍었지.")).toBe(true);
+    expect(heard(run.shown, "…하린아.")).toBe(true);
     expect(heard(run.shown, "안 지워요.")).toBe(false);
   });
 
-  it("사진을 지우고 일어서면 화환으로 끝난다", async () => {
+  it("교실에 오라는 말에 답하지 않으면 화환으로 끝난다", async () => {
     await start("erase");
-    const run = await play({ e1_school: "사실대로 말한다", e1_photo: "사진을 지운다", e2_listen: "앨범만 받고 일어난다" });
+    const run = await play({ ...mainPath, e3_go: "답하지 않는다" });
     finished(run);
     expect(run.state.resolvedEndingId).toBe("walked_past");
-    expect(heard(run.shown, "화환 리본에 정아진이라는 이름이 적혀 있다")).toBe(true);
-    expect(heard(run.shown, "사고가 아니었다. 내가 신청했다.")).toBe(false);
-  });
-
-  it("사진을 남겼으면 일어서도 이야기가 이어진다", async () => {
-    await start("erase");
-    const run = await play({ e1_school: "사실대로 말한다", e1_photo: "남겨 둔다", e2_listen: "앨범만 받고 일어난다", e2_jisu: "사실대로 말한다", e3_ajin: "미안하다고 한다", e3_booking: "날짜를 잡는다", e4_tell: "전부 말한다", e5_final: "3층으로 올라간다" });
-    finished(run);
-    expect(run.state.resolvedEndingId).toBe("erase_loop");
-    expect(heard(run.shown, "화환 리번")).toBe(false);
     expect(heard(run.shown, "사고가 아니었다. 내가 신청했다.")).toBe(true);
+    expect(heard(run.shown, "사진은 원래대로 실장님이 찍는다")).toBe(true);
+    expect(heard(run.shown, "로비 화환 리본에 정아진이라는 이름이 적혀 있다")).toBe(true);
+    expect(heard(run.shown, "잘못 들어온 거래.")).toBe(true);
+    expect(heard(run.shown, "저를 한 번도 안 보고요")).toBe(false);
   });
 
-  it("끝까지 들은 사람에게 옆자리가 열린다", async () => {
+  it("원본 마지막 사진을 지웠으면 폴더가 311장에서 끝난다", async () => {
     await start("erase");
-    const run = await play({
-      e1_school: "사실대로 말한다",
-      e1_photo: "남겨 둔다",
-      e2_listen: "그 사람 얘기를 더 해 달라고 한다",
-      e2_jisu: "사실대로 말한다",
-      e3_ajin: "미안하다고 한다",
-      e3_booking: "날짜를 잡는다",
-      e4_tell: "전부 말한다",
-      e5_final: "사진관으로 간다"
-    });
+    const run = await play({ ...mainPath, e1_photo: "사진을 지운다", e3_go: "답하지 않는다" });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe("walked_past");
+    expect(heard(run.shown, "사진은 311장에서 끝난다")).toBe(true);
+    expect(heard(run.shown, "잘못 들어온 거래.")).toBe(false);
+  });
+
+  it("끝까지 들은 사람에게 옆자리가 열리고, 그 대가로 가봉을 놓친다", async () => {
+    await start("erase");
+    const run = await play(mainPath);
     finished(run);
     expect(run.state.resolvedEndingId).toBe("side_seat");
 
@@ -466,76 +553,112 @@ describe("ERASE", () => {
 
     expect(heard(run.shown, "그날 카레 안 나왔어. 닭볶음탕이었어")).toBe(true);
     expect(heard(run.shown, "1층 유리문 너머에 아진이 서 있다")).toBe(true);
+    // The eleventh message is Ajin's own fault, and he takes the apology for Harin.
+    expect(heard(run.shown, "너 나 좋아하는 것 같다고 민재한테 말한 것도 나야")).toBe(true);
+    expect(heard(run.shown, "기억 안 나는 사람이 받아도 돼요?")).toBe(true);
     expect(heard(run.shown, "오늘 점심 사진관으로 올래요? 옆자리 비워 둘게요.")).toBe(true);
+    expect(heard(run.shown, "사천 원어치만요")).toBe(true);
     expect(heard(run.shown, "안 지워요.")).toBe(true);
+    expect(heard(run.shown, "근데 오늘은 그 사람한테 먼저 갔네.")).toBe(true);
+    expect(heard(run.shown, "나는 오늘 처음 듣는데")).toBe(false);
   });
 
-  it("듣지 않은 사람에게는 옆자리가 없다", async () => {
+  it("듣지도 사과하지도 받지도 않은 사람에게는 옆자리가 없다", async () => {
     await start("erase");
     const run = await play({
-      e1_school: "사실대로 말한다",
-      e1_photo: "남겨 둔다",
+      ...mainPath,
       e2_listen: "왜 이런 얘기를 하느냐고 묻는다",
-      e2_jisu: "사실대로 말한다",
       e3_ajin: "그건 하린이라고 한다",
-      e3_booking: "날짜를 잡는다",
-      e4_tell: "전부 말한다"
+      e4_accept: "받지 않는다",
     }, state => state.choiceGate.key === "e5_final");
 
     expect(run.state.choiceGate.key).toBe("e5_final");
     const options = run.state.choiceGate.options.map(o => o.text);
     expect(options).not.toContain("사진관으로 간다");
     expect(heard(run.shown, "오늘 점심 사진관으로 올래요?")).toBe(false);
+    expect(heard(run.shown, "하린이 아니라고 하셨죠. 알아요.")).toBe(true);
+    expect(heard(run.shown, "충전기 뽑히던 소리.")).toBe(true);
+  });
+
+  it("사과만 한 사람도 사진관에 가지만 사천 원 얘기는 모른다", async () => {
+    await start("erase");
+    const run = await play({ ...mainPath, e2_listen: "왜 이런 얘기를 하느냐고 묻는다", e4_accept: "받지 않는다" });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe("side_seat");
+    expect(heard(run.shown, "점심시간만큼만요.")).toBe(true);
+    expect(heard(run.shown, "사천 원어치만요")).toBe(false);
+  });
+
+  it("지수에게 다 말하지 않고 사진관에 가면 명단은 내일로 미뤄진다", async () => {
+    await start("erase");
+    const run = await play({ ...mainPath, e2_jisu: "앨범 얘기만 했다고 한다", e4_tell: "아무 일도 없다고 한다" });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe("side_seat");
+    expect(heard(run.shown, "나는 오늘 처음 듣는데. 그 사람은 점심에 들었네.")).toBe(true);
+    expect(heard(run.shown, "명단은 내일 하자.")).toBe(true);
+    expect(heard(run.shown, "그 사람한테만 말고, 라고 했잖아.")).toBe(false);
   });
 
   it("클리닉에서 날짜를 잡으면 새벽 3시는 확인 문자다", async () => {
     await start("erase");
-    const booked = await play({ e1_school: "사실대로 말한다", e1_photo: "남겨 둔다", e2_listen: "그 사람 얘기를 더 해 달라고 한다", e2_jisu: "사실대로 말한다", e3_ajin: "미안하다고 한다", e3_booking: "날짜를 잡는다", e4_tell: "전부 말한다", e5_final: "3층으로 올라간다" });
+    const booked = await play({ ...mainPath, e5_final: "3층으로 올라간다" });
     finished(booked);
     expect(heard(booked.shown, "예약 확인 · 내일(화) 오전 10시")).toBe(true);
+    expect(heard(booked.shown, "희망 기간")).toBe(false);
   });
 
-  it("클리닉에서 그냥 나오면 새벽 3시에 손이 예약한다", async () => {
+  it("클리닉에서 그냥 나오면 예약은 없고, 사본을 찾으러 간 1층에서 기간을 직접 쓴다", async () => {
     await start("erase");
-    const notBooked = await play({ e1_school: "사실대로 말한다", e1_photo: "남겨 둔다", e2_listen: "그 사람 얘기를 더 해 달라고 한다", e2_jisu: "사실대로 말한다", e3_ajin: "미안하다고 한다", e3_booking: "그냥 나온다", e4_tell: "전부 말한다", e5_final: "3층으로 올라간다" });
+    const notBooked = await play({ ...mainPath, e3_booking: "그냥 나온다", e5_final: "3층으로 올라간다" });
     finished(notBooked);
+    expect(notBooked.state.resolvedEndingId).toBe("erase_loop");
     expect(heard(notBooked.shown, "예약 확인")).toBe(false);
-    expect(heard(notBooked.shown, "언제 열었는지 기억이 나지 않는다")).toBe(true);
+    expect(heard(notBooked.shown, "언제 열었는지 기억이 나지 않는다")).toBe(false);
+    expect(heard(notBooked.shown, "2016년 동의서 사본이 준비되었습니다")).toBe(true);
+    expect(heard(notBooked.shown, "희망 기간: 2027년 4월 2일부터 오늘까지")).toBe(true);
+  });
+
+  it("첫날 그 사람이 아니라고 했으면 교실의 첫마디가 다르다", async () => {
+    await start("erase");
+    const run = await play({ ...mainPath, e1_school: "그 사람이 아니라고 한다" });
+    finished(run);
+    expect(heard(run.shown, "하린이 아니라고 하셨죠. 오늘은 왜 물어보셨어요?")).toBe(true);
+    expect(heard(run.shown, "사고라고 하셨죠. 첫날.")).toBe(false);
   });
 
   it("지수에게 전부 털어놓았다면 전화 끝에 그 이름을 불러 본다", async () => {
     await start("erase");
-    const twoNames = await play({
-      e1_school: "사실대로 말한다",
-      e1_photo: "남겨 둔다",
-      e2_listen: "그 사람 얘기를 더 해 달라고 한다",
-      e2_jisu: "사실대로 말한다",
-      e3_ajin: "미안하다고 한다",
-      e3_booking: "날짜를 잡는다",
-      e4_tell: "전부 말한다",
-      e5_final: "지수에게 전화한다"
-    });
+    const twoNames = await play({ ...mainPath, e5_final: "지수에게 전화한다" });
     finished(twoNames);
     expect(twoNames.state.resolvedEndingId).toBe("two_names");
-    expect(heard(twoNames.shown, "하린아. 저녁 먹으러 가자. 도윤이도 같이.")).toBe(true);
+    expect(heard(twoNames.shown, "하린아. 가봉 가자. 도윤이도 같이.")).toBe(true);
     expect(heard(twoNames.shown, "나 열여덟 살 때 이름은 유하린이었어.")).toBe(true);
+    expect(heard(twoNames.shown, "알았어요. 돈까스는 제가 먹을게요.")).toBe(true);
   });
 
-  it("털어놓지 않은 채 전화하면 반지가 신발장 위에 있다", async () => {
+  it("털어놓지 않은 채 전화하면 식이 미뤄지고 반지는 서류철 위에 놓인다", async () => {
     await start("erase");
     const unfinished = await play({
-      e1_school: "사실대로 말한다",
-      e1_photo: "남겨 둔다",
-      e2_listen: "그 사람 얘기를 더 해 달라고 한다",
+      ...mainPath,
       e2_jisu: "앨범 얘기만 했다고 한다",
-      e3_ajin: "미안하다고 한다",
-      e3_booking: "날짜를 잡는다",
       e4_tell: "아무 일도 없다고 한다",
-      e5_final: "지수에게 전화한다"
+      e5_final: "지수에게 전화한다",
     });
     finished(unfinished);
     expect(unfinished.state.resolvedEndingId).toBe("unfinished");
-    expect(heard(unfinished.shown, "반지는 네가 들고 있어. 지우지 말고.")).toBe(true);
+    expect(heard(unfinished.shown, "반지를 빼서 서류철 위에 올려놓는다")).toBe(true);
+    expect(heard(unfinished.shown, "반지는 네가 갖고 있어.")).toBe(true);
+    expect(heard(unfinished.shown, "가봉 예약 취소")).toBe(true);
     expect(heard(unfinished.shown, "나 열여덟 살 때 이름은 유하린이었어.")).toBe(true);
+  });
+
+  it("2장에서 사실대로 말하고 식탁에서 옛 친구만 말한 사람은 다 말한 것으로 치지 않는다", async () => {
+    await start("erase");
+    const run = await play({ ...mainPath, e4_tell: "옛날 친구를 만났다고만 한다", e5_final: "지수에게 전화한다" });
+    finished(run);
+    expect(run.state.resolvedEndingId).toBe("unfinished");
+    expect(heard(run.shown, "월요일에 네가 다 말해 줬잖아")).toBe(false);
+    expect(heard(run.shown, "개수대에서 오래 흐르던 물.")).toBe(false);
+    expect(heard(run.shown, "봉투로 도로 들어가던 기본증명서.")).toBe(true);
   });
 });

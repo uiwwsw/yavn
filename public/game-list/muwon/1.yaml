@@ -9,28 +9,55 @@ scenes:
     title: "비단전 행수"
     actions:
       - bg: { id: hyeminseo, transition: fade, duration: 800 }
-      - place: { text: "이튿날 아침 · 한성 혜민서", presentation: center }
+      - place: { text: "9월 22일 아침 · 한성 혜민서", presentation: center }
       - music: inquest
       - say:
           channel: record
-          text: "이튿날 진시. 혜민서 약재실."
+          text: "9월 22일 진시. 혜민서 약재실."
       - say:
           channel: action
           with: []
           camera: wide
-          text: "새벽에 업혀 온 아이가 구석 평상에 누워 있다. 어미는 빈 약주머니를 쥔 채 졸고 있다."
+          text: "새벽에 업혀 온 아이가 구석 평상에 누워 있다. 다섯 살 계집아이다. 어미는 점순이라고 부른다."
+      - sticker:
+          id: c2_plain_pouch
+          image: pouch_plain_sticker
+          x: 50
+          y: 34
+          width: "clamp(140px, 18%, 240px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "어미는 빈 약주머니 끈을 검지에 두 번 감은 채 졸고 있다."
+      - clearSticker: { id: c2_plain_pouch, leave: fadeOut }
       - say:
           channel: thought
           with: []
-          text: "청심원 한 환을 다 먹였다는데 열이 그대로다. 물수건을 갈고 실을 챙긴다. 육의전에 가야 한다."
+          text: "청심원 한 환을 다 먹였다는데 열이 그대로다. 물수건만 간다."
       - say:
           channel: action
           with: []
-          text: "약재실 문간으로 처음 보는 의관 하나가 지나간다. 평상의 아이를 한 번 보고도 걸음을 늦추지 않는다. 버선 앞코에 흙 한 점 없다."
+          text: "약재실 문간으로 처음 보는 의관 하나가 지나간다. 담 옆 박씨 약방 쪽에서 나오는 길이다."
+      - sticker:
+          id: c2_socks
+          image: socks_sticker
+          x: 50
+          y: 36
+          width: "clamp(140px, 18%, 240px)"
+          enter: fadeIn
+          inputLockMs: 300
       - say:
           channel: action
           with: []
-          text: "문을 나서기 전에 비단전에서 사람이 먼저 왔다. 분이의 시신을 거두러 왔다고 한다."
+          text: "평상의 아이를 한 번 보고도 걸음을 늦추지 않는다. 버선 앞코에 흙 한 점 없다."
+      - get: doorway_socks
+      - clearSticker: { id: c2_socks, leave: fadeOut }
+      - say:
+          channel: action
+          with: []
+          text: "분이의 몸은 새벽에 막쇠가 혜민서 뒷방으로 옮겨 두었다. 문을 나서기 전에 비단전에서 사람이 먼저 왔다."
       - char: { id: 서연, position: left }
       - char: { id: 여금, position: right }
       - say:
@@ -41,7 +68,7 @@ scenes:
       - say:
           char: 여금.wary
           with: [서연]
-          text: "분이는 우리 가게 침모예요. 장례 치를 돈은 챙겨 왔어요."
+          text: "분이는 우리 가게 침모고."
       - say:
           char: 여금.wary
           with: [서연]
@@ -49,7 +76,7 @@ scenes:
       - say:
           char: 서연
           with: [여금]
-          text: "네. 오작인과 함께 살폈습니다. 분이는 목이 졸린 뒤 우물에 던져졌습니다."
+          text: "네. 오작인과 함께 살폈습니다. 목이 졸린 뒤에 우물에 던져졌습니다."
       - say:
           channel: action
           with: [여금]
@@ -65,31 +92,15 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "혼수 비단을 골라 줬어요. 붉은 건 얼굴이 죽는다면서 끝내 노란 걸 가져갔어요."
-      - say:
-          char: 서연
-          with: [여금]
-          text: "그 비단은 분이가 집에 가져갔습니까?"
+          text: "혼수 비단을 내가 골라 줬어요. 붉은 건 얼굴이 죽는다고 했더니 끝내 노란 걸 가져갔어요."
       - say:
           char: 여금.wary
           with: [서연]
-          text: "가져갔죠. 동네에선 그 애가 혼례가 겁나서 우물에 들었다는데, 나는 안 믿어요."
-      - say:
-          char: 서연
-          with: [여금]
-          text: "입에도 코에도 거품이 없었습니다. 목에는 손자국이 있었고요."
+          text: "동네에선 그 애가 혼례가 겁나서 우물에 들었다는데, 나는 안 믿어요."
       - say:
           channel: action
           with: []
           text: "여금이 장옷 끈을 놓는다. 한참 아무 말도 하지 않는다."
-      - say:
-          char: 여금
-          with: [서연]
-          text: "…그 말, 포교 나리 앞에서도 했어요?"
-      - say:
-          char: 서연
-          with: [여금]
-          text: "들으셨습니다. 그래도 사흘 안에 다른 범인이 안 나오면 오라비를 다시 잡아간답니다."
       - goto: c2_meet
 
   c2_meet:
@@ -103,7 +114,7 @@ scenes:
             - text: "감청 실을 보여 준다"
               saveText: "손톱 밑에서 나온 감청 실을 보여 준다"
               goto: c2_show_thread
-            - text: "분이와 다퉜는지 묻는다"
+            - text: "어젯밤 어디 있었는지 다그친다"
               saveText: "분이와 다툰 적이 있는지 따진다"
               goto: c2_press
 
@@ -133,20 +144,44 @@ scenes:
       - say:
           char: 여금
           with: [서연]
-          text: "납품하는 날 분이가 따라왔어요. 오는 길에 그러더군요. 주머니는 다 찼는데 약 냄새가 안 난다고."
+          text: "납품하는 날 분이가 따라갔어요. 전의감 약고요."
       - say:
           char: 여금
           with: [서연]
-          text: "나는 잔금부터 받으라고 했어요. 그 애가 약 냄새를 안다고, 웃기나 했고."
+          text: "하인들이 환을 주머니에 담고 있었는데, 오는 길에 그 애가 그래요. 약고에 약 냄새가 하나도 안 난다고."
+      - say:
+          char: 여금
+          with: [서연]
+          text: "나는 잔금부터 받으라고 했어요. 그 애가 약 냄새를 안다고, 웃기나 했지."
       - clearSticker: { id: c2_thread, leave: fadeOut }
       - say:
+          char: 여금
+          with: [서연]
+          text: "노란 거 입혀서 보낼게요. 뒷방이 어디예요?"
+      - say:
           channel: action
-          with: [여금]
-          text: "여금이 소매에서 접힌 종이를 꺼낸다. 귀퉁이에 실밥이 붙어 있다."
+          with: []
+          text: "여금은 뒷방에 한참 있었다. 나올 때 손에 접힌 종이가 들려 있다. 귀퉁이에 실밥이 붙어 있다."
       - say:
           char: 여금
           with: [서연]
-          text: "어젯밤 분이 저고리를 여며 주다가 안섶에서 찾았어요. 거기 꿰매져 있었어요."
+          text: "저고리 안섶에 꿰매져 있었어요. 여기만 바늘땀이 이렇게 촘촘해요."
+      - say:
+          char: 여금
+          with: [서연]
+          text: "어제 저녁엔 가게 일 일찍 끝내고 혜민서 옆 약방에 들렀다 간다 했어요."
+      - say:
+          char: 여금
+          with: [서연]
+          text: "박씨 약방이 전의감 청심원을 받아 파는 건 이 동네가 다 알아요."
+      - say:
+          char: 여금.wary
+          with: [서연]
+          text: "그게 마지막이에요."
+      - say:
+          char: 서연
+          with: [여금]
+          text: "…네."
       - say:
           char: 여금.wary
           with: [서연]
@@ -157,25 +192,45 @@ scenes:
   c2_press:
     actions:
       - say:
+          char: 서연.resolve
+          with: [여금]
+          text: "행수님. 어젯밤엔 어디 계셨습니까."
+      - say:
+          char: 서연.resolve
+          with: [여금]
+          text: "분이와 다투신 적 있습니까. 혼수 비단 값 때문에라도요."
+      - say:
           char: 여금.wary
           with: [서연]
-          text: "다퉜냐고요?"
+          text: "…다퉜냐고요?"
       - say:
           char: 여금.wary
           with: [서연]
           text: "의녀가 포교 흉내를 내네. 내 가게 아이를 내가 왜 죽여요."
       - say:
+          channel: action
+          with: [여금]
+          text: "소매로 가던 여금의 손이 멈춘다. 장옷 끈을 도로 단단히 맨다."
+      - say:
           char: 여금.wary
           with: [서연]
           text: "할 말 없어요. 장례 날짜나 알려 줘요."
       - say:
-          channel: action
-          with: []
-          text: "여금이 나간 뒤, 분이의 저고리를 펼친다. 안섶 한쪽에 끝이 풀린 실밥이 보인다."
+          char: 여금.wary
+          with: [서연]
+          text: "사람 불러서 데려갈게요."
       - say:
           channel: action
           with: []
-          text: "그 둘레만 유난히 촘촘하게 꿰맸다. 실을 뜯으니 접힌 종이가 나온다."
+          text: "여금이 문간에서 한 번 돌아본다. 그냥 나간다."
+      - say:
+          channel: action
+          with: []
+          text: "뒷방에서 분이의 저고리를 여민다. 안섶 한쪽만 바늘땀이 유난히 촘촘하다."
+      - say:
+          channel: action
+          with: []
+          text: "실을 뜯으니 접힌 종이가 나온다."
       - get: order_slip
       - goto: c2_fire_alarm
 
@@ -193,11 +248,15 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "‘감청 주머니 삼백.’ 주문한 집 이름 자리에 붉은 표식이 있고, 뒤에는 분이 글씨로 ‘약 냄새 없음. 박씨에게 확인’이라고 적혀 있다."
+          text: "‘감청 주머니 삼백.’ 주문한 집 자리에 이름 대신 붉은 도장. 오른쪽 아래 모서리가 깨져 비었다."
+      - say:
+          channel: action
+          with: []
+          text: "뒷면에는 분이 글씨로 ‘약 냄새 없음. 박씨에게 확인’."
       - say:
           channel: thought
           with: []
-          text: "약 냄새 없음. 어디서 읽은 말이다. 어디였는지는 떠오르지 않는다."
+          text: "약 냄새 없음. 어디서 본 말이다. 생각이 그리로 가다가 멈춘다."
       - clearSticker: { id: c2_slip, leave: fadeOut }
       - mood: { tone: dread, level: 1 }
       - say:
@@ -216,10 +275,6 @@ scenes:
           channel: action
           with: [막쇠]
           text: "연기 사이로 쓰러진 사람의 발이 보인다. 그 옆 궤짝 뚜껑에 ‘장부’라고 적혀 있다. 대들보에서 우지끈 소리가 난다."
-      - say:
-          channel: thought
-          with: []
-          text: "영감은 움직이지 않는다. 막쇠는 벌써 업으려고 들어갔다."
       - say:
           char: 막쇠
           with: [서연]
@@ -240,7 +295,7 @@ scenes:
           timeoutOptionIndex: 0
           options:
             - text: "장부 궤짝을 끌어낸다"
-              set: { makssoe_hurt: true }
+              set: { makssoe_hurt: true, ledger_whole: true }
               goto: c2_chest
             - text: "막쇠를 끌어낸다"
               saveText: "막쇠의 허리띠를 잡아 끌어낸다"
@@ -269,6 +324,28 @@ scenes:
           char: 막쇠.hurt
           with: [서연]
           text: "영감은 업을 때부터 숨이 끊겼었소. 아, 내 다리 좀 받쳐 줘요."
+      - sticker:
+          id: c2_ledger_page
+          image: ledger_page_sticker
+          x: 50
+          y: 32
+          width: "clamp(170px, 24%, 320px)"
+          enter: fadeIn
+          inputLockMs: 300
+      - say:
+          channel: action
+          with: []
+          text: "궤짝 속 장부는 한 장이 통째로 남았다. ‘청심원 삼백 환. 구월 열아흐레 받음. 한.’"
+      - say:
+          channel: action
+          with: []
+          text: "그 아래 붙여 둔 영수 쪽지에 붉은 도장. 오른쪽 아래 모서리가 비었다."
+      - say:
+          channel: thought
+          with: []
+          text: "분이의 주문서에 찍힌 도장도 같은 자리가 비어 있었다."
+      - get: ledger_page
+      - clearSticker: { id: c2_ledger_page, leave: fadeOut }
       - goto: c2_after_fire
 
   c2_pull_makssoe:
@@ -283,14 +360,6 @@ scenes:
           char: 막쇠
           with: [서연]
           text: "아가씨, 이제 내 허리띠 놔도 돼요."
-      - say:
-          channel: narration
-          text: "불이 잦아든 뒤에야 궤짝을 꺼냈다. 뚜껑을 열어 보니 그을린 장부 한 장이 남아 있었다."
-      - goto: c2_after_fire
-
-  c2_after_fire:
-    title: "불 속의 시신"
-    actions:
       - sticker:
           id: c2_ledger
           image: ledger_burnt_sticker
@@ -300,15 +369,27 @@ scenes:
           enter: fadeIn
           inputLockMs: 300
       - say:
+          channel: narration
+          text: "불이 잦아든 뒤에야 궤짝을 꺼냈다. 장부는 거의 다 탔다."
+      - say:
           channel: action
           with: []
-          text: "도원이 마당을 비우게 하고 박씨의 몸을 거적 위에 눕힌다. 그 옆 장부에 ‘청심원 삼백 환’, 그 뒤에 ‘한’ 자 하나가 보인다."
+          text: "그을린 한 장에 ‘청심원 삼백 환’, 그 뒤에 ‘한’ 자 하나만 남았다."
+      - get: burnt_ledger
+      - clearSticker: { id: c2_ledger, leave: fadeOut }
+      - goto: c2_after_fire
+
+  c2_after_fire:
+    title: "불 속의 시신"
+    actions:
+      - say:
+          channel: action
+          with: []
+          text: "도원이 와서 마당을 비우게 하고 박씨의 몸을 거적 위에 눕힌다."
       - say:
           channel: thought
           with: []
           text: "삼백. 주머니도 삼백이었다."
-      - get: burnt_ledger
-      - clearSticker: { id: c2_ledger, leave: fadeOut }
       - char: { id: 서연, position: left }
       - char: { id: 도원, position: center }
       - say:
@@ -379,7 +460,7 @@ scenes:
       - say:
           channel: action
           with: []
-          text: "두 손이 가지런하다. 화상도, 문을 두드린 멍도 없다."
+          text: "두 손이 가지런하다. 덴 데도, 문을 두드린 멍도 없다."
       - say:
           char: 막쇠
           with: [서연]
@@ -532,11 +613,10 @@ scenes:
           inputLockMs: 300
       - get: poison_note
       - clearSticker: { id: c2_note, leave: fadeOut }
-      - add: { trust_dowon: 1 }
       - say:
           char: 도원.stern
           with: [서연]
-          text: "…독을 먹이고, 목을 긋고, 불을 질렀다. 강도 짓으로 보이게 한 거요."
+          text: "…독을 먹이고, 목을 긋고, 불을 질렀소. 강도 짓으로 보이게."
       - say:
           char: 서연.think
           with: [도원]
@@ -548,7 +628,7 @@ scenes:
       - say:
           char: 서연
           with: [도원]
-          text: "네. 장부에 남은 ‘한’ 자가 누구를 가리키는지부터 알아보겠습니다."
+          text: "네."
       - say:
           char: 막쇠.grin
           with: [서연, 도원]
@@ -565,12 +645,16 @@ scenes:
           char: 막쇠
           with: [서연]
           text: "마흔 해 만에 책에 적힌 대로 해 본 건 처음이오. 닭 값쯤은 내가 내야지."
+      - say:
+          channel: thought
+          with: []
+          text: "주문서는 소매에 넣어 둔다. 붉은 도장이 누구 것인지 모르고는 내밀 데가 없다."
       - goto: c2_arrest
 
   c2_arrest:
     title: "잡혀 온 짐꾼"
     actions:
-      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "해 질 녘 · 한성부 마당" }
+      - bg: { id: hanseongbu_yard, transition: fade, duration: 700, place: "9월 22일 해 질 녘 · 한성부 마당" }
       - music: pressure
       - say:
           channel: narration
@@ -624,9 +708,27 @@ scenes:
           with: [서연]
           text: "심지 한 번. …적었습니다."
       - say:
+          channel: dialogue
+          speakerName: "서리 윤길"
+          with: [도원]
+          text: "나리, 낮에 전의감 의관 한 분이 이 시장을 빌려 가셨다가 방금 돌려주셨습니다."
+      - say:
+          channel: dialogue
+          speakerName: "서리 윤길"
+          with: [도원]
+          text: "대출 장부에 도장도 받아 뒀고요. 침모 송장 기록을 의관이 뭐 하러 봅니까?"
+      - say:
+          channel: action
+          with: [도원]
+          text: "도원은 대답하지 않는다."
+      - say:
+          char: 도원
+          with: [서연]
+          text: "윤길, 오늘은 그만 들어가 보게."
+      - say:
           channel: thought
           with: [도원]
-          text: "열 대. 분이 오라비가 받을 뻔한 것과 같은 수다."
+          text: "열 대."
       - char: { id: 막쇠, position: right }
       - say:
           char: 막쇠

@@ -10,12 +10,13 @@ assets:
     seobinggo: assets/bg/seobinggo.svg
     hyeongjo_hall: assets/bg/hyeongjo_hall.svg
     alley_night: assets/bg/alley_night.svg
+    room_night: assets/bg/room_night.svg
     dawn_gate: assets/bg/dawn_gate.svg
     well_hand_sticker: assets/items/well_hand.svg
     neck_traces_sticker: assets/items/neck_traces.svg
     thread_sticker: assets/items/thread.svg
     sijang_sticker: assets/items/sijang.svg
-    order_slip_sticker: assets/items/order_slip.svg
+    order_slip_sticker: assets/items/order_slip_broken_seal.svg
     ledger_burnt_sticker: assets/items/ledger_burnt.svg
     silver_pin_sticker: assets/items/silver_pin.svg
     poison_note_sticker: assets/items/poison_note.svg
@@ -24,10 +25,17 @@ assets:
     ice_ledger_sticker: assets/items/ice_ledger.svg
     fake_pill_sticker: assets/items/fake_pill.svg
     seal_mark_sticker: assets/items/seal_mark.svg
-    register_page_sticker: assets/items/register_page.svg
+    register_page_sticker: assets/items/register_page_broken_seal.svg
     eonhae_sticker: assets/items/eonhae.svg
     eonhae_filled_sticker: assets/items/eonhae_filled.svg
     accusation_sticker: assets/items/accusation.svg
+    pouch_plain_sticker: assets/items/pouch_plain.svg
+    socks_sticker: assets/items/socks.svg
+    ledger_page_sticker: assets/items/ledger_page.svg
+    name_slip_sticker: assets/items/name_slip.svg
+    eonhae_note_sticker: assets/items/eonhae_note.svg
+    eonhae_margin_sticker: assets/items/eonhae_margin.svg
+    yungil_sijang_sticker: assets/items/yungil_sijang.svg
   backgroundLabels:
     title: false
     well_night: "한성 남부 훈도방"
@@ -39,6 +47,7 @@ assets:
     seobinggo: "한강 변 서빙고"
     hyeongjo_hall: "형조 대청"
     alley_night: "한성 골목"
+    room_night: "서연의 방"
     dawn_gate: "관아 문 앞"
   characters:
     서연:
@@ -152,12 +161,15 @@ state:
   player_name: "서연"
   trust_dowon: 0
   trust_yeogeum: 0
-  credibility: 3
+  credibility: 4
   truth: 0
   makssoe_hurt: false
   makssoe_alive: true
   deokgu_saved: false
   struck_deal: false
+  ledger_whole: false
+  servant_beaten: false
+  time_fixed: false
   c1_mouth: false
   c1_nails: false
   c1_neck: false
@@ -187,16 +199,28 @@ inventory:
     order: 20
   order_slip:
     name: "주머니 주문서"
-    description: "분이가 저고리 안섶에 꿰매 둔 종이. 감청 주머니 삼백 개라는 글과 주문한 집의 붉은 표식이 있다."
-    image: assets/items/order_slip.svg
+    description: "분이가 저고리 안섶에 꿰매 둔 종이. 감청 주머니 삼백. 주문한 집 자리에 붉은 도장이 찍혔고, 오른쪽 아래 모서리가 비었다. 뒷면에 '약 냄새 없음. 박씨에게 확인'."
+    image: assets/items/order_slip_broken_seal.svg
     category: "증거"
     order: 30
+  doorway_socks:
+    name: "약재실 문간의 의관"
+    description: "9월 22일 진시, 박씨 약방 쪽에서 나와 혜민서 약재실 문간을 지나간 의관. 평상의 아이를 보고도 걸음을 늦추지 않았다. 버선 앞코에 흙 한 점 없었다."
+    image: assets/items/socks.svg
+    category: "본 것"
+    order: 35
   burnt_ledger:
     name: "탄 장부 조각"
-    description: "약방 궤짝에서 건진 장부 한 장. '청심원 삼백 환 — 한'까지만 남았다."
+    description: "막쇠를 먼저 끌어낸 뒤 꺼낸 약방 장부. 거의 다 타고 '청심원 삼백 환 — 한'까지만 남았다."
     image: assets/items/ledger_burnt.svg
     category: "증거"
     order: 40
+  ledger_page:
+    name: "박씨 장부 한 장"
+    description: "불길에서 궤짝째 끌어낸 약방 장부. '청심원 삼백 환. 구월 열아흐레 받음. 한.' 붙여 둔 영수에 오른쪽 아래가 빈 붉은 도장."
+    image: assets/items/ledger_page.svg
+    category: "증거"
+    order: 41
   silver_pin:
     name: "은비녀"
     description: "박씨를 검안할 때 쓴 비녀. 검게 변하지 않았지만 그걸로 독이 없었다고 단정할 수는 없다."
@@ -205,43 +229,61 @@ inventory:
     order: 50
   poison_note:
     name: "닭 실험 기록"
-    description: "검시에 쓴 닭이 쓰러진 뒤 남긴 기록. 박씨가 불이 나기 전에 독을 먹었을 가능성을 보여 준다."
+    description: "박씨 콧속에 그을음 없음. 입에 물렸던 밥을 먹은 닭이 반 식경 안에 쓰러짐. 불이 나기 전에 독을 먹었다."
     image: assets/items/poison_note.svg
     category: "검안 기록"
     order: 60
   wound_rubbing:
     name: "상처 탁본"
-    description: "박씨 목의 칼자국을 종이에 떠 둔 것. 자국은 오른쪽 위에서 왼쪽 아래로 비스듬하고, 너비는 한 치다."
+    description: "박씨 목의 칼자국을 종이에 떠 둔 것. 숨이 끊어진 뒤에 그은 자국. 오른쪽 위에서 왼쪽 아래로 비스듬하고, 너비는 한 치다."
     image: assets/items/wound_rubbing.svg
     category: "검안 기록"
     order: 70
   deokgu_sickle:
     name: "덕구의 낫"
-    description: "포도청이 흉기라고 내놓은 낫. 날 너비가 두 치를 넘는다."
+    description: "포도청이 흉기라고 내놓은 낫. 날 너비가 두 치를 넘고, 녹 사이에 피가 없다."
     image: assets/items/sickle.svg
     category: "증거"
     order: 80
-  ice_ledger:
-    name: "얼음 출납부"
-    description: "서빙고의 출납부. 윤길이 발견된 날 낮에 ‘약재 보관용’으로 얼음 열 덩이가 나갔고, 전의감 도장이 찍혀 있다."
-    image: assets/items/ice_ledger.svg
-    category: "증거"
-    order: 90
-  fake_pill:
-    name: "가짜 청심원"
-    description: "감청 주머니에 든 환약. 쪼개 보니 속이 흰 석회다."
+  child_pouch:
+    name: "점순 어미의 주머니"
+    description: "9월 24일 점순 어미가 장에서 산 감청 비단 주머니. 분이의 바늘땀. 약 냄새가 없고, 쪼갠 반 환은 속이 희다."
     image: assets/items/fake_pill.svg
     category: "증거"
-    order: 100
-  seal_mark:
-    name: "전의감 도장"
-    description: "얼음 출납부와 청심원 상자에 같은 도장이 찍혀 있다. 모서리 한쪽이 깨진 자국까지 같다."
-    image: assets/items/seal_mark.svg
-    category: "증거"
-    order: 110
+    order: 85
   register_page:
     name: "윤길이 베껴 쓴 문서"
-    description: "윤길이 검안 기록을 옮겨 적은 종이. 기록을 빌려 간 사람의 이름에 붉은 동그라미가 쳐져 있다."
-    image: assets/items/register_page.svg
+    description: "윤길이 분이의 시장을 베낀 종이. '9월 22일 전의감 의관 한명재 빌려 감'에 붉은 동그라미. 대출 장부의 도장을 먹으로 떠 둔 쪽지가 붙어 있다."
+    image: assets/items/register_page_broken_seal.svg
+    category: "증거"
+    order: 90
+  yungil_sijang:
+    name: "윤길의 시장"
+    description: "목에 끈 자국. 시반은 등에만 있어 옮겨졌다. 팔다리는 얼고 턱은 무름. 손등을 누르면 자국이 남음. 손목에 끈 자국 두 줄. 죽은 때는 9월 25일 낮."
+    image: assets/items/yungil_sijang.svg
+    category: "검안 기록"
+    order: 95
+  ice_ledger:
+    name: "얼음 출납부"
+    description: "서빙고의 출납부. 윤길이 죽은 날 낮에 '약재 보관용' 얼음 열 덩이가 나갔다. 달마다 열 덩이씩, 받은 사람 자리엔 모서리 빈 도장."
+    image: assets/items/ice_ledger.svg
+    category: "증거"
+    order: 100
+  fake_pill:
+    name: "가짜 청심원"
+    description: "전의감 빙실 상자의 감청 주머니에 든 환약. 쪼개 보니 속이 흰 석회다. 상자 밑 얼음 일곱 덩이 위엔 빼돌린 우황 단지."
+    image: assets/items/fake_pill.svg
+    category: "증거"
+    order: 110
+  seal_mark:
+    name: "전의감 도장"
+    description: "얼음 출납부와 청심원 상자에 같은 도장이 찍혀 있다. 오른쪽 아래 모서리가 깨진 자국까지 같다. 인장 대장에는 한명재 몫."
+    image: assets/items/seal_mark.svg
     category: "증거"
     order: 120
+  eonhae_margin:
+    name: "언해 맨 뒷장"
+    description: "송 의녀가 정조 14년 동짓달에 적은 기록. 아이 둘, 옆 약방 청심원, 남빛 주머니, 약 냄새 없음. 주머니를 거둬 간 의관의 이름은 묻지 못함. 등잔 든 아이의 이름이 적혀 있다."
+    image: assets/items/eonhae_margin.svg
+    category: "기록"
+    order: 130

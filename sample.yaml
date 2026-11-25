@@ -210,6 +210,32 @@ scenes:
           with: []
           text: "창 아래로 몸을 낮춘다. 틈으로 붉은 경보등이 깜빡인다. 스위치까지 손이 닿을 것 같다."
       - goto: safety_choice
+  # 휴대폰 메시지와 '안 읽음' 표시. script의 첫 scene을 phone_unread로 지정하면 볼 수 있습니다.
+  # unread: true는 보낸 말풍선 옆에 노란 1을 띄웁니다. 단톡방은 안 읽은 인원을 숫자로 적습니다(unread: 3).
+  # 숫자는 그 말풍선에 고정되어 저장·불러오기 뒤에도 남고, 답장이 와도 저절로 사라지지 않습니다.
+  phone_unread:
+    actions:
+      - say:
+          channel: message
+          thread: 하린
+          side: them
+          speakerName: 하린
+          text: "문 앞에 누가 서 있어"
+      - say:
+          channel: message
+          thread: 하린
+          side: me
+          speakerName: 아진
+          unread: true
+          text: "누군데?"
+      - say:
+          channel: message
+          thread: 하린
+          side: me
+          speakerName: 아진
+          unread: true
+          text: "하린아"
+      - goto: safety_choice
   safety_choice:
     layout: auto # 보이는 인원에 따라 자동 배치. 빈자리를 유지할 장면만 fixed
     actions:
