@@ -1425,6 +1425,18 @@ export function validateGameData(data: GameData): { data?: GameData; error?: VNE
                 return { error };
               }
             }
+            if (option.requires) {
+              const error = validateCondition(
+                sceneId,
+                `actions[${actionIndex}].choice.options[${optionIndex}].requires`,
+                option.requires,
+                defaults,
+                inventoryDefaults,
+              );
+              if (error) {
+                return { error };
+              }
+            }
             if (option.goto) {
               const gotoError = validateGotoReference(
                 sceneId,

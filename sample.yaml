@@ -387,3 +387,21 @@ scenes:
     actions:
       - use: clue_note
       - goto: /conclusion/1.yaml
+
+  # 잠긴 선택지 예시 (requires / lockedText)
+  locked_choice_demo:
+    actions:
+      - say:
+          text: "문 옆에 여러 문장이 있다."
+      - choice:
+          key: locked_choice_demo
+          prompt: "어떤 문장을 읽을까?"
+          options:
+            - text: "첫 번째 문장"
+              goto: route_select
+            - text: "두 번째 문장"
+              requires: { var: clue_note, op: eq, value: true }
+              lockedText: "현장 메모를 확인해야 읽을 수 있다."
+              goto: all_done_after_item
+            - text: "세 번째 문장"
+              goto: safety_choice

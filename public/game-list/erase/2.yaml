@@ -29,9 +29,93 @@ scenes:
       - music: wind
       - place: "그날 밤 · 도윤과 지수의 집"
       - say: { channel: action, with: [도윤], text: "지수는 저녁 내내 봉투 얘기를 꺼내지 않았다." }
-      - say: { channel: action, with: [도윤], text: "밤에 도윤은 베란다 수납장에서 엄마 상자를 꺼낸다. 장례 뒤로 한 번도 열지 않은 상자다." }
+      - goto: e3_home
+
+  e3_home:
+    title: "그날 밤"
+    actions:
+      - say: { channel: action, with: [도윤], text: "열한 시. 지수가 먼저 들어가 눕는다. 거실 불만 남는다." }
+      - goto: e3_home_look
+
+  e3_home_look:
+    title: "거실"
+    actions:
+      - choice:
+          key: e3_home
+          presentation: explore
+          investigation: { width: 1600, height: 900 }
+          prompt: "거실 불만 켜져 있다."
+          with: []
+          options:
+            - text: "식탁 위 봉투"
+              at: { x: 52, y: 62 }
+              when: { var: home_envelope, op: eq, value: false }
+              goto: e3_home_envelope
+            - text: "휴대폰"
+              at: { x: 34, y: 70 }
+              when: { var: home_phone, op: eq, value: false }
+              goto: e3_home_phone
+            - text: "안방 문"
+              at: { x: 82, y: 40 }
+              when: { var: home_jisu, op: eq, value: false }
+              goto: e3_home_jisu
+            - text: "베란다 수납장"
+              at: { x: 14, y: 46 }
+              when: { var: home_box, op: eq, value: false }
+              requires: { var: home_envelope, op: eq, value: true }
+              lockedText: "장례 뒤로 한 번도 열지 않은 칸이다."
+              goto: e3_home_box
+            - text: "정림의원을 찾아본다"
+              requires: { var: discharge_paper, op: eq, value: true }
+              lockedText: "어디부터 찾아야 할지 모른다."
+              goto: e3_home_leave
+
+  e3_home_envelope:
+    title: "봉투"
+    actions:
+      - say: { channel: action, with: [도윤], text: "주민센터 봉투가 지수 가방 옆에 있다. 세 번 접힌 그대로다." }
+      - say: { channel: action, with: [도윤], text: "꺼내서 맨 아래 칸을 다시 읽는다." }
+      - say: { channel: record, with: [], text: "[개명] 허가일자 2016년 5월 13일 · 개명 전 이름 유하린 · 신청인 법정대리인 한경숙" }
+      - say: { channel: action, with: [도윤], text: "한경숙. 엄마 이름이다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 종이를 접힌 금대로 다시 접어 봉투에 넣는다." }
+      - set: { home_envelope: true }
+      - goto: e3_home_look
+
+  e3_home_phone:
+    title: "휴대폰"
+    actions:
+      - say: { channel: action, with: [도윤], text: "검색창에 유하린을 쳐 본다. 결과가 없다." }
+      - say: { channel: action, with: [도윤], text: "사진첩 맨 끝으로 내린다. 교실 창가의 남자아이가 아직 거기 있다.", when: { var: ajin_photo, op: ne, value: deleted } }
+      - say: { channel: action, with: [도윤], text: "사진첩 맨 끝으로 내린다. 휴지통까지 비운 자리에는 미끄럼틀 위 아이 한 장뿐이다.", when: { var: ajin_photo, op: eq, value: deleted } }
+      - say: { channel: action, with: [도윤], text: "지수와의 대화방은 오늘 아침 '반차 냈어'에서 멈춰 있다." }
+      - set: { home_phone: true }
+      - goto: e3_home_look
+
+  e3_home_jisu:
+    title: "안방 문"
+    actions:
+      - say: { channel: action, with: [도윤], text: "문이 한 뼘 열려 있다. 불은 꺼져 있다." }
+      - say: { channel: action, with: [도윤], text: "지수는 벽 쪽으로 돌아누워 있다. 자는 숨소리가 아니다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 문고리를 잡았다가 그대로 둔다." }
+      - set: { home_jisu: true }
+      - goto: e3_home_look
+
+  e3_home_box:
+    title: "엄마 상자"
+    actions:
+      - say: { channel: action, with: [도윤], text: "베란다 수납장 맨 아래 칸에서 엄마 상자를 꺼낸다. 테이프가 누렇게 말라 있다." }
+      - say: { channel: action, with: [도윤], text: "보험 증권과 통장 사이에 종이 한 장이 끼어 있다.", continueLabel: "꺼낸다" }
       - say: { channel: record, with: [], text: "퇴원 확인서 · 2016년 3월 29일 · 발급처 정림의원" }
       - say: { channel: narration, with: [], text: "스무 살 때 엄마가 한 번 보여 준 종이다. 사고 뒤에 있었던 병원이라고 했다." }
+      - get: discharge_paper
+      - set: { home_box: true }
+      - goto: e3_home_look
+
+  e3_home_leave:
+    title: "검색"
+    actions:
+      - say: { channel: action, with: [도윤], text: "지도에 정림의원을 친다. 버스로 사십 분. 3층 칸에만 영어가 적혀 있다." }
+      - say: { channel: action, with: [도윤], text: "도윤은 화요일 오후 반차를 올린다." }
       - goto: e3_clinic
 
   e3_clinic:

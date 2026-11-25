@@ -14,6 +14,7 @@ Make choice-driven browser games with YAML scenes, dialogue, branching choices, 
 - Chapter story maps, discovered paths and replay checkpoints.
 - Always-on autosave, three manual slots with scene previews, portable save backups, and a notice when a new version is deployed.
 - Automatic location/story-time labels on background changes, with reusable metadata and per-transition text/visibility overrides. See the [creator guide](docs/DEVELOPMENT_GUIDE.en.md#automatic-location-and-story-time-labels).
+- Locked but visible options (`choice.options[].requires` / `choice.options[].lockedText`) for options that show a reason when clicked but remain non-selectable until a condition is met.
 - Korean and English launcher/engine controls; catalog language labels, search and filters.
 - Browser demos with per-game public search pages and language metadata.
 

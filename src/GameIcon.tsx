@@ -14,6 +14,7 @@ const paths = {
   map: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14',
   prev: 'm15 5-7 7 7 7',
   next: 'm9 5 7 7-7 7',
+  lock: 'M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z',
 } as const;
 
 export function GameIcon({ name, className = '', style }: { name: keyof typeof paths; className?: string; style?: CSSProperties }) {

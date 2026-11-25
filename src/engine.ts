@@ -3347,19 +3347,35 @@ function evaluateCondition(
 export type AvailableChoiceOption = {
   option: ChoiceOption;
   authoredIndex: number;
+  locked: boolean;
 };
 
 export function resolveAvailableChoiceOptions(
   options: readonly ChoiceOption[],
   vars: Record<string, RouteVarValue>,
   inventory: InventoryOwnedMap,
-): AvailableChoiceOption[] {
-  return options.flatMap((option, authoredIndex) => {
+): { options: AvailableChoiceOption[]; lockedOptionIndexes: number[] } {
+  // lockedOptionIndexes contains the authored indexes of options that are visible but locked.
+  // This is kept for backward compatibility but App.tsx now uses the `locked` property
+  // of each AvailableChoiceOption to determine lock status by visible index.
+  const lockedOptionIndexes: number[] = [];
+  const availableOptions = options.flatMap((option, authoredIndex) => {
     if (option.when && !evaluateCondition(option.when, vars, inventory)) {
       return [];
     }
-    return [{ option, authoredIndex }];
+    // Check if option is locked due to `requires` condition
+    const isLocked = option.requires && !evaluateCondition(option.requires, vars, inventory);
+    if (isLocked) {
+      lockedOptionIndexes.push(authoredIndex);
+    }
+    return [{ option, authoredIndex, locked: isLocked ?? false }];
   });
+  // Convert authored indexes to visible indexes for lockedOptionIndexes
+  const visibleLockedOptionIndexes = lockedOptionIndexes.map(authoredIdx => {
+    const visibleIdx = availableOptions.findIndex(opt => opt.authoredIndex === authoredIdx);
+    return visibleIdx;
+  });
+  return { options: availableOptions, lockedOptionIndexes: visibleLockedOptionIndexes };
 }
 
 export function resolveVisibleTimeoutOptionIndex(
@@ -3369,6 +3385,11 @@ export function resolveVisibleTimeoutOptionIndex(
   const matchedIndex = availableOptions.findIndex(
     ({ authoredIndex }) => authoredIndex === authoredTimeoutOptionIndex,
   );
+  // If the matched option is locked, find the first unlocked option
+  if (matchedIndex >= 0 && availableOptions[matchedIndex].locked) {
+    const firstUnlocked = availableOptions.findIndex(opt => !opt.locked);
+    return firstUnlocked >= 0 ? firstUnlocked : 0;
+  }
   return matchedIndex >= 0 ? matchedIndex : 0;
 }
 
@@ -4955,7 +4976,7 @@ function runActionsUntilPause(loopGuard: number): void {
       action.choice.with,
       getStagedCharacterIds(),
     );
-    const availableOptions = resolveAvailableChoiceOptions(
+    const { options: availableOptions, lockedOptionIndexes } = resolveAvailableChoiceOptions(
       action.choice.options,
       state.routeVars,
       state.inventory,
@@ -4964,6 +4985,15 @@ function runActionsUntilPause(loopGuard: number): void {
       useVNStore.getState().setWaitingInput(false);
       useVNStore.getState().setError({
         message: `Choice has no available options: ${state.currentSceneId}:${state.actionIndex}`,
+      });
+      return;
+    }
+    // If all visible options are locked, treat as no available options
+    const unlockedCount = availableOptions.filter(opt => !opt.locked).length;
+    if (unlockedCount === 0) {
+      useVNStore.getState().setWaitingInput(false);
+      useVNStore.getState().setError({
+        message: `Choice has no available options (all locked): ${state.currentSceneId}:${state.actionIndex}`,
       });
       return;
     }
@@ -4992,6 +5022,7 @@ function runActionsUntilPause(loopGuard: number): void {
       approachSteps: visibleOptions.map(() => 0),
       approachSwitched: false,
       mood: action.choice.mood,
+      lockedOptionIndexes,
       options: visibleOptions,
     });
     useVNStore.getState().setVisibleCharacters(presentation.visibleCharacterIds);
@@ -6254,6 +6285,11 @@ export function submitChoiceOption(optionIndex: number, skipForgiveOnce = false)
 
   const selected = state.choiceGate.options[optionIndex];
   if (!selected) {
+    return;
+  }
+
+  // If the option is locked, do nothing (blocked from selection)
+  if (state.choiceGate.lockedOptionIndexes.includes(optionIndex)) {
     return;
   }
 

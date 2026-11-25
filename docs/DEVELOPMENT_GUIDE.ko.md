@@ -8,6 +8,11 @@
 
 작품 대사를 편집할 때는 [인물·관계·장면 상태 자료](NARRATIVE_CONTEXT.ko.md)를 먼저 읽습니다. `node scripts/narrative-context.mjs --check`로 모든 화자와 관계 참조를 확인하고, `--game`·`--scene`으로 해당 장면의 실제 대사와 조건부 사실을 함께 조회할 수 있습니다.
 
+## 2026-11-25 변경 기록 — 잠긴 채 보이는 선택지
+
+- 선택지 옵션에 `requires`·`lockedText`를 추가했습니다. 조건이 맞지 않으면 옵션이 숨지 않고 잠긴 채 보이며, 누르면 무엇이 모자란지 `lockedText`로 알려 줍니다. 목록형과 화면 탐색(`explore`) 모두 지원합니다. 자세한 규칙은 [잠긴 채 보이는 선택지](#잠긴-채-보이는-선택지-requires--lockedtext)에 있습니다.
+- ERASE 2장 「그날 밤」을 이 문법으로 만든 탐색 장면으로 바꿨습니다. 봉투를 읽어야 베란다 수납장이 열리고, 퇴원 확인서를 얻어야 정림의원을 찾아볼 수 있습니다.
+
 ## 2026-11-25 변경 기록 — 휴대폰 메시지 '안 읽음' 숫자
 
 - `channel: message` 줄의 `say.unread`로 한국 메신저처럼 말풍선 옆에 작은 노란 숫자를 띄웁니다. `unread: true`는 `1`, 숫자(`unread: 32`)는 그 숫자(단톡방의 안 읽은 인원)를 표시합니다. 생략하거나 `false`·`0`이면 표시하지 않습니다. 0 이상 999 이하의 정수만 받으며, `message`가 아닌 채널에 쓰면 검증 오류입니다.
@@ -1355,6 +1360,39 @@ scenes:
 - 조건을 만족하지 않은 옵션은 비활성 버튼으로 노출하지 않고 선택 목록에서 제외합니다.
 - 보이는 옵션은 YAML 작성 순서를 유지합니다. 선택 기록은 옵션 텍스트로 저장되므로 선택 복구와 저장 재생도 기존 방식으로 동작합니다.
 - 모든 옵션이 숨겨지면 빈 선택 게이트를 열지 않고 `sceneId:actionIndex`가 포함된 런타임 오류를 표시합니다.
+
+### 잠긴 채 보이는 선택지: `requires` · `lockedText`
+
+`when`이 맞지 않는 옵션은 숨습니다. `requires`가 맞지 않는 옵션은 **보이지만 고를 수 없습니다.** 플레이어에게 "저기는 아직 못 간다, 무엇이 필요하다"를 보여 줄 때 씁니다.
+
+```yaml
+- choice:
+    key: home_night
+    presentation: explore
+    prompt: "거실 불만 켜져 있다."
+    options:
+      - text: "식탁 위 봉투"
+        at: { x: 52, y: 62 }
+        when: { var: read_envelope, op: eq, value: false }
+        goto: envelope
+      - text: "베란다 수납장"
+        at: { x: 14, y: 46 }
+        requires: { var: read_envelope, op: eq, value: true }
+        lockedText: "장례 뒤로 한 번도 열지 않은 칸이다."
+        goto: mom_box
+      - text: "정림의원을 찾아본다"
+        requires: { var: discharge_paper, op: eq, value: true }   # 소지품 ID도 된다
+        lockedText: "어디부터 찾아야 할지 모른다."
+        goto: clinic
+```
+
+- `requires`는 `when`과 같은 조건 문법을 씁니다(상태 변수, 소지품 ID, `all`/`any`/`not`). `lockedText`(60자 이내)와 함께 써야 하며 둘 중 하나만 쓰면 오류입니다.
+- `when`이 먼저입니다. `when`이 거짓이면 숨고, 참이면서 `requires`가 거짓일 때 잠깁니다.
+- 목록형: 흐린 버튼에 자물쇠 표시가 붙고, `lockedText`가 버튼 둘째 줄에 보입니다. 마우스·키보드 숫자로 고를 수 없습니다.
+- 화면 탐색(`explore`): 번호 대신 자물쇠가 점선 테두리로 그려집니다. 누르면 고르지 않고 `lockedText`를 탐색 안내 자리에 보여 줍니다.
+- 시간 제한 선택에서 `timeoutOptionIndex`가 잠긴 옵션이면 보이는 옵션 중 첫 번째 열린 옵션이 골라집니다. 보이는 옵션이 전부 잠기면 저작 오류입니다.
+- 잠금은 선택지가 다시 그려질 때마다 다시 계산됩니다. 살펴보기 장면에서 `set`이나 `get`으로 조건을 채우고 같은 선택으로 돌아오면 열립니다. [ERASE 2장](../public/game-list/erase/2.yaml)의 `e3_home_look`에서 실행할 수 있습니다.
+
 
 ### 9-9) `gameOver` 실패 상태와 복구
 

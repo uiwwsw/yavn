@@ -318,16 +318,36 @@ function useLatchedMotionTempo(
 }
 
 function NumberedSceneMarker({
-  number, label, style, disabled, step, buttonRef, onActivate,
+  number, label, style, disabled, step, buttonRef, onActivate, isLocked, lockedText, onLocked,
 }: {
   number: number;
   label: string;
   style: CSSProperties;
   disabled: boolean;
   step?: number;
+  isLocked?: boolean;
+  lockedText?: string;
+  /** A locked spot still answers a press: it says what is missing instead of choosing. */
+  onLocked?: () => void;
   buttonRef?: (element: HTMLButtonElement | null) => void;
   onActivate: () => void;
 }) {
+  if (isLocked) {
+    return (
+      <button
+        type="button"
+        className="investigation-marker is-locked"
+        style={style}
+        aria-label={`${label}, ${t('잠김')}${lockedText ? `: ${lockedText}` : ''}`}
+        onClick={event => {
+          event.stopPropagation();
+          onLocked?.();
+        }}
+      >
+        <span aria-hidden="true"><GameIcon name="lock" className="investigation-marker-lock-icon" /></span>
+      </button>
+    );
+  }
   return (
     <button
       type="button"
@@ -1970,6 +1990,7 @@ export default function App() {
   const [activeTag, setActiveTag] = useState(ALL_TAG_FILTER);
   const [showAllLauncherTags, setShowAllLauncherTags] = useState(false);
   const [launcherShareNotice, setLauncherShareNotice] = useState('');
+  const [lockedChoiceNotice, setLockedChoiceNotice] = useState<{ key: string; text: string }>();
   const [uploading, setUploading] = useState(false);
   const [startGate, setStartGate] = useState<StartGateState | null>(null);
   const [startGateLaunching, setStartGateLaunching] = useState(false);
@@ -4980,22 +5001,26 @@ export default function App() {
     if (!option.at) return [];
     const index = choiceGate.options.indexOf(option);
     if (index < 0 && (!investigation || isApproach)) return [];
-    return [{ option, index, number: position + 1, at: option.at }];
+    const isLocked = choiceGate.lockedOptionIndexes.includes(index);
+    return [{ option, index, number: position + 1, at: option.at, isLocked, lockedText: option.lockedText }];
   }) : [];
   const hasSpatialTargets = spatialTargets.length > 0;
   const listedChoices = choiceGate.options.flatMap((option, index) =>
-    isSpatialChoice && option.at ? [] : [{ option, index }]);
+    isSpatialChoice && option.at ? [] : [{ option, index, isLocked: choiceGate.lockedOptionIndexes.includes(index) }]);
   const choiceEvidence = choiceGate.active && choiceGate.evidence
     ? inventoryCatalogEntries.find(entry => entry.id === choiceGate.evidence && entry.owned)
     : undefined;
   const approachStatus = choiceGate.approachSwitched
     ? t("처음부터 다시 다가갑니다.")
     : t("같은 번호를 연속으로 눌러 다가가세요.");
-  const spatialHint = isApproach ? approachStatus : t("화면에서 살펴볼 곳을 누르세요");
+  const lockedNoticeText = lockedChoiceNotice?.key === choiceGate.key ? lockedChoiceNotice.text : undefined;
+  const spatialHint = lockedNoticeText ?? (isApproach ? approachStatus : t("화면에서 살펴볼 곳을 누르세요"));
 
   const chooseOption = (index: number) => {
     if (busy) return;
     if (hasRecoveredFailedChoice) setRecoveredFailedChoice(undefined);
+    // Return immediately if the option is locked
+    if (choiceGate.lockedOptionIndexes.includes(index)) return;
     submitChoiceOption(index);
   };
 
@@ -5003,16 +5028,21 @@ export default function App() {
     option: typeof choiceGate.options[number],
     index: number,
     displayNumber = index + 1,
+    isLocked = false,
+    lockedText?: string,
   ) => {
     const optionText = fillText(option.text);
     const hasForgiveOnce = option.forgiveOnce ?? choiceGate.forgiveOnceDefault;
     const forgiveAvailable = hasForgiveOnce && !choiceGate.forgivenOptionIndexes.includes(index);
     const isPreviousGameOverChoice = index === recoveredFailedChoiceIndex;
+    const lockedTextDisplay = isLocked && lockedText ? (
+      <span className="choice-gate-option-locked-text">{lockedText}</span>
+    ) : null;
     return (
       <button
         key={`${choiceGate.key}-${option.text}-${index}`}
         type="button"
-        className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}`}
+        className={`choice-gate-option${forgiveAvailable ? ' choice-gate-option-forgive' : ''}${isPreviousGameOverChoice ? ' choice-gate-option-previous-game-over' : ''}${isLocked ? ' is-locked' : ''}`}
         ref={(el) => {
           choiceOptionButtonRefs.current[index] = el;
         }}
@@ -5030,8 +5060,9 @@ export default function App() {
           event.stopPropagation();
           chooseOption(index);
         }}
-        disabled={busy}
-        aria-label={`${optionText}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}`}
+        disabled={busy || isLocked}
+        aria-label={`${optionText}${isPreviousGameOverChoice ? t(", 죽음의 원인 선택, 게임 오버 경로") : ''}${isLocked ? t(", 잠김") : ''}`}
+        aria-disabled={isLocked}
       >
         <span className="choice-gate-option-copy">
           <span className="choice-gate-option-index" aria-hidden="true">
@@ -5040,8 +5071,10 @@ export default function App() {
           <span className="choice-gate-option-text">
             {optionText}
           </span>
+          {isLocked && <GameIcon name="lock" className="choice-gate-option-lock-icon" />}
           <GameIcon name="arrow" className="choice-gate-option-mark" />
         </span>
+        {lockedTextDisplay}
         <span className="choice-gate-option-badges">
           {isPreviousGameOverChoice && (
             <span className="choice-gate-option-history-badge">
@@ -5215,7 +5248,7 @@ export default function App() {
             }),
           } as CSSProperties}
         >
-          {spatialTargets.map(({ option, index, number, at }) => {
+          {spatialTargets.map(({ option, index, number, at, isLocked, lockedText }) => {
             const checked = index < 0;
             const step = isApproach ? choiceGate.approachSteps[index] ?? 0 : 0;
             const total = choiceGate.clicks ?? (option.reveal?.length ?? 0) + 1;
@@ -5236,10 +5269,13 @@ export default function App() {
                 number={number}
                 label={`${fillText(option.text)}${isApproach && total > 1 ? `, ${step}/${total}` : ''}`}
                 style={markerStyle}
-                disabled={busy}
+                disabled={busy || isLocked}
                 step={isApproach ? step : undefined}
                 buttonRef={element => { choiceOptionButtonRefs.current[index] = element; }}
                 onActivate={() => chooseOption(index)}
+                isLocked={isLocked}
+                lockedText={lockedText}
+                onLocked={() => { if (lockedText) setLockedChoiceNotice({ key: choiceGate.key, text: fillText(lockedText) }); }}
               />
             );
           })}
@@ -6357,7 +6393,11 @@ export default function App() {
               )}
               {listedChoices.length > 0 && (
                 <div className="choice-gate-options" data-choice-count={listedChoices.length}>
-                  {listedChoices.map(({ option, index }, position) => renderChoiceOption(option, index, position + 1))}
+                  {listedChoices.map(({ option, index, isLocked }, position) => {
+                  const lockedOption = choiceGate.options.find((opt, i) => i === index);
+                  const lockedText = isLocked && lockedOption?.lockedText ? lockedOption.lockedText : undefined;
+                  return renderChoiceOption(option, index, position + 1, isLocked, lockedText);
+                })}
                 </div>
               )}
             </div>
