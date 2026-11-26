@@ -1,10 +1,9 @@
-"""Render the original loops for ERASE and 8비트 심장 with synthesis only (no samples).
+"""Render the original loops for 8비트 심장 with synthesis only (no samples).
 
 Run with Python 3. Output is 24-second mono PCM WAV loops. Every voice wraps around the loop
 boundary and low tones are snapped to whole loop periods, so loops repeat without clicks.
 Fixed seeds make the output reproducible.
 
-- ERASE (public/game-list/erase/assets/music): cold ambient pads, filtered noise for static and wind.
 - 8비트 심장 (public/game-list/8bit-heart/assets/music): square/triangle chiptune with a noise hat.
 """
 import math
@@ -113,34 +112,6 @@ def chip(samples, lead, bass, beat, amp, rng, hat=True):
                 samples[(onset + i) % SIZE] += amp * 0.18 * rng.uniform(-1, 1) * (1 - i / (RATE * 0.03))
 
 
-def erase():
-    out = ROOT / 'erase/assets/music'
-    rng = random.Random(29)
-    s = [0.0] * SIZE
-    pad(s, [45, 52], 0.05)
-    bell(s, [69, None, 72, None, 76, None, 74, None], 3.0, 0.05, rng)
-    write(out / 'cold-room.wav', s)
-    s = [0.0] * SIZE
-    for b in range(48):
-        onset = round(b * 0.5 * RATE)
-        for i in range(round(RATE * 0.22)):
-            t = i / RATE
-            s[(onset + i) % SIZE] += 0.5 * math.sin(2 * math.pi * (55 + 90 * math.exp(-t * 30)) * t) * math.exp(-t * 9)
-    pad(s, [49, 56], 0.02)
-    bell(s, [73, 76, None, 80, 78, None, 76, 73] * 2, 1.5, 0.025, rng)
-    write(out / 'neon.wav', s)
-    s = [0.0] * SIZE
-    noise(s, 0.07, 0.6, rng)
-    pad(s, [40, 41], 0.025)
-    bell(s, [None, 82, None, None, 81, None, None, None], 3.0, 0.02, rng)
-    write(out / 'static.wav', s, 0.2)
-    s = [0.0] * SIZE
-    noise(s, 0.2, 0.02, rng, gust=1)
-    pad(s, [38, 45, 50], 0.02)
-    bell(s, [62, None, None, 69, None, None, 67, None], 3.0, 0.03, rng)
-    write(out / 'wind.wav', s, 0.22)
-
-
 def eight_bit():
     out = ROOT / '8bit-heart/assets/music'
     rng = random.Random(8)
@@ -160,5 +131,4 @@ def eight_bit():
         write(out / f'{name}.wav', s, 0.2)
 
 
-erase()
 eight_bit()

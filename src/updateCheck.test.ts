@@ -28,9 +28,9 @@ describe('update detection', () => {
   });
 
   it('reads the listed version and the game id from the route', () => {
-    const manifest = { games: [{ id: 'muwon', version: '1.2.0' }, { id: 'erase' }] };
+    const manifest = { games: [{ id: 'muwon', version: '1.2.0' }, { id: 'unlisted' }] };
     expect(findListedGameVersion(manifest, 'muwon')).toBe('1.2.0');
-    expect(findListedGameVersion(manifest, 'erase')).toBeUndefined();
+    expect(findListedGameVersion(manifest, 'unlisted')).toBeUndefined();
     expect(findListedGameVersion({}, 'muwon')).toBeUndefined();
     expect(readGameIdFromPath('/game-list/8bit-heart/')).toBe('8bit-heart');
     expect(readGameIdFromPath('/')).toBeUndefined();

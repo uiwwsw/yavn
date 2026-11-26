@@ -272,3 +272,7 @@ state:
   l4_sign_blocked: false
   l4_signed: false
   looked_back: false
+  lo_port: false
+  lo_dock: false
+  lo_ward: false
+  lo_edit: false

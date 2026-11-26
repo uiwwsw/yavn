@@ -161,11 +161,19 @@ scenes:
           options:
             - text: "새끼손가락 약속"
               saveText: "새끼손가락 약속 — \"끝까지 2P로\""
-              when: { var: m_promise, op: eq, value: true }
+              requires:
+                var: m_promise
+                op: eq
+                value: true
+              lockedText: "끝까지 함께하자는 약속은 하지 않았다."
               set: { kept_promise: true }
               goto: b4_go
             - text: "복숭아 3.5조각"
-              when: { var: m_snack, op: eq, value: true }
+              requires:
+                var: m_snack
+                op: eq
+                value: true
+              lockedText: "복숭아는 내일로 남겨 뒀다. RAM에 없다."
               set: { kept_snack: true }
               goto: b4_go
             - text: "똑똑 농담"

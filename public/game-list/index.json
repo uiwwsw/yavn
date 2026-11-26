@@ -1,6 +1,6 @@
 {
   "schemaVersion": 5,
-  "generatedAt": "2026-11-25T13:23:42.794Z",
+  "generatedAt": "2026-11-26T00:09:32.812Z",
   "games": [
     {
       "id": "360",
@@ -187,80 +187,15 @@
         "image": "/game-list/muwon/assets/share/og.png",
         "imageAlt": "기와지붕과 등잔이 보이는 밤의 우물가"
       }
-    },
-    {
-      "id": "erase",
-      "name": "ERASE",
-      "path": "/game-list/erase/",
-      "author": "uiwwsw",
-      "version": "4.0.0",
-      "summary": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 서윤을 다른 이름으로 부른다. 서윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
-      "summaryEn": "The day Doyun and Jisu shoot their wedding invitation, the stand-in photographer calls Doyun by a name he does not know. He remembers nothing from before eighteen. On her old phone, eleven messages to that name are still unread. A five-chapter psychological drama with five endings.",
-      "thumbnail": "/game-list/erase/assets/bg/title.svg",
-      "tags": [
-        "psychological-drama",
-        "modern",
-        "twist",
-        "complete",
-        "mature"
-      ],
-      "tagLabels": {
-        "psychological-drama": "심리 드라마",
-        "modern": "현대극",
-        "twist": "반전",
-        "complete": "완결",
-        "mature": "성인 주제"
-      },
-      "languages": [
-        "ko"
-      ],
-      "showcase": {
-        "label": "ERASE · 5 CHAPTERS",
-        "backgroundColor": "#0f1420",
-        "image": {
-          "positionX": 72,
-          "positionY": 50,
-          "scale": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
-      "legalNotices": [
-        {
-          "id": "content-warning",
-          "title": "내용 안내",
-          "text": "이 작품에는 단체 대화방 따돌림과 기억을 지우는 선택이 나옵니다. 힘든 마음이 들면 109(자살예방 상담전화, 24시간)에 전화할 수 있습니다."
-        }
-      ],
-      "chapterCount": 5,
-      "endingCount": 5,
-      "seo": {
-        "title": "ERASE",
-        "description": "청첩장 사진을 찍던 날, 처음 보는 사진작가가 서윤을 다른 이름으로 부른다. 서윤에게는 열여덟 전 기억이 없다. 지운 사람과 기억하는 사람의 5장 심리 드라마, 결말 5종.",
-        "keywords": [
-          "심리 드라마",
-          "비주얼노벨",
-          "반전",
-          "현대극",
-          "psychological-drama",
-          "modern",
-          "twist",
-          "complete",
-          "mature"
-        ],
-        "image": "/game-list/erase/assets/bg/title.svg",
-        "imageAlt": "겹친 인화 사진 두 장과 오려 낸 얼굴의 빈자리"
-      }
     }
   ],
   "seo": {
     "title": "야븐엔진 (YAVN) 게임 목록",
-    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록, ERASE.",
+    "description": "야븐엔진(YAVN)에서 플레이 가능한 게임: 360, 8비트 심장, 무원 — 한성 검안록.",
     "keywords": [
       "360",
       "8비트 심장",
       "무원 — 한성 검안록",
-      "ERASE",
       "philosophical-sf",
       "reincarnation",
       "period-drama",
@@ -274,10 +209,6 @@
       "joseon",
       "investigation",
       "consequential-choices",
-      "psychological-drama",
-      "modern",
-      "twist",
-      "mature",
       "환생 비주얼노벨",
       "철학 SF",
       "선택형 이야기",
@@ -291,18 +222,13 @@
       "검시",
       "무원록",
       "역사 비주얼노벨",
-      "추리 게임",
-      "심리 드라마",
-      "비주얼노벨",
-      "반전",
-      "현대극"
+      "추리 게임"
     ],
     "gameTitles": [
       "360",
       "8비트 심장",
-      "무원 — 한성 검안록",
-      "ERASE"
+      "무원 — 한성 검안록"
     ],
-    "gameCount": 4
+    "gameCount": 3
   }
 }
