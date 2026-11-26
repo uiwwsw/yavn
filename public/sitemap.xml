@@ -81,20 +81,4 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://yavn.vercel.app/game-list/erase/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/erase/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/erase/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/erase/"/>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://yavn.vercel.app/en/game-list/erase/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://yavn.vercel.app/game-list/erase/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://yavn.vercel.app/en/game-list/erase/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://yavn.vercel.app/en/game-list/erase/"/>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
 </urlset>
