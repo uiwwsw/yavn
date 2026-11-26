@@ -209,6 +209,7 @@ const actionBodySchema = z.union([
     wait: z.boolean().optional(),
     place: placeTextSchema.optional(),
     label: sceneLabelOptionsSchema.optional(),
+    keepCast: z.boolean().optional(),
   }).strict()]) }),
   z.object({ attack: z.object({
     attacker: z.string().min(1),

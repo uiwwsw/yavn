@@ -330,6 +330,16 @@ const flinchTimers = new Map<string, number>();
 /** Ends each character's body-language motion: one-shots clear, holds settle into their end pose. */
 const motionTimers = new Map<string, { timer: number; finish: () => void }>();
 let suppressResumedLineMotion = false;
+// Set when the background moves to another place without `keepCast`. Whoever stood in the old
+// place left with it, so from then on a line without `with` shows only who is on screen now, its
+// speaker and anyone staged since the last line, instead of calling the whole staged cast back.
+let castLeftWithPlace = false;
+// Characters staged since the last line. They are entering the new place, not leaving the old one.
+const pendingEntrances = new Set<string>();
+function leavePlaceWithCast(): void {
+  castLeftWithPlace = true;
+  useVNStore.getState().setVisibleCharacters([...pendingEntrances]);
+}
 let runtimeMode: RuntimeMode;
 let storySessionRevision = 0;
 let urlGameRootBase = '';
@@ -2179,15 +2189,19 @@ function stageDeclaredCharacter(game: GameData, baseUrl: string, char: CharActio
   // Someone who walked off with `move: exit` keeps that stance on their id. Placing them again
   // is a fresh entrance, so the walk-off must not carry over and leave them past the edge.
   if (state.characterStances[char.id]?.style === 'exit') state.setCharacterStance(char.id, undefined);
+  pendingEntrances.add(char.id);
   state.setCharacter(position, buildCharacterSlot(baseUrl, char.id, path, definition, char.emotion, char.framing, char.enter));
   return true;
 }
 
 function getStagedCharacterIds(): string[] {
-  const characters = useVNStore.getState().characters;
-  return (['left', 'center', 'right'] as const)
+  const { characters, visibleCharacterIds } = useVNStore.getState();
+  const staged = (['left', 'center', 'right'] as const)
     .map((position) => characters[position]?.id)
     .filter((id): id is string => Boolean(id));
+  return castLeftWithPlace
+    ? staged.filter((id) => visibleCharacterIds.includes(id) || pendingEntrances.has(id))
+    : staged;
 }
 
 function resolveSpeakerDisplayName(
@@ -2227,12 +2241,15 @@ function resolveSayPresentation(
   visibleCharacterIds: string[];
   emotionRefs: Array<{ id: string; emotion?: string }>;
 } {
+  pendingEntrances.clear();
   const speaker = parseCharacterRef(char);
   const withRefs = (withChars ?? [])
     .map((raw) => parseCharacterRef(raw))
     .filter((ref): ref is { id: string; emotion?: string } => Boolean(ref.id));
   const visibleCharacterIds = resolveDialogueVisibleCharacterIds(
-    stagedCharacterIds,
+    castLeftWithPlace && speaker.id && !stagedCharacterIds.includes(speaker.id)
+      ? [...stagedCharacterIds, speaker.id]
+      : stagedCharacterIds,
     speaker.id,
     withChars === undefined ? undefined : withRefs.map((ref) => ref.id),
   );
@@ -3997,6 +4014,9 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
   let actionIndex = 0;
   let guard = 0;
   let musicUrl: string | undefined;
+  let restoredBackground: string | undefined;
+  castLeftWithPlace = false;
+  pendingEntrances.clear();
   useVNStore.getState().setSceneTime(undefined);
 
   const setBg = useVNStore.getState().setBackground;
@@ -4045,7 +4065,13 @@ export function restorePresentationToCursor(chapter: PreparedChapter, game: Game
         ? typeof following.place === 'string' ? following.place : following.place.text : undefined);
       useVNStore.getState().setSceneTime(resolveSceneLabel(game, scene, action.bg,
         useVNStore.getState().sceneTime, legacyText).time);
-      setBg(resolveAsset(chapter.baseUrl, game.assets.backgrounds[backgroundId(action.bg)]));
+      const restoredUrl = resolveAsset(chapter.baseUrl, game.assets.backgrounds[backgroundId(action.bg)]);
+      if (restoredBackground !== undefined && restoredUrl !== restoredBackground
+        && (typeof action.bg === 'string' || action.bg.keepCast !== true)) {
+        leavePlaceWithCast();
+      }
+      restoredBackground = restoredUrl;
+      setBg(restoredUrl);
       actionIndex += 1;
       continue;
     }
@@ -4744,6 +4770,7 @@ function runActionsUntilPause(loopGuard: number): void {
     const options = normalizeBackground(action.bg);
     const place = typeof action.bg === 'string' ? undefined : action.bg.place;
     const labelOverride = typeof action.bg === 'string' ? undefined : action.bg.label;
+    const keepCast = typeof action.bg !== 'string' && action.bg.keepCast === true;
     const changed = state.background !== url;
     const followingIndex = followingPlace(scene.actions, state.actionIndex);
     const following = followingIndex === undefined ? undefined : scene.actions[followingIndex];
@@ -4772,6 +4799,9 @@ function runActionsUntilPause(loopGuard: number): void {
     if (!changed) {
       continueAfterBackground();
       return;
+    }
+    if (!keepCast) {
+      leavePlaceWithCast();
     }
     // Hide the previous location during the image transition.
     useVNStore.getState().setPlaceCaption();

@@ -129,6 +129,8 @@ The library's main story is *Muwon — Hanseong Inquest Records* (`public/game-l
 
 ## Automatic location and story-time labels
 
+When `bg` switches to a different image, the characters on screen leave with the old place: they fade out during the transition, and in the new place only the next line's speaker and `with` cast come back. A line without `with` (narration included) does not call the old cast back. Characters staged with `char` right before the `bg` count as arriving and stay. To keep the cast through a change of angle or lighting in the same room, write `keepCast: true`.
+
 When a background URL changes, the engine shows a nonblocking label near the top of the stage for 2.6 seconds. Repeating the same image does not retrigger it. Object-form `bg` waits for decoded transition completion; shorthand and `wait: false` retain their immediate execution.
 
 Register each location once in `base.yaml`; individual transitions need no `place` action:

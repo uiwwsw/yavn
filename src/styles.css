@@ -4591,6 +4591,16 @@ textarea,
   --character-position-easing: cubic-bezier(0.5, 0, 0.75, 0);
 }
 
+/* An exit is usually followed at once by a line without the leaver, or by a change of place.
+   Let the walk finish on screen: the actor stays opaque while it slides and fades only at the edge,
+   instead of blinking out a few steps in. */
+.char.stance-exit.is-camera-hidden {
+  --character-opacity-duration: 760ms;
+  --character-visibility-delay: 760ms;
+  /* Same order as the .char transition list: translate, scale, opacity, visibility. */
+  transition-timing-function: var(--character-position-easing), var(--character-scale-easing), cubic-bezier(0.9, 0, 1, 0.4), linear;
+}
+
 .char.stance-flinch {
   --character-position-duration: 110ms;
   --character-position-easing: cubic-bezier(0.1, 0.9, 0.2, 1);
