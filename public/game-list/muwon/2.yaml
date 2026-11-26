@@ -138,10 +138,11 @@ scenes:
               when: { var: c3_hand, op: eq, value: false }
               goto: c3_hand_scene
             - text: "포교와 이야기한다"
-              when:
+              requires:
                 all:
                   - { var: c3_sickle, op: eq, value: true }
                   - { var: c3_hand, op: eq, value: true }
+              lockedText: "아직 살펴보지 않은 곳이 있다."
               goto: c3_offer
 
   c3_sickle_scene:

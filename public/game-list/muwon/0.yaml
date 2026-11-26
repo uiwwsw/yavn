@@ -227,11 +227,12 @@ scenes:
               when: { var: c1_neck, op: eq, value: false }
               goto: c1_neck_scene
             - text: "본 것을 정리한다"
-              when:
+              requires:
                 all:
                   - { var: c1_mouth, op: eq, value: true }
                   - { var: c1_nails, op: eq, value: true }
                   - { var: c1_neck, op: eq, value: true }
+              lockedText: "아직 살펴보지 않은 곳이 있다."
               goto: c1_reasoning
 
   c1_mouth_scene:

@@ -100,11 +100,12 @@ scenes:
               when: { var: register_page, op: eq, value: false }
               goto: c4_sleeve_scene
             - text: "본 것을 정리한다"
-              when:
+              requires:
                 all:
                   - { var: c4_lividity, op: eq, value: true }
                   - { var: c4_stiff, op: eq, value: true }
                   - { var: register_page, op: eq, value: true }
+              lockedText: "아직 살펴보지 않은 곳이 있다."
               goto: c4_reason
 
   c4_lividity_scene:
@@ -416,10 +417,11 @@ scenes:
               when: { var: c4_box, op: eq, value: false }
               goto: c4_box_scene
             - text: "막쇠를 찾는다"
-              when:
+              requires:
                 all:
                   - { var: c4_ledger, op: eq, value: true }
                   - { var: c4_box, op: eq, value: true }
+              lockedText: "아직 살펴보지 않은 곳이 있다."
               goto: c4_missing
 
   c4_ledger_scene:

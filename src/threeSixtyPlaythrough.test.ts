@@ -21,7 +21,7 @@ const serve = (path: string): string | undefined => {
   }
 };
 
-type Route = Record<string, string>;
+type Route = Record<string, string | string[]>;
 
 const OPEN = '곳간을 열고 쌀을 나눈다.';
 const SHUT = '대문을 잠근다.';
@@ -63,6 +63,7 @@ const WINTER_OPEN_HAND = '손을 편다.';
 async function play(route: Route, stopAtChoice?: string) {
   const picked: string[] = [];
   const shown: string[] = [];
+  const routeIndex: Record<string, number> = {};
   const collect = (state: ReturnType<typeof useVNStore.getState>) => {
     for (const entry of state.storyLog) if ('text' in entry && !shown.includes(entry.text)) shown.push(entry.text);
   };
@@ -75,16 +76,19 @@ async function play(route: Route, stopAtChoice?: string) {
       const key = state.choiceGate.key ?? '';
       if (key && key === stopAtChoice) break;
       const options = state.choiceGate.options;
-      const wanted = route[key] ?? OPENING[key];
-      if (wanted === undefined) throw new Error(`no route for ${key}: ${options.map((o) => o.text).join(' | ')}`);
-      let index = options.findIndex((option) => option.text === wanted);
+      const routeEntry = route[key] ?? OPENING[key];
+      const routeValue = Array.isArray(routeEntry) ? routeEntry[routeIndex[key] ?? 0] : routeEntry;
+      if (routeIndex[key] === undefined && Array.isArray(routeEntry)) routeIndex[key] = 0;
+      if (routeValue === undefined) throw new Error(`no route for ${key}: ${options.map((o) => o.text).join(' | ')}`);
+      let index = options.findIndex((option) => option.text === routeValue);
       // The first dark hands back the winter one piece at a time; its menu repeats until the
       // pieces are found, and the star menu drops each life once it has been lived. Take
       // whatever is still there until the route's option shows up.
       if (index < 0 && (state.choiceGate.presentation === 'explore' || state.choiceGate.presentation === 'approach')) index = 0;
-      if (index < 0) throw new Error(`option "${wanted}" not offered at ${key}: ${options.map((o) => o.text).join(' | ')}`);
+      if (index < 0) throw new Error(`option "${routeValue}" not offered at ${key}: ${options.map((o) => o.text).join(' | ')}`);
       picked.push(`${key}=${options[index].text}`);
       submitChoiceOption(index, true);
+      if (Array.isArray(routeEntry)) routeIndex[key] = (routeIndex[key] ?? 0) + 1;
     } else {
       handleAdvance(true);
     }
@@ -335,9 +339,12 @@ describe('360 full playthrough', () => {
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '문호의 말에 반박한다.',
       l4_sign: SIGN,
+      // leftover_places: explore 4 locations then '숫자들을 내려놓는다'
+      leftover_places: ['포구', '부두', '병실', '편집실', '숫자들을 내려놓는다'],
+      // leftover_look
       l5_leftover: '쉰여섯 해의 기억을 본다.',
       v4: BESIDE,
-      w_remember: '울음',
+      w_remember: ['냄새', '소리', '추위', '울음'],
       v_end: WINTER_BESIDE,
       l5_look: '돌아본다.',
     });
@@ -510,9 +517,12 @@ describe('360 full playthrough', () => {
       l4_mark: "'어두웠다'에 줄을 긋는다.",
       l4_munho: '녹음하며 듣는다.',
       l4_sign: WALK,
+      // leftover_places: explore 4 locations then '숫자들을 내려놓는다'
+      leftover_places: ['포구', '부두', '병실', '편집실', '숫자들을 내려놓는다'],
+      // leftover_look
       l5_leftover: '열일곱 해의 기억을 본다.',
       v4: BESIDE,
-      w_remember: '울음',
+      w_remember: ['냄새', '소리', '추위', '울음'],
       v_end: WINTER_BESIDE,
     }, 'v_end');
     expect(state.choiceGate.key).toBe('v_end');
@@ -565,9 +575,12 @@ describe('360 full playthrough', () => {
       l4_mark: "'가다가 돌아봤다'에 줄을 긋는다.",
       l4_munho: '녹음하며 듣는다.',
       l4_sign: SIGN,
+      // leftover_places: explore 4 locations then '숫자들을 내려놓는다'
+      leftover_places: ['포구', '부두', '병실', '편집실', '숫자들을 내려놓는다'],
+      // leftover_look
       l5_leftover: '보지 않는다.',
       v4: BESIDE,
-      w_remember: '울음',
+      w_remember: ['냄새', '소리', '추위', '울음'],
       v_end: WINTER_JAR,
       l5_look: '그대로 간다.',
     });
@@ -593,7 +606,7 @@ describe('360 full playthrough', () => {
   }, 120000);
 
   it('makes the player open the hand that holds the kimchi tub to take the winter jar', async () => {
-    await startAt(4, 'last_choice', { l4_signed: true });
+    await startAt(4, 'last_choice', { l4_signed: true, m_found: 3 });
     const { state, picked, shown } = await play({ v4: BESIDE, w_remember: '울음', v_end: WINTER_JAR });
     expect(state.isFinished, picked.join('\n')).toBe(true);
     expect(heard(shown, '초록 김치통 손잡이다.')).toBe(true);
@@ -609,7 +622,7 @@ describe('360 full playthrough', () => {
   }, 60000);
 
   it('lets the winter go unnumbered again, and the one-point child lifts the corner and goes out', async () => {
-    await startAt(4, 'last_choice', { l4_signed: true });
+    await startAt(4, 'last_choice', { l4_signed: true, m_found: 3 });
     const { state, picked, shown } = await play({ v4: BESIDE, w_remember: '울음', v_end: WINTER_LEAVE });
     expect(state.isFinished, picked.join('\n')).toBe(true);
     expect(heard(shown, '그 겨울은 이번에도 숫자 없이 남는다')).toBe(true);
@@ -624,7 +637,7 @@ describe('360 full playthrough', () => {
   }, 60000);
 
   it('holds the originals and the winter jar in one hand, and that child bars the gate', async () => {
-    await startAt(4, 'last_choice', { l4_signed: true });
+    await startAt(4, 'last_choice', { l4_signed: true, m_found: 3 });
     const { state, picked, shown } = await play({ v4: ORIGINALS, w_remember: '울음', v_end: WINTER_JAR });
     expect(state.isFinished, picked.join('\n')).toBe(true);
     expect(heard(shown, '녹음기 무게가 손에 남는다')).toBe(true);
@@ -637,7 +650,7 @@ describe('360 full playthrough', () => {
   }, 60000);
 
   it('lets the bankbook go for the child under the blanket when the originals were never signed away', async () => {
-    await startAt(4, 'stake', { l4_signed: false });
+    await startAt(4, 'stake', { l4_signed: false, m_found: 3 });
     const { state, picked, shown } = await play({ v4: SAVINGS, w_remember: '울음', v_end: WINTER_BESIDE });
     expect(state.isFinished, picked.join('\n')).toBe(true);
     expect(heard(shown, '다른 하나는 서랍의 통장이다')).toBe(true);
@@ -649,7 +662,7 @@ describe('360 full playthrough', () => {
   }, 60000);
 
   it('stays by the hearth with a hand on the blanket when the hand opens in the winter', async () => {
-    await startAt(4, 'last_choice', { l4_signed: true });
+    await startAt(4, 'last_choice', { l4_signed: true, m_found: 3 });
     const { state, picked, shown } = await play({ v4: BESIDE, w_remember: '울음', v_end: WINTER_OPEN_HAND, v_end_stop: '여기 남는다.' });
     expect(state.isFinished, picked.join('\n')).toBe(true);
     expect(heard(shown, '이불 위에 손을 얹는다')).toBe(true);

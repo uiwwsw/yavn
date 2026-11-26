@@ -427,11 +427,12 @@ scenes:
               when: { var: c3_wound, op: eq, value: false }
               goto: c2_wound_scene
             - text: "본 것을 정리한다"
-              when:
+              requires:
                 all:
                   - { var: c2_nose, op: eq, value: true }
                   - { var: c2_hands, op: eq, value: true }
                   - { var: c3_wound, op: eq, value: true }
+              lockedText: "아직 살펴보지 않은 곳이 있다."
               goto: c2_poison
 
   c2_nose_scene:
