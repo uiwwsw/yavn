@@ -80,13 +80,6 @@ SCORES = {
         Track("chip-core", 124, 42, TENSE, (0, 1, 0, None, 6, None, 7, 6, 0, 1, 3, 1, None, -1, 0, None), "pulse", "triangle", "run", level=.081),
         Track("chip-dawn", 86, 48, MAJOR, (0, None, 4, None, 7, None, 9, None, 7, 4, 2, None, 4, None, 0, None), "triangle", "triangle", level=.075),
     ),
-    "erase": (
-        Track("cold-room", 62, 43, TENSE, (2, None, None, None, 5, None, None, None, None, None, 1, None, 0, None, None, None), "glass", "pad", ambience="sterile", level=.048),
-        Track("studio", 74, 50, MAJOR, (4, None, 7, None, 9, 7, 4, None, 2, None, 4, None, 7, 4, 2, None), "felt", "pad", level=.055),
-        Track("neon", 118, 45, MINOR, (0, None, 0, 3, None, 7, None, 5, 0, None, 5, 7, None, 8, 7, None), "pulse", "triangle", "club", level=.080),
-        Track("static", 76, 40, TENSE, (None, None, 7, None, None, None, 6, None, None, 1, None, None, 0, None, None, None), "glass", "sub", ambience="radio", level=.044),
-        Track("wind", 66, 43, OPEN, (7, None, None, None, 5, None, None, 2, None, None, None, 0, None, None, None, None), "felt", "pad", ambience="wind", level=.052),
-    ),
     "muwon": (
         Track("night-well", 64, 43, OPEN, (0, None, None, 3, None, 5, None, None, 7, None, None, 5, None, 2, None, None), "breath", "bow", ambience="wind", level=.052),
         Track("inquest", 82, 45, MINOR, (0, None, 3, 5, None, 7, None, 5, 3, None, 0, None, 5, None, 3, None), "silk", "pad", "skin", level=.061),
@@ -234,7 +227,6 @@ class Soundstage:
 SOUNDSTAGES = {
     "360": Soundstage(8.2, 2.1, ((.29, .13, -.24), (.55, .09, .22)), .65, .90, .32, (.071, .09)),
     "8bit-heart": Soundstage(1.2, .48, (), .42, .91, .92, (0, 0)),
-    "erase": Soundstage(11.0, 1.8, ((.72, .21, -.65), (1.1, .10, .60)), .94, .78, .57, (.038, .09)),
     "muwon": Soundstage(7.1, 2.7, ((.31, .16, .27), (.79, .11, -.53)), .78, .85, .58, (.126, .17)),
 }
 
@@ -329,11 +321,6 @@ FOLEY = {
         "repair_tap": [Layer(0, .11, .69, 177, 119, .36), Layer(.146, .11, .53, 196, 127, .41)],
         "repair_breath": [Layer(0, .36, .61, noise=1, tone=.22, attack=.06), Layer(.19, .17, .17, noise=1, tone=.66, attack=.034)],
         "boot": [Layer(0, .09, .22, 392, 392, .03), Layer(.09, .12, .30, 523, 523, .04), Layer(.18, .18, .38, 659, 659, .03)],
-    },
-    "erase": {
-        "shutter": [Layer(0, .06, .63, 1050, 480, .69, .59), Layer(.058, .088, .73, 1280, 450, .83, .58), Layer(.13, .17, .12, noise=1, tone=.62)],
-        "consent_pen": [Layer(0, .17, .37, noise=1, tone=.38, attack=.017), Layer(.11, .12, .22, 710, 310, .70), Layer(.16, .19, .42, noise=1, tone=.20, attack=.045)],
-        "monitor": [Layer(0, .14, .63, 840, 840, .08, attack=.014), Layer(.274, .14, .43, 837, 837, .08, attack=.012)],
     },
     "muwon": {
         "well_rope": [Layer(0, .56, .36, 272, 144, .49, .10, .06), Layer(.17, .19, .24, 88, 44, .66, .18), Layer(.38, .55, .25, 164, 36, .82, .42, .024)],

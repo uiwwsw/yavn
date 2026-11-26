@@ -13,9 +13,12 @@
 	redir /game-list/english-deokman /game-list/muwon/ 308
 	redir /game-list/english-deokman/ /game-list/muwon/ 308
 	redir /game-list/english-deokman/* /game-list/muwon/ 308
-	redir /game-list/erase-first /game-list/erase/ 308
-	redir /game-list/erase-first/ /game-list/erase/ 308
-	redir /game-list/erase-first/* /game-list/erase/ 308
+	redir /game-list/erase-first / 308
+	redir /game-list/erase-first/ / 308
+	redir /game-list/erase-first/* / 308
+	redir /game-list/erase / 308
+	redir /game-list/erase/ / 308
+	redir /game-list/erase/* / 308
 	redir /game-list/conan / 308
 	redir /game-list/conan/ / 308
 	redir /game-list/conan/* / 308

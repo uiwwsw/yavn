@@ -6,8 +6,8 @@ import { handleAdvance, loadGameFromUrl, setScenePresentationPaused, setSkipRead
 import { parseBaseYaml, parseChapterYaml, parseConfigYaml, resolveChapterGame } from './parser';
 import { useVNStore } from './store';
 
-// ERASE and 8비트 심장 are built from the owner's stories. These tests pin
-// their structure (schema, assets, endings, fair failures) and play each one to every ending
+// 8비트 심장 is built from the owner's story. These tests pin
+// its structure (schema, assets, endings, fair failures) and play it to every ending
 // through the real engine. Background transitions are served in their non-waiting short form
 // because there is no renderer here to report that a dissolve finished.
 
@@ -27,7 +27,6 @@ const collectKey = (value: unknown, key: string, result: unknown[] = []): unknow
 };
 
 const games = [
-  { id: 'erase', chapters: 5, endings: ['erase_loop', 'side_seat', 'two_names', 'unfinished', 'walked_past'] },
   { id: '8bit-heart', chapters: 5, endings: ['new_game', 'no_response', 'off_screen', 'saved_together'] },
 ];
 
@@ -156,21 +155,6 @@ describe('owner story playthroughs', () => {
     void loadGameFromUrl(`http://test/game-list/${game}/`);
     await vi.advanceTimersByTimeAsync(3000);
   }
-
-  // ERASE's last morning: look at the form, the phone and the door before a way out opens.
-  const lobbyThen = (way: string) => ['서류철', '휴대폰', '유리문', way];
-  it.each([
-    ['side_seat', { e2_listen: '그 사람 얘기를 더 해 달라고 한다', e5_lobby: lobbyThen('사진관으로 간다') }],
-    ['erase_loop', { e5_lobby: lobbyThen('3층으로 올라간다') }],
-    ['two_names', { e2_jisu: '사실대로 말한다', e4_tell: '전부 말한다', e5_lobby: lobbyThen('유리문을 밀고 나간다') }],
-    ['unfinished', { e2_jisu: '앨범 얘기만 했다고 한다', e4_tell: '아무 일도 없다고 한다', e5_lobby: lobbyThen('유리문을 밀고 나간다') }],
-    ['walked_past', { e3_go: '답하지 않는다' }],
-  ] as Array<[string, Route]>)('ERASE reaches %s', async (ending, route) => {
-    await start('erase');
-    const state = await play(route);
-    expect(state.gameOver).toBeUndefined();
-    expect(state.resolvedEndingId).toBe(ending);
-  }, 60000);
 
   const loyal: Route = {
     b0_buy: '중고 게임기를 산다',

@@ -89,17 +89,32 @@
     },
     {
       "source": "/game-list/erase-first",
-      "destination": "/game-list/erase/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/game-list/erase-first/",
-      "destination": "/game-list/erase/",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/game-list/erase-first/:path*",
-      "destination": "/game-list/erase/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/erase",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/erase/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/game-list/erase/:path*",
+      "destination": "/",
       "permanent": true
     },
     {

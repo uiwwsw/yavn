@@ -1134,14 +1134,6 @@ scenes:
 - 주인공은 그리지 않고 서 있는 자리만 비워 둡니다. 다른 인물은 얼굴 없는 종이 오림입니다. 그림과 음악의 제작 정보는 [게임 에셋 기록](docs/GAME_ART_ASSETS.ko.md)에 정리했습니다.
 - 기획: [`docs/360_GAME_BIBLE.ko.md`](docs/360_GAME_BIBLE.ko.md). 구조는 `src/threeSixtyGame.test.ts`, 네 결말은 `src/threeSixtyPlaythrough.test.ts`가 실제 엔진으로 끝까지 플레이해 확인합니다.
 
-## ERASE
-
-- `/game-list/erase/`(5장)는 결혼을 앞둔 회사원 서윤의 심리 드라마입니다. 청첩장 사진을 찍던 날, 처음 보는 사진작가 정아진이 서윤을 "하린아"라고 부릅니다. 서윤에게는 열여덟 전 기억이 없습니다. 사고 때문이라고 알고 살았습니다.
-- 시술은 본인의 기억만 지우고 남의 기억은 바꾸지 않습니다. 현재(서윤)와 11년 전(하린)을 오가며, 집과 클리닉 로비를 직접 뒤져 단서를 찾습니다. 3장 식탁에서 약혼자 지수가 반지 안쪽의 날짜를 보여 주며 두 번째 반전이 열리고, 마지막에 세 번째로 지울지, 유리문 밖에서 기다리는 지수에게 갈지, 기억하는 사람 옆자리에 앉을지 고릅니다. 결말은 5종입니다.
-- 단체 대화방 따돌림과 기억을 지우는 선택이 나옵니다. 시작 화면과 법적 고지에 내용 안내를 넣었습니다.
-- 전체 화면 자막 카드(`say.channel: card`)로 현재·과거를 오가고, 휴대폰 메시지 채널(`say.channel: message`)로 작가·지수·반 단톡·클리닉의 말을 나눕니다.
-- 기획: [`docs/ERASE_GAME_BIBLE.ko.md`](docs/ERASE_GAME_BIBLE.ko.md)
-
 ## 8비트 심장
 
 - `/game-list/8bit-heart/`(5장)는 AI 재난으로 모든 칩이 미쳐 버린 날, 유일하게 멀쩡한 싸구려 레트로 게임기의 CPU로 고장 난 안드로이드를 깨우는 소년의 생존기입니다. 처음에 비싼 기기를 사면 재난 날 그 기기가 폭주합니다. 안드로이드 이름은 플레이어가 짓고, 마지막에는 8KB 메모리 카드에 어떤 기억을 남길지 고릅니다.
@@ -1149,7 +1141,7 @@ scenes:
 - 그림은 16색 픽셀 아트 SVG, 음악은 사각파 칩튠입니다.
 - 기획: [`docs/8BIT_HEART_GAME_BIBLE.ko.md`](docs/8BIT_HEART_GAME_BIBLE.ko.md)
 
-배경음 8곡은 외부 샘플 없이 `scripts/generate-story-scores.py`로 합성합니다. ERASE·8비트 심장의 대본 구조와 결말 분기는 `src/userStories.test.ts`와 `src/gamePlaythroughs.test.ts`에서 확인합니다.
+8비트 심장의 배경음 4곡은 외부 샘플 없이 `scripts/generate-story-scores.py`로 합성합니다. 8비트 심장의 대본 구조와 결말 분기는 `src/userStories.test.ts`와 `src/gamePlaythroughs.test.ts`에서 확인합니다.
 
 ## 샘플
 

@@ -53,7 +53,7 @@ describe('Vercel production hosting', () => {
 
   it.each([
     ['deokman', '/game-list/muwon/'], ['deokman-v8-preview', '/game-list/muwon/'],
-    ['english-deokman', '/game-list/muwon/'], ['erase-first', '/game-list/erase/'],
+    ['english-deokman', '/game-list/muwon/'], ['erase-first', '/'], ['erase', '/'],
     ['conan', '/'], ['conan-demo', '/'], ['conan-midnight-alibi', '/'], ['english-conan', '/'],
   ])('preserves retired game links: %s', (id, destination) => {
     for (const suffix of ['', '/', '/:path*']) {
