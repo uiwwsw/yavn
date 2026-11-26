@@ -32,7 +32,7 @@
 .start-gate.is-scene .start-gate-frame { inset: 34px; border-color: #d7c7a023; animation-duration: 1600ms; }
 .start-gate.is-scene .start-gate-frame::before, .start-gate.is-scene .start-gate-frame::after { content: none; }
 .start-gate.is-scene .start-gate-title-block {
-  top: 26%; left: 8%; transform: none; width: min(47%, 700px); padding: 0;
+  position: relative; inset: auto; transform: none; width: min(100%, 700px); padding: 0;
   text-align: left; background: none; border: 0; border-radius: 0; box-shadow: none;
   backdrop-filter: none; -webkit-backdrop-filter: none;
   animation: title-copy-reveal 1200ms 160ms cubic-bezier(.2,.7,.2,1) both;
@@ -42,23 +42,42 @@
 .start-gate.is-scene .start-gate-title-block h1 { font-size: clamp(36px, 4.7vw, 76px); font-weight: 650; line-height: 1.22; letter-spacing: -.045em; text-wrap: balance; }
 .start-gate.is-scene .start-gate-eyebrow { font-size: 12px; letter-spacing: .22em; color: #dcc9a6; line-height: 1.7; margin-bottom: 17px; }
 .start-gate.is-scene .start-gate-prologue { max-width: 450px; margin-top: 27px; font-size: clamp(12px, 1.15vw, 16px); line-height: 1.9; letter-spacing: .025em; color: #e8e0d0bd; word-break: keep-all; }
-.start-gate.is-scene .start-gate-actions { bottom: 17%; top: auto; left: 8%; right: auto; transform: none; width: min(310px, 38%); gap: 12px; animation: start-gate-actions-in 900ms 650ms ease-out both; }
+.start-gate.is-scene .start-gate-actions { position: relative; inset: auto; transform: none; width: min(310px, 100%); gap: 12px; animation: start-gate-actions-in 900ms 650ms ease-out both; }
 .start-gate.is-scene .start-gate-button { min-width: 0; min-height: 55px; border-radius: 2px; box-shadow: none; border: 1px solid #dec19d70; background: #0b101a5c; color: #f7ebcf; font-size: 15px; font-weight: 550; letter-spacing: .09em; padding: 0 20px; }
 .start-gate.is-scene .start-gate-button-start { background: linear-gradient(100deg, #ead7ad, #cfa675); border-color: #efd5a3; color: #221a12; }
 .start-gate.is-scene .start-gate-button-start::before { animation: title-menu-sheen 7s 2s ease-in-out infinite; }
 .start-gate.is-scene .start-gate-button-load { min-height: 44px; font-size: 12px; }
 .start-gate.is-scene .start-gate-button:focus-visible { outline: 2px solid currentColor; outline-offset: -5px; }
 .start-gate.is-scene .start-gate-hint { font-size: 12px; color: #eee1c9d9; text-align: left; letter-spacing: .01em; margin-top: 2px; }
-.start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { left: 50%; top: 17%; transform: translateX(-50%); text-align: center; width: min(80%, 920px); animation-name: title-copy-reveal-centered; }
+.start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { align-self: center; text-align: center; width: min(100%, 920px); }
 .start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-ornament { margin-inline: auto; }
 .start-gate.is-scene[data-scene-layout='centered'] .start-gate-prologue { margin-inline: auto; }
-.start-gate.is-scene[data-scene-layout='centered'] .start-gate-actions { left: 50%; transform: translateX(-50%); }
+.start-gate.is-scene[data-scene-layout='centered'] .start-gate-actions { align-self: center; }
 .start-gate.is-scene[data-scene-layout='centered'] .start-gate-overlay { background: linear-gradient(0deg, #060b12ed, #060b121a 50%, #060b12ba); }
 .start-gate.is-scene[data-ui-template='neon-grid'] .start-gate-button-start { color: #c3fbff; border-color: #82dbe2; background: #082a37dd; }
 .start-gate.is-scene[data-ui-template='neon-grid'] .start-gate-eyebrow { color: #9fdbe6; }
 .start-gate.is-scene[data-ui-template='neon-grid'] .start-gate-title-block h1 { font-weight: 800; }
-.start-gate.is-scene .start-gate-legal-notices { bottom: max(24px, env(safe-area-inset-bottom)); max-height: 95px; width: min(700px, 84%); left: 8%; transform: none; padding: 0; background: none; border: none; color: #eee3ca; }
-.start-gate.is-scene.has-legal-notices .start-gate-actions { bottom: max(150px, 20%); }
+.start-gate.is-scene .start-gate-legal-notices { position: relative; inset: auto; flex: 0 0 auto; max-height: 95px; width: min(700px, 100%); transform: none; padding: 0; background: none; border: none; color: #eee3ca; }
+/* One column that flows top to bottom on every screen: title, then the menu pushed to the
+   bottom, then the content notice. Nothing is pinned by percentage, so a save summary, an
+   older-version note or a long title makes the column taller (and scrollable) instead of
+   sliding the menu over the title. The column starts under the top controls and ends above
+   the version line in the corner. */
+.start-gate.is-scene .start-gate-content {
+  position: absolute; width: auto; height: auto; min-height: 0;
+  inset: calc(max(48px, env(safe-area-inset-top, 0px)) + 68px) 6% max(44px, calc(env(safe-area-inset-bottom, 0px) + 36px)) 8%;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 24px;
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+}
+.start-gate.is-scene .start-gate-title-block { flex: 0 0 auto; margin-top: clamp(0px, 5dvh, 72px); }
+.start-gate.is-scene .start-gate-content .start-gate-actions { flex: 0 0 auto; margin-top: auto; }
+/* Authored button placement (config startScreen.buttonPosition) now picks a side of the column. */
+.start-gate.is-scene .start-gate-content :is(.start-gate-actions-auto, .start-gate-actions-bottom-center, .start-gate-actions-center) { align-self: center; }
+.start-gate.is-scene .start-gate-content .start-gate-actions-bottom-right { align-self: flex-end; }
+/* A waiting update is announced under the top controls; the column starts below it. */
+.start-gate.is-scene + .vs-update-banner { top: calc(max(48px, env(safe-area-inset-top, 0px)) + 56px); }
+.start-gate.is-scene:has(+ .vs-update-banner) .start-gate-content { top: calc(max(48px, env(safe-area-inset-top, 0px)) + 150px); }
+.start-gate.is-scene:has(+ .vs-update-banner) .start-gate-title-block { margin-top: 0; }
 .start-scene-controls { position: absolute; z-index: 6; left: 8%; right: 6%; top: max(48px, env(safe-area-inset-top)); display: flex; justify-content: space-between; align-items: center; gap: 20px; }
 .start-scene-controls > div { display: flex; gap: 12px; }
 .start-scene-controls a, .start-scene-controls button { color: #e6e4d4eb; text-decoration: none; font: inherit; font-size: 12px; letter-spacing: .025em; min-height: 44px; display: inline-flex; align-items: center; border: 0; background: #090f1633; padding: 0 12px; border-radius: 2px; cursor: pointer; }
@@ -91,37 +110,38 @@
 @keyframes title-fog { from { transform: translateX(-9%) scale(1); } to { transform: translateX(9%) scale(1.15); } }
 @keyframes title-lightning { 0%, 61%, 64%, 66%, 100% { opacity: 0; } 62% { opacity: .15; } 65% { opacity: .08; } }
 @keyframes title-copy-reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes title-copy-reveal-centered { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
 @keyframes title-menu-sheen { 0%, 72% { transform: translateX(-130%); } 90%, 100% { transform: translateX(130%); } }
 
 @media (max-width: 768px) {
   .title-scene-layer-position { left: var(--layer-mobile-x); top: var(--layer-mobile-y); width: var(--layer-mobile-width); height: var(--layer-mobile-height); opacity: var(--layer-mobile-opacity); }
-  .start-gate.is-scene .start-gate-title-block, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { top: 19%; left: 7%; transform: none; text-align: left; width: 86%; animation-name: title-copy-reveal; }
+  .start-gate.is-scene .start-gate-title-block, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { align-self: stretch; text-align: left; width: 100%; }
   .start-gate.is-scene .start-gate-title-block h1 { max-width: 560px; font-size: clamp(32px, 8.4vw, 54px); line-height: 1.23; }
   .start-gate.is-scene .start-gate-title-ornament { width: 85px; margin: 0 0 19px !important; }
   .start-gate.is-scene .start-gate-eyebrow { font-size: 12px; letter-spacing: .18em; margin-bottom: 13px; }
   .start-gate.is-scene .start-gate-prologue { font-size: 12px; max-width: 80%; margin: 18px 0 0 !important; }
   .start-gate.is-scene .start-gate-overlay, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-overlay { background: linear-gradient(0deg, #050910ef, #05091012 52%, #05091075 75%, #05091050); }
-  .start-gate.is-scene .start-gate-actions, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-actions { left: 7%; right: 7%; width: auto; transform: none; bottom: max(60px, 9%); }
   .start-gate.is-scene .start-gate-button { min-height: 54px; font-size: 14px; }
   .start-scene-controls { top: max(18px, env(safe-area-inset-top)); left: 4%; right: 4%; gap: 8px; }
   .start-scene-controls > div { gap: 3px; }
   .start-scene-controls a, .start-scene-controls button { padding: 0 9px; font-size: 12px; }
   .start-gate.is-scene .start-gate-frame { inset: 14px; }
-  .start-gate.is-scene.has-legal-notices .start-gate-actions { bottom: 156px; }
-  .start-gate.is-scene .start-gate-legal-notices { left: 7%; width: 86%; bottom: max(23px, env(safe-area-inset-bottom)); max-height: 112px; }
+  .start-gate.is-scene .start-gate-legal-notices { max-height: 112px; }
 }
 @media (max-height: 600px) and (orientation: landscape) {
-  .start-gate.is-scene .start-gate-title-block, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { top: 23%; left: 7%; width: 48%; transform: none; text-align: left; animation-name: title-copy-reveal; }
+  .start-gate.is-scene .start-gate-content { top: 64px; bottom: 34px; left: 7%; right: 7%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 31%); grid-template-rows: auto 1fr auto; align-items: start; gap: 12px 6%; }
+  /* No room under the top controls here: the update notice sits at the bottom and the column ends above it. */
+  .start-gate.is-scene + .vs-update-banner { top: auto; bottom: 12px; left: 7%; transform: none; width: min(560px, calc(93vw - 240px)); }
+  .start-gate.is-scene:has(+ .vs-update-banner) .start-gate-content { top: 64px; bottom: 92px; }
+  .start-gate.is-scene .start-gate-title-block, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-title-block { grid-column: 1; grid-row: 1; width: 100%; margin-top: 0; text-align: left; align-self: start; }
+  .start-gate.is-scene .start-gate-content .start-gate-actions { grid-column: 2; grid-row: 1 / span 2; width: 100%; margin-top: 0; align-self: start; }
+  .start-gate.is-scene .start-gate-legal-notices { grid-column: 1; grid-row: 3; }
   .start-gate.is-scene .start-gate-title-block h1 { font-size: clamp(25px, 4vw, 40px); }
   .start-gate.is-scene .start-gate-title-ornament { display: none; }
   .start-gate.is-scene .start-gate-eyebrow { font-size: 12px; margin-bottom: 9px; }
   .start-gate.is-scene .start-gate-prologue { font-size: 12px; margin-top: 12px; max-width: 100%; }
-  .start-gate.is-scene .start-gate-actions, .start-gate.is-scene[data-scene-layout='centered'] .start-gate-actions { top: 28%; bottom: auto; left: auto; right: 7%; width: 31%; transform: none; }
   .start-gate.is-scene .start-gate-button { min-height: 47px; font-size: 12px; }
   .start-gate.is-scene .start-gate-hint { font-size: 12px; }
-  .start-gate.is-scene.has-legal-notices .start-gate-actions { bottom: auto; }
-  .start-gate.is-scene .start-gate-legal-notices { max-height: 72px; bottom: 15px; }
+  .start-gate.is-scene .start-gate-legal-notices { max-height: 72px; }
   .start-scene-controls { top: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -131,13 +151,6 @@
   .start-scene-cover i, .start-gate.is-scene.is-revealing { transition: none !important; }
 }
 
-/* Authored button placement stays available independently of the scene layout. */
-@media (min-width: 769px) and (min-height: 601px) {
-  .start-gate.is-scene .start-gate-actions-bottom-center,
-  .start-gate.is-scene .start-gate-actions-auto { left: 50%; right: auto; transform: translateX(-50%); }
-  .start-gate.is-scene .start-gate-actions-bottom-right { left: auto; right: 8%; transform: none; }
-  .start-gate.is-scene .start-gate-actions-center { top: 56%; bottom: auto; left: 50%; transform: translate(-50%, -50%); }
-}
 .chapter-loading.scene-curtain { background: #080b10; backdrop-filter: none; z-index: 80; transition: opacity var(--scene-reveal-duration) ease; animation: scene-curtain-in 180ms ease-out both; }
 .scene-curtain.is-revealing { opacity: 0; animation: none; }
 .scene-curtain-center { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); text-align: center; width: min(80%, 680px); }
@@ -184,8 +197,7 @@
   .start-gate.is-scene .start-gate-button-load { font-size: 14px; background: #0b101ad9; }
   .start-gate.is-scene .start-gate-hint { text-align: center; line-height: 1.6; margin: 4px 0 0; }
   .start-gate.is-scene .start-gate-legal-notices { position: relative; inset: auto; width: 100%; max-height: 104px; flex: 0 0 auto; padding: 5px; box-sizing: border-box; }
-  /* A waiting update is announced under the top controls. Start the title copy below it
-     instead of underneath it. */
+  /* The banner wraps to two rows on a phone. */
+  .start-gate.is-scene + .vs-update-banner { top: max(78px, calc(env(safe-area-inset-top, 0px) + 70px)); }
   .start-gate.is-scene:has(+ .vs-update-banner) .start-gate-content { top: max(196px, calc(env(safe-area-inset-top, 0px) + 178px)); }
-  .start-gate.is-scene:has(+ .vs-update-banner) .start-gate-title-block { margin-top: 0; }
 }
