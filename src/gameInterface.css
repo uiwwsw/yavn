@@ -778,8 +778,6 @@ body:has(.app) #movv-usage-choice:has(> .usage-preference) { display: none; }
 .start-gate .vs-start-save .vs-slot-time { display: flex; flex-wrap: wrap; gap: 4px 10px; color: #e7dccbb3; font-size: 13px; font-variant-numeric: tabular-nums; }
 .start-gate .vs-slot-old { padding: 0 6px; border: 1px solid #e7bb72; border-radius: 2px; color: #f0c985; font-size: 13px; font-style: normal; font-weight: 650; }
 .start-gate .vs-older-save-note { margin: 0; color: #f0c985; font-size: 14px; line-height: 1.55; }
-/* A save summary makes the menu taller; let it grow into the empty lower band instead of up into the title. */
-.start-gate.is-scene:not(.has-legal-notices) .start-gate-actions:has(.vs-start-save) { bottom: max(56px, 7%); }
 .start-gate .start-gate-actions:has(.vs-start-save) .start-gate-hint { display: none; }
 .start-gate.is-scene .start-gate-button-load { font-size: 14px; }
 .start-gate.is-scene .start-gate-hint { font-size: 13px; }

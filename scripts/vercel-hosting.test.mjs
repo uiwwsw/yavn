@@ -23,8 +23,8 @@ describe('Vercel production hosting', () => {
     for (const rule of config.rewrites) expect(rule.destination.startsWith('/')).toBe(true);
   });
 
-  it('deploys main without accumulating automatic branch previews', () => {
-    expect(config.git.deploymentEnabled).toEqual({ '**': false, '*': false, main: true });
+  it('never deploys per commit; the Monday weekly run deploys on purpose', () => {
+    expect(config.git.deploymentEnabled).toBe(false);
   });
 
   it.each(manifest.games.flatMap(game => [
