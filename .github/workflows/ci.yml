@@ -1,10 +1,8 @@
 name: CI
 
 on:
-  # Not on every commit: run by hand when needed, plus once a week.
+  # By hand, or by the Monday workspace run when main changed since the last check.
   workflow_dispatch:
-  schedule:
-    - cron: '29 1 * * 1'
 
 jobs:
   verify:
