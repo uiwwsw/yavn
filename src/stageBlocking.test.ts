@@ -13,6 +13,7 @@ const documents: Record<string, string> = {
   'base.yaml': `assets:
   backgrounds:
     office: office.png
+    hall: hall.png
   characters:
     a:
       base: a.png
@@ -55,6 +56,23 @@ scenes:
       - say: { channel: message, text: "회사에서 온 문자." }
       - place: { text: "그날 밤 · {{who}}네 집", presentation: center }
       - say: { text: "다시 집." }
+      - ending: done
+`,
+  'cast.yaml': `script: [{scene: start}]
+scenes:
+  start:
+    actions:
+      - char: { id: a, position: left }
+      - char: { id: b, position: right }
+      - say: { char: a, with: [b], text: "첫 방." }
+      - bg: { id: office, transition: cut, wait: false }
+      - say: { char: a, text: "새 방." }
+      - say: { text: "내레이션도 옛 사람을 부르지 않는다." }
+      - say: { char: a, with: [b], text: "둘 다." }
+      - bg: { id: hall, transition: cut, wait: false, keepCast: true }
+      - say: { char: a, text: "같은 사람들, 다른 각도." }
+      - bg: { id: hall, transition: cut, wait: false }
+      - say: { char: a, text: "같은 그림." }
       - ending: done
 `,
 };
@@ -101,7 +119,7 @@ describe('stage blocking playback', () => {
     vi.stubGlobal('Audio', class { volume = 0; play() { return Promise.resolve(); } pause() {} addEventListener() {} });
     vi.stubGlobal('fetch', vi.fn(async (url: string) => {
       const pathname = new URL(url).pathname;
-      const path = pathname === '/captions/0.yaml' ? 'captions.yaml' : pathname.split('/').pop()!;
+      const path = pathname === '/captions/0.yaml' ? 'captions.yaml' : pathname === '/cast/0.yaml' ? 'cast.yaml' : pathname.split('/').pop()!;
       if (path.endsWith('.png')) return new Response(new Uint8Array([137, 80, 78, 71]), { status: 200 });
       return new Response(documents[path] ?? '', { status: documents[path] ? 200 : 404 });
     }));
@@ -189,5 +207,39 @@ describe('stage blocking playback', () => {
 
     await next();
     expect(useVNStore.getState().resolvedEndingId).toBe('done');
+  });
+
+  it('sends the visible cast out with the old place unless keepCast is set', async () => {
+    void loadGameFromUrl('http://test/cast/');
+    await vi.advanceTimersByTimeAsync(3000);
+    expect(useVNStore.getState().dialog.fullText).toBe('첫 방.');
+    expect([...useVNStore.getState().visibleCharacterIds].sort()).toEqual(['a', 'b']);
+
+    // A new place: whoever stood in the old one leaves with it; only the next line's cast comes back.
+    await next();
+    let state = useVNStore.getState();
+    expect(state.background).toBe('http://test/cast/office.png');
+    expect(state.dialog.fullText).toBe('새 방.');
+    expect(state.visibleCharacterIds).toEqual(['a']);
+
+    await next();
+    expect(useVNStore.getState().dialog.fullText).toBe('내레이션도 옛 사람을 부르지 않는다.');
+    expect(useVNStore.getState().visibleCharacterIds).toEqual(['a']);
+
+    await next();
+    expect([...useVNStore.getState().visibleCharacterIds].sort()).toEqual(['a', 'b']);
+
+    // Same room, another angle: the cast stays.
+    await next();
+    state = useVNStore.getState();
+    expect(state.background).toBe('http://test/cast/hall.png');
+    expect(state.dialog.fullText).toBe('같은 사람들, 다른 각도.');
+    expect([...state.visibleCharacterIds].sort()).toEqual(['a', 'b']);
+
+    // Naming the picture already on screen changes nothing.
+    await next();
+    state = useVNStore.getState();
+    expect(state.dialog.fullText).toBe('같은 그림.');
+    expect([...state.visibleCharacterIds].sort()).toEqual(['a', 'b']);
   });
 });

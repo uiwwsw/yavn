@@ -115,6 +115,7 @@ chapterTitle: "이야기의 시작"
 # scene actions:
 #   - bg: { id: lounge, transition: fade, duration: 900 } # decoded paint + transition까지 대기
 #   - bg: { id: lounge, transition: cut } # dissolve | fade | wipeLeft | wipeRight | cut
+#   - bg: { id: lounge_night, keepCast: true } # 같은 방, 조명만 바뀜: 보이던 인물이 남는다 (기본은 옛 장소와 함께 퇴장)
 #   - attack:
 #       attacker: witness # assets.characters ID, 화면에 없으면 자동 배치
 #       target: detective # 생략 시 player (1인칭 피격)

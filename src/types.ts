@@ -147,6 +147,8 @@ export type BackgroundDirective = string | {
   wait?: boolean;
   place?: string;
   label?: SceneLabelOptions;
+  /** Keep the visible cast through a background change (same room, new angle). */
+  keepCast?: boolean;
 };
 export type BackgroundPresentation = {
   transition: BackgroundTransitionKind;
